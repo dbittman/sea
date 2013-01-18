@@ -1,5 +1,16 @@
 #!/bin/sh
 
+if [ -d seakernel ]; then
+	echo "ok, you've got the kernel sources..."
+else
+	echo "couldn't locate the kernel sources! You may check them out from github with:"
+	echo "(read-only) : git clone git://github.com/dbittman/seakernel.git"
+	echo "(read-write): git clone https://github.com/dbittman/seakernel.git"
+	exit 1
+fi
+
+mkdir -p data/{dev,proc,mnt,tmp}
+
 echo -ne "please enter a path to store the generated toolchain:\n</path/to/toolchain>: "
 read tools
 if [ "$tools" == "" ]; then
@@ -32,9 +43,9 @@ fi
 echo -n "$loop" > .loop
 
 #sh tools/update_repos.sh
-#cd system
-#sh ./configure
-#cd ..
+cd seakernel
+sh ./configure
+cd ..
 
 echo -e "if you don't want to run the hard drive generation commands as root, you'll need to add a line to /etc/fstab to allow me to use and mount a loop device without root permission. That line would be:\n$loop\t`pwd`/mnt\tauto\trw,user,noauto"
 if [ "`whoami`" != "root" ]; then

@@ -11,6 +11,7 @@ Commands:
 make toolchain
 make apps_port
 make man
+make config
 make newhd
 make all
 

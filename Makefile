@@ -1,4 +1,4 @@
-include system/make.inc
+include seakernel/make.inc
 
 all: build
 
@@ -16,8 +16,8 @@ toolchain: toolchain/built
 toolchain/built:
 	@cd toolchain && sh install_toolchain.sh
 
-system/skernel:
-	@PATH=$$PATH:`cat .toolchain` $(MAKE) -j2 -s -C system all
+seakernel/skernel:
+	@PATH=$$PATH:`cat .toolchain` $(MAKE) -j2 -s -C seakernel all
 
 man:
 	sh tools/gen_man.sh
@@ -25,26 +25,26 @@ man:
 hd.img: newhd
 
 config:
-	@make -s -C system config
+	@make -s -C seakernel config
 
 defconfig:
-	@make -s -C system defconfig
+	@make -s -C seakernel defconfig
 
-build: system/skernel
+build: seakernel/skernel
 	@sh tools/inc_build.sh
 	@echo -n "build: "
 	@cat build_number
 	@echo updating hd image...
 	@sh tools/open_hdimage.sh
 	@mkdir -p ./mnt/sys/modules-${KERNEL_VERSION}/
-	@cp -rf system/drivers/built/* ./mnt/sys/modules-${KERNEL_VERSION}/
-	@cp -rf system/initrd.img ./mnt/sys/initrd
-	@cp -rf system/skernel ./mnt/sys/kernel
-	@mv system/skernel skernel
+	@cp -rf seakernel/drivers/built/* ./mnt/sys/modules-${KERNEL_VERSION}/
+	@cp -rf seakernel/initrd.img ./mnt/sys/initrd
+	@cp -rf seakernel/skernel ./mnt/sys/kernel
+	@mv seakernel/skernel skernel
 	@sh tools/close_hdimage.sh
 
 clean:
-	@make -s -C system clean
+	@make -s -C seakernel clean
 	@rm hd.img hd2.img
 
 test_t:
