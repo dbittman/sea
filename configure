@@ -1,0 +1,45 @@
+#!/bin/sh
+
+echo -ne "please enter a path to store the generated toolchain:\n</path/to/toolchain>: "
+read tools
+if [ "$tools" == "" ]; then
+	echo "You must enter a toolchain path!"
+	exit 1
+fi
+echo -n "$tools" > .toolchain
+
+if [ -d $tools ]; then
+	if [ ! -w $tools -o ! -x $tools  ]; then
+		echo "you don't have proper permissions on $tools!"
+		exit 1
+	fi
+else
+	echo "$tools is not a directory (or may not exist)!"
+	exit 1
+fi
+
+echo -n "enter a path to a loop device that I should use: "
+read loop
+test -e $loop
+if [ "$?" != "0" ]; then
+	echo "Device $loop doesn't exist!"
+	exit 1
+fi
+if [ "$loop" == "" ]; then
+	echo "You must enter a loop device!"
+	exit 1
+fi
+echo -n "$loop" > .loop
+
+#sh tools/update_repos.sh
+#cd system
+#sh ./configure
+#cd ..
+
+echo -e "if you don't want to run the hard drive generation commands as root, you'll need to add a line to /etc/fstab to allow me to use and mount a loop device without root permission. That line would be:\n$loop\t`pwd`/mnt\tauto\trw,user,noauto"
+if [ "`whoami`" != "root" ]; then
+groups | grep `ls -l $loop | awk '{ print $4 }'` &>/dev/null
+if [ $? != 0 ]; then
+	echo "warning - loop device $loop doesn't exist or you don't have permission for it!"
+fi
+fi

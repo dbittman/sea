@@ -1,0 +1,7 @@
+default 0
+timeout 1
+root (cd)
+title SeaOS 0.2
+	kernel /kernel root="/"
+	module /initrd
+

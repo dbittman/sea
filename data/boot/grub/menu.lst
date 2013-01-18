@@ -1,0 +1,5 @@
+timeout 1
+color light-blue/black light-gray/blue
+title SeaOS 0.2 (kernel eclipse)
+	kernel /sys/kernel root="/dev/hda1"
+	module /sys/initrd

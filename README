@@ -1,0 +1,17 @@
+build instructions
+------------------
+
+Requirements:
+loop devices in /dev that are accessible by a normal user.
+the ability to mount that loop device on ./mnt (fstab entry is printed
+in ./configure)
+
+Commands:
+./configure
+make toolchain
+make apps_port
+make man
+make newhd
+make all
+
+then to test in Qemu: make all test

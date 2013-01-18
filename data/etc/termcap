@@ -1,0 +1,47 @@
+# termcap configuration file for seaos 0.2
+#:sr=\EM:\
+seaos|SEAOS System Console:\
+	:bs:mi:ms:pt:xn:xo:it#8:\
+	:RA=\E[?7l
+	:SA=\E?7h:\
+	:bl=^G
+	:cr=^M
+	:ta=^I:\
+	:cm=\E[%i%d;%dH:\
+	:le=^H
+	:up=\E[A
+	:do=\E[B
+	:nd=\E[C:\
+	:LE=\E[%dD
+	:RI=\E[%dC
+	:UP=\E[%dA
+	:DO=\E[%dB:\
+	:ho=\E[H
+	:cl=\E[H\E[2J
+	:ce=\E[K
+	:cb=\E[1K
+	:cd=\E[J
+	:sf=\ED
+	:st=\EH:\
+	:sc=\E7
+	:rc=\E8:\
+	:dc=\E[P
+	:DC=\E[%dP
+	:dl=\E[M
+	:DL=\E[%dM:\
+	:so=\E[7m
+	:se=\E[m
+	:us=\E[4m
+	:ue=\E[m:\
+	:mb=\E[5m
+	:mh=\E[2m
+	:md=\E[1m
+	:mr=\E[7m
+	:me=\E[m:\
+	:sc=\E7
+	:rc=\E8
+	:kb=\177:\
+	:ku=\E[A
+	:kd=\E[B
+	:kr=\E[C
+	:kl=\E[D:

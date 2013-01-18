@@ -1,0 +1,33 @@
+#!/bin/sh
+
+start()
+{
+	echo "starting"
+}
+
+stop()
+{
+	echo stopping
+}
+
+up() 
+{
+	start
+}
+
+down()
+{
+	stop
+}
+
+status()
+{
+	echo status
+}
+
+if [ -z $1 ]; then
+	echo "usage: $0 [start|stop|status|up|down]"
+	return 1
+fi
+
+$1

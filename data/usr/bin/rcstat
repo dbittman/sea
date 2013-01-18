@@ -1,0 +1,22 @@
+#!/bin/sh
+cd /etc/rc
+for i in `ls`; do
+	if [ $i = "boot" ]; then
+		continue
+	fi
+	if [ $i = "shutdown" ]; then
+		continue
+	fi
+	
+	printf "$i\t: "
+	
+	. ./$i status
+	case $? in
+	  0 )
+	    echo up ;;
+	  1 )
+	    echo down ;;
+	  * )
+	    echo unknown ;;
+	esac
+done

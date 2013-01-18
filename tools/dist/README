@@ -1,0 +1,32 @@
+Latest public build of the Sea Operating System
+
+-- Testing Instructions --
+Provided is a hard drive image and a CD image. Currently, booting up on real
+hardware is not officially support (since its not tested well). The CD is the
+easiest way to make it boot up on real hardware.
+
+With the HD image:
+	* Use an emulator to boot up the OS. qemu -hda hd.img for example
+
+With the CD image:
+	* pop it in a computer and boot from it!
+	-> If you have a computer with less than 512MB of memory:
+		The OS wont boot up all the way! If it manages to get to the point where
+		the OS says that it's out of memory, I'd count that as a success. That
+		is, it didn't crash on your hardware and would probably have worked.
+
+
+Some fun things to try:
+	* cd to /usr/src/seaos-util and run `./configure --prefix=/; make; make install'. This will let you
+	  compile the applications for seaos and install them.
+	* cd to /usr/src/sea and run `./configure; make; make install'. This lets you recompile and install the
+	  kernel.
+	* use nano to edit files!
+	* create users with `useradd joe' (or whatever login you want).
+	* change your password with `passwd'!
+	* run sh explode (if you're curious as to what this does, look at /bin/explode [its a shell script]).
+	* play around with the included software!
+	* read the man pages of various programs!
+	  `man cat', for example
+
+See the release notes for more information

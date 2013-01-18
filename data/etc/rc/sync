@@ -1,0 +1,34 @@
+#!/bin/sh
+
+start()
+{
+	modprobe sync
+}
+
+stop()
+{
+	modprobe -r sync
+}
+
+up() 
+{
+	start
+}
+
+down()
+{
+	stop
+}
+
+status()
+{
+	modprobe -e sync
+	return $?
+}
+
+if [ -z $1 ]; then
+	echo "usage: $0 [start|stop|status|up|down]"
+	return 1
+fi
+
+$1

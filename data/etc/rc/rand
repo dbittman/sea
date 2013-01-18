@@ -1,0 +1,40 @@
+#!/bin/sh
+
+start()
+{
+	modprobe rand
+	if [ -e /dev/random ]; then
+		ioctl /dev/random 0 8
+	else
+		echo "$0: failed to create random device"
+		exit 1
+	fi
+}
+
+stop()
+{
+	modprobe -r rand
+}
+
+up() 
+{
+	start
+}
+
+down()
+{
+	stop
+}
+
+status()
+{
+	modprobe -e rand
+	return $?
+}
+
+if [ -z $1 ]; then
+	echo "usage: $0 [start|stop|status|up|down]"
+	return 1
+fi
+
+$1

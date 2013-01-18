@@ -1,0 +1,67 @@
+diff -crB gcc-4.7.0/config.sub gcc-4.7.0-seaos/config.sub
+*** gcc-4.7.0/config.sub	2011-11-01 17:56:32.000000000 -0700
+--- gcc-4.7.0-seaos/config.sub	2012-04-25 16:18:49.000000000 -0700
+***************
+*** 1333,1339 ****
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+  	      | -sym* | -kopensolaris* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* | -aros* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+--- 1333,1339 ----
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+  	      | -sym* | -kopensolaris* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* | -aros* | -seaos* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+Only in gcc-4.7.0-seaos/gcc/config: seaos.h
+diff -crB gcc-4.7.0/gcc/config.gcc gcc-4.7.0-seaos/gcc/config.gcc
+*** gcc-4.7.0/gcc/config.gcc	2012-03-05 02:43:22.000000000 -0800
+--- gcc-4.7.0-seaos/gcc/config.gcc	2012-04-25 16:20:44.000000000 -0700
+***************
+*** 685,690 ****
+--- 685,696 ----
+        tm_defines="${tm_defines} HAS_LIBC_R=1" ;;
+    esac
+    ;;
++ *-*-seaos*)
++   extra_parts="crtbegin.o crtend.o"
++   gas=yes
++   gnu_ld=yes
++   default_use_cxa_atexit=yes
++   ;;
+  *-*-rtems*)
+    case ${enable_threads} in
+      yes) thread_file='rtems' ;;
+***************
+*** 1225,1230 ****
+--- 1231,1241 ----
+  	gas=yes
+  	gnu_ld=yes
+  	;;
++ i[3-7]86-*-seaos*)
++     tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h i386/i386elf.h seaos.h"
++     tmake_file="i386/t-i386elf t-svr4"
++     use_fixproto=yes
++     ;;
+  i[34567]86-*-linux* | i[34567]86-*-kfreebsd*-gnu | i[34567]86-*-knetbsd*-gnu | i[34567]86-*-gnu* | i[34567]86-*-kopensolaris*-gnu)
+  			# Intel 80386's running GNU/*
+  			# with ELF format using glibc 2
+diff -crB gcc-4.7.0/libgcc/config.host gcc-4.7.0-seaos/libgcc/config.host
+*** gcc-4.7.0/libgcc/config.host	2012-02-20 13:19:55.000000000 -0800
+--- gcc-4.7.0-seaos/libgcc/config.host	2012-04-25 16:23:37.000000000 -0700
+***************
+*** 543,548 ****
+--- 543,550 ----
+  	tmake_file="${tmake_file} i386/t-crtpc i386/t-crtfm i386/t-crtstuff t-dfprules"
+  	md_unwind_header=i386/linux-unwind.h
+  	;;
++ i[3-7]86-*-seaos*)
++     ;;
+  i[34567]86-*-kfreebsd*-gnu | i[34567]86-*-knetbsd*-gnu | i[34567]86-*-gnu* | i[34567]86-*-kopensolaris*-gnu)
+  	extra_parts="$extra_parts crtprec32.o crtprec64.o crtprec80.o crtfastmath.o"
+  	tmake_file="${tmake_file} i386/t-crtpc i386/t-crtfm i386/t-crtstuff t-dfprules"

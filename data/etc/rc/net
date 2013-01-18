@@ -1,0 +1,38 @@
+#!/bin/sh
+
+start()
+{
+	modprobe rtl8139
+	modprobe i825xx
+	modprobe ipv4
+}
+
+stop()
+{
+	modprobe -r rtl8139 2> /dev/null
+	modprobe -r i825xx 2> /dev/null
+	modprobe -r ipv4 2> /dev/null
+	modprobe -r ethernet 2> /dev/null
+}
+
+up() 
+{
+	start
+}
+
+down()
+{
+	stop
+}
+
+status()
+{
+	return 2
+}
+
+if [ -z $1 ]; then
+	echo "usage: $0 [start|stop|status|up|down]"
+	return 1
+fi
+
+$1
