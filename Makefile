@@ -48,7 +48,7 @@ clean:
 	@rm hd.img hd2.img
 
 test_t:
-	@qemu-system-i386 --enable-kvm -m 256 -serial stdio -smp 1 -drive file=hd.img,if=ide,cache=none 
+	@qemu-system-i386 --enable-kvm -m 512 -serial stdio -smp 1 -drive file=hd.img,if=ide,cache=none 
 
 test_1:
 	@-sudo mkdir /tmp_t 2> /dev/null
