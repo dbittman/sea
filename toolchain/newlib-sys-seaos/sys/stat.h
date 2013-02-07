@@ -46,7 +46,7 @@ struct task_stat {
 	void *exe;
 	char **argv;
 	unsigned mem_usage;
-	char *cmd;
+	char cmd[128];
 };
 
 struct mem_stat {
