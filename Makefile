@@ -39,7 +39,7 @@ build: seakernel/skernel
 	@echo updating hd image...
 	@sh tools/open_hdimage.sh
 	@mkdir -p ./mnt/sys/modules-${KERNEL_VERSION}/
-	@cp -rf seakernel/drivers/built/* ./mnt/sys/modules-${KERNEL_VERSION}/
+	@-cp -rf seakernel/drivers/built/* ./mnt/sys/modules-${KERNEL_VERSION}/ 2>/dev/null
 	@cp -rf seakernel/initrd.img ./mnt/sys/initrd
 	@cp -rf seakernel/skernel ./mnt/sys/kernel
 	@mv seakernel/skernel skernel
@@ -50,7 +50,7 @@ clean:
 	@rm hd.img hd2.img
 
 test_t:
-	@qemu-system-i386 -enable-kvm -m 512 -serial stdio -smp 1 -drive file=hd.img,if=ide,cache=none $(QEMU_NET)
+	@qemu-system-i386 -localtime -enable-kvm -m 512 -serial stdio -smp 1 -drive file=hd.img,if=ide,cache=none $(QEMU_NET)
 
 test_1:
 	@-sudo mkdir /tmp_t 2> /dev/null
