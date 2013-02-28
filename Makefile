@@ -13,6 +13,9 @@ apps_seaos:
 newhd:
 	@zsh tools/chd.sh
 
+writehd:
+	@zsh tools/copy_to_hd.sh
+
 toolchain: toolchain/built
 
 toolchain/built:

@@ -171,8 +171,8 @@ int main(int argc, char **argv)
 			fprintf(stderr, "%s: %s: %s\n", basename(argv[0]), path, strerror(errno));
 		} else
 		{
-			char buf[128];
-			fread(buf, 1, 36, f);
+			char buf[1024];
+			fread(buf, 1, 1024, f);
 			struct pci_device *p = (struct pci_device *)buf;
 			printf("%2.2x:%2.2x.%d %s: %s %s\n", p->bus, p->dev, p->func, class_code[p->pcs->class_code], getVendor(p->pcs->vendor_id), getDeviceS(p->pcs->vendor_id, p->pcs->device_id));
 			if(desc)
