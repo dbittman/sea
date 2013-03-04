@@ -56,6 +56,8 @@ int main(int argc, char **argv)
 	setbuf(stdout, NULL);
 	waitpid(pid, 0, 0);
 	signal(SIGINT, sigint_h);
+	signal(SIGTSTP, sigint_h);
+	signal(SIGQUIT, sigint_h);
 	struct utsname name;
 	uname(&name);
 	/* Main loop */
