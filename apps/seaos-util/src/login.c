@@ -23,6 +23,7 @@
 #include <signal.h>
 #include <sys/utsname.h>
 #include <libgen.h>
+#include <errno.h>
 char out_tty=0;
 int pid;
 char *name;
@@ -30,7 +31,7 @@ int check_password(char *);
 char def_shell[8] = "/bin/sh";
 void sigint_h(int g)
 {
-	
+	/* LOL LOL LOL */
 }
 
 int main(int argc, char **argv)
@@ -85,7 +86,7 @@ int main(int argc, char **argv)
 		/* Okay, login the user */
 		pid = fork();
 		if(pid) {
-			while(waitpid(pid, 0, 0) == -1);
+			while(syscall(3, pid, -1, 0, 0, 0) == -EINTR);
 			ioctl(1, 0, 0);
 		} else {
 			set_uid(pwd->pw_uid);
