@@ -13,7 +13,7 @@ fi
 
 read INSTALL_LOC < ../.toolchain
 export INSTALL_LOC=$INSTALL_LOC
-
+export TARGET=i586-pc-seaos
 rm -rf $INSTALL_LOC/* &>/dev/null
 export INSTALL_LOC
 echo "Installing toolchain..."

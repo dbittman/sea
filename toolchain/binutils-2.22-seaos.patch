@@ -1,6 +1,6 @@
 diff -crB binutils-2.22/bfd/config.bfd binutils-2.22-seaos/bfd/config.bfd
-*** binutils-2.22/bfd/config.bfd	2011-07-28 15:35:13.000000000 -0700
---- binutils-2.22-seaos/bfd/config.bfd	2012-02-28 01:04:04.000000000 -0800
+*** binutils-2.22/bfd/config.bfd	Thu Jul 28 15:35:13 2011
+--- binutils-2.22-seaos/bfd/config.bfd	Tue Mar 19 14:33:34 2013
 ***************
 *** 566,571 ****
 --- 566,575 ----
@@ -14,9 +14,22 @@ diff -crB binutils-2.22/bfd/config.bfd binutils-2.22-seaos/bfd/config.bfd
     i[3-7]86-*-nacl*)
       targ_defvec=bfd_elf32_i386_nacl_vec
       targ_selvecs="bfd_elf32_i386_vec"
+***************
+*** 602,607 ****
+--- 606,615 ----
+      targ_selvecs="bfd_elf32_i386_vec i386netbsd_vec i386coff_vec i386pei_vec x86_64pei_vec bfd_elf64_l1om_vec bfd_elf64_k1om_vec"
+      want64=true
+      ;;
++   x86_64-*-seaos*)
++     targ_defvec=bfd_elf64_x86_64_vec
++     targ_selvecs="bfd_elf32_i386_vec bfd_elf32_x86_64_vec"
++     ;;
+    x86_64-*-linux-*)
+      targ_defvec=bfd_elf64_x86_64_vec
+      targ_selvecs="bfd_elf32_i386_vec bfd_elf32_x86_64_vec i386linux_vec i386pei_vec x86_64pei_vec bfd_elf64_l1om_vec bfd_elf64_k1om_vec"
 diff -crB binutils-2.22/config.sub binutils-2.22-seaos/config.sub
-*** binutils-2.22/config.sub	2011-06-06 03:36:06.000000000 -0700
---- binutils-2.22-seaos/config.sub	2012-02-28 01:02:56.000000000 -0800
+*** binutils-2.22/config.sub	Mon Jun  6 03:36:06 2011
+--- binutils-2.22-seaos/config.sub	Tue Mar 19 14:33:34 2013
 ***************
 *** 1320,1326 ****
   	-gnu* | -bsd* | -mach* | -minix* | -genix* | -ultrix* | -irix* \
@@ -35,8 +48,8 @@ diff -crB binutils-2.22/config.sub binutils-2.22-seaos/config.sub
   	      | -aos* | -aros* \
   	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
 diff -crB binutils-2.22/gas/configure.tgt binutils-2.22-seaos/gas/configure.tgt
-*** binutils-2.22/gas/configure.tgt	2011-06-20 06:23:21.000000000 -0700
---- binutils-2.22-seaos/gas/configure.tgt	2012-02-28 01:05:43.000000000 -0800
+*** binutils-2.22/gas/configure.tgt	Mon Jun 20 06:23:21 2011
+--- binutils-2.22-seaos/gas/configure.tgt	Tue Mar 19 14:33:34 2013
 ***************
 *** 194,199 ****
 --- 194,200 ----
@@ -47,30 +60,35 @@ diff -crB binutils-2.22/gas/configure.tgt binutils-2.22-seaos/gas/configure.tgt
     i386-*-lynxos*)			fmt=elf em=lynx ;;
     i386-*-sysv[45]*)			fmt=elf ;;
     i386-*-solaris*)			fmt=elf em=solaris ;;
-diff -crB binutils-2.22/ld/configure.tgt binutils-2.22-seaos/ld/configure.tgt
-*** binutils-2.22/ld/configure.tgt	2011-11-21 01:29:37.000000000 -0800
---- binutils-2.22-seaos/ld/configure.tgt	2012-02-28 01:06:41.000000000 -0800
-***************
-*** 190,195 ****
---- 190,196 ----
-  			targ64_extra_libpath=elf_x86_64
-  			targ_extra_libpath=elf32_x86_64
-  			tdir_i386linux=${targ_alias}aout ;;
-+ i[3-7]86-*-seaos*)	targ_emul=seaos_i386 ;;
-  x86_64-*-linux-*)	targ_emul=elf_x86_64
-  			targ_extra_emuls="elf32_x86_64 elf_i386 i386linux elf_l1om elf_k1om"
-  			targ_extra_libpath="elf_i386 elf32_x86_64 elf_l1om elf_k1om"
 diff -crB binutils-2.22/ld/Makefile.in binutils-2.22-seaos/ld/Makefile.in
-*** binutils-2.22/ld/Makefile.in	2011-07-22 13:22:37.000000000 -0700
---- binutils-2.22-seaos/ld/Makefile.in	2012-02-28 01:09:51.000000000 -0800
+*** binutils-2.22/ld/Makefile.in	Fri Jul 22 13:22:37 2011
+--- binutils-2.22-seaos/ld/Makefile.in	Tue Mar 19 14:48:27 2013
 ***************
 *** 2627,2632 ****
---- 2627,2634 ----
+--- 2627,2636 ----
   eelf_i386.c: $(srcdir)/emulparams/elf_i386.sh \
     $(ELF_DEPS) $(srcdir)/scripttempl/elf.sc ${GEN_DEPENDS}
   	${GENSCRIPTS} elf_i386 "$(tdir_elf_i386)"
 + eseaos_i386.c: $(srcdir)/emulparams/seaos_i386.sh $(ELF_DEPS) $(srcdir)/scripttempl/elf.sc ${GEN_DEPENDS}
 + 	${GENSCRIPTS} seaos_i386 "$(tdir_seaos_i386)"
++ eseaos_x86_64.c: $(srcdir)/emulparams/seaos_x86_64.sh $(ELF_DEPS) $(srcdir)/scripttempl/elf.sc ${GEN_DEPENDS}
++ 	${GENSCRIPTS} seaos_x86_64 "$(tdir_seaos_x86_64)"
   eelf_i386_be.c: $(srcdir)/emulparams/elf_i386_be.sh \
     $(ELF_DEPS) $(srcdir)/scripttempl/elf.sc ${GEN_DEPENDS}
   	${GENSCRIPTS} elf_i386_be "$(tdir_elf_i386_be)"
+diff -crB binutils-2.22/ld/configure.tgt binutils-2.22-seaos/ld/configure.tgt
+*** binutils-2.22/ld/configure.tgt	Mon Nov 21 01:29:37 2011
+--- binutils-2.22-seaos/ld/configure.tgt	Tue Mar 19 14:54:26 2013
+***************
+*** 190,195 ****
+--- 190,199 ----
+  			targ64_extra_libpath=elf_x86_64
+  			targ_extra_libpath=elf32_x86_64
+  			tdir_i386linux=${targ_alias}aout ;;
++ i[3-7]86-*-seaos*)	targ_emul=seaos_i386 ;;
++ x86_64-*-seaos*)	targ_emul=seaos_x86_64 
++ 			targ_extra_emuls="elf32_x86_64 elf_i386"
++ 			targ_extra_libpath="elf_i386 elf32_x86_64" ;;
+  x86_64-*-linux-*)	targ_emul=elf_x86_64
+  			targ_extra_emuls="elf32_x86_64 elf_i386 i386linux elf_l1om elf_k1om"
+  			targ_extra_libpath="elf_i386 elf32_x86_64 elf_l1om elf_k1om"
