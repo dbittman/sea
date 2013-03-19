@@ -16,6 +16,7 @@ patch_gcc:
 	wget http://ftp.gnu.org/gnu/gcc/gcc-4.7.1/gcc-4.7.1.tar.gz
 	tar xzf gcc-4.7.1.tar.gz
 	cd gcc-4.7.1; patch -p1 -i ../gcc-4.7.1-seaos.patch
+	cd gcc-4.7.1; patch -p1 -i ../gcc-4.7.2-texinfo.patch
 	cp seaos.h seaos64.h gcc-4.7.1/gcc/config/
 	cd gcc-4.7.1/libstdc++-v3; /opt/autoconf/2.64/bin/autoconf
 	rm gcc-4.7.1.tar.gz
