@@ -6,6 +6,7 @@ $newlib_ver   = "1.20.0"
 
 $gcc_download = "http://ftp.gnu.org/gnu/gcc/gcc-#{$gcc_ver}/gcc-#{$gcc_ver}.tar.gz"
 $binutils_download = "http://ftp.gnu.org/gnu/binutils/binutils-#{$binutils_ver}.tar.gz"
+$newlib_download = "ftp://sourceware.org/pub/newlib/newlib-1.20.0.tar.gz"
 
 $install = ""
 $target = ""
@@ -37,7 +38,7 @@ def patch_binutils()
 		puts(out)
 		error("binutils patch failed")
 	end
-	`cp seaos_i386.sh seaos_x86_64.sh binutils-#{$binutils_ver}/ld/emulparams/`
+	`cp ../seaos_i386.sh ../seaos_x86_64.sh ld/emulparams/`
 	Dir.chdir("..")
 end
 
@@ -53,7 +54,7 @@ def patch_gcc()
 		puts(out)
 		error("gcc texinfo patch failed")
 	end
-	`cp seaos.h seaos64.h gcc-#{$gcc_ver}/gcc/config/`
+	`cp ../seaos.h ../seaos64.h gcc/config/`
 	Dir.chdir("libstdc++-v3")
 	out = `autoconf`
 	if ! $?.success?
@@ -99,33 +100,37 @@ def clean()
 end
 
 def conf_binutils()
+	create_build_dirs()
 	Dir.chdir("build-binutils-#{$binutils_ver}-#{$target}")
 	`../binutils-#{$binutils_ver}/configure --target=#{$target} --prefix=#{$install} --disable-nls --disable-werror &> binutils-#{$binutils_ver}-configure-#{$target}.log`
 	Dir.chdir("..")
 end
 
 def build_binutils()
+	create_build_dirs()
 	Dir.chdir("build-binutils-#{$binutils_ver}-#{$target}")
-	`make MAKEINFO=makeinfo all install &> binutils-#{$binutils_ver}-build-#{$target}.log`
+	`make -j3 MAKEINFO=makeinfo all install &> binutils-#{$binutils_ver}-build-#{$target}.log`
 	Dir.chdir("..")
 end
 
 def conf_gcc()
+	create_build_dirs()
 	Dir.chdir("build-gcc-#{$gcc_ver}-#{$target}")
 	`../gcc-#{$gcc_ver}/configure --target=#{$target} --prefix=#{$install} --enable-languages=c,c++ --enable-lto --disable-nls &> gcc-#{$gcc_ver}-configure-#{$target}.log`
 	Dir.chdir("..")
 end
 
 def build_gcc()
+	create_build_dirs()
 	Dir.chdir("build-gcc-#{$gcc_ver}-#{$target}")
-	`make all-gcc install-gcc &> gcc-#{$gcc_ver}-build-#{$target}.log`
+	`make -j3 all-gcc install-gcc &> gcc-#{$gcc_ver}-build-#{$target}.log`
 	Dir.chdir("..")
 end
 
 def conf_newlib()
-	Dir.chdir("build-newlib-#{$gcc_ver}-#{$target}")
+	create_build_dirs()
 	
-	Dir.chdir("newlib/libc/sys")
+	Dir.chdir("newlib-#{$newlib_ver}/newlib/libc/sys")
 	`autoconf &> newlib-#{$newlib_ver}-configure-#{$target}.log`
 	if ! $?.success?
 		error("error in autoconf of newlib (check newlib configure log)")
@@ -135,27 +140,72 @@ def conf_newlib()
 	if ! $?.success?
 		error("error in autoreconf of newlib (check newlib configure log)")
 	end
-	Dir.chdir("../../../..")
+	Dir.chdir("../../../../..")
+	Dir.chdir("build-newlib-#{$newlib_ver}-#{$target}")
 	`../newlib-#{$newlib_ver}/configure --target=#{$target} --prefix=#{$install} &>> newlib-#{$newlib_ver}-configure-#{$target}.log`
 	Dir.chdir("..")
 end
 
 def build_newlib()
+	create_build_dirs()
 	Dir.chdir("build-newlib-#{$newlib_ver}-#{$target}")
 	`make all install &> newlib-#{$newlib_ver}-build-#{$target}.log`
 	Dir.chdir("..")
 end
 
 def build_libgcc()
+	create_build_dirs()
 	Dir.chdir("build-gcc-#{$gcc_ver}-#{$target}")
-	`make all-target-libgcc install-target-libgcc &> libgcc-#{$gcc_ver}-build-#{$target}.log`
+	`make -j3 all-target-libgcc install-target-libgcc &> libgcc-#{$gcc_ver}-build-#{$target}.log`
 	Dir.chdir("..")
 end
 
 
-
 def perform_action(act)
 	
+	puts "performing #{act}..."
+	
+	case act
+	when "config-gcc"
+		conf_gcc()
+	when "config-binutils"
+		conf_binutils()
+	when "config-newlib"
+		conf_newlib()
+	
+	when "download-gcc"
+		download_extract_file($gcc_download)
+	when "download-binutils"
+		download_extract_file($binutils_download)
+	when "download-newlib"
+		download_extract_file($newlib_download)
+	
+	when "build-gcc"
+		build_gcc()
+	when "build-binutils"
+		build_binutils()
+	when "build-newlib"
+		build_newlib()
+	when "build-libgcc"
+		build_libgcc()
+	
+	when "patch-gcc"
+		patch_gcc()
+	when "patch-binutils"
+		patch_binutils()
+	when "patch-newlib"
+		patch_newlib()
+	when "populate-newlib"
+		populate_newlib()
+	when "clean"
+		clean()
+	else
+		error("unknown action: #{act}")
+	end
+	
+	if ! $?.success?
+		error("error in performing action #{act}")
+	end
 end
 
 if ARGV.nil? or ARGV[0] == "" or ARGV[0] == "help" or ARGV[0] == "-h" or ARGV[0] == "--help" or ARGV.length == 0
@@ -187,7 +237,12 @@ if ARGV.nil? or ARGV[0] == "" or ARGV[0] == "help" or ARGV[0] == "-h" or ARGV[0]
 	puts "                     does not include build-libgcc"
 	puts "  all-binutils"
 	puts "  all-newlib         includes build-libgcc"
-	
+	puts 
+	puts "  clean              remove build files"
+	puts "Note that most of these actions depend on other actions. 'all' is probably"
+	puts "the best choice"
+	puts "The install prefix is chosen by reading the file '../.toolchain', set"
+	puts "by the configure script in the parent directory"
 	exit 0
 end
 select_target()
@@ -203,6 +258,8 @@ while $install.nil? or $install == ""
 	$install = $stdin.gets.chomp
 end
 
+ENV["PATH"] = ENV["PATH"] + ":#{$install}/bin"
+
 $actions = ARGV
 
 printf "will perform actions: #{$actions.join(", ")}\ninstalling to: #{$install}\ntarget: #{$target}\n\npress enter to start..."
@@ -214,22 +271,19 @@ $actions.each do |a|
 		perform_action("patch-gcc")
 		perform_action("config-gcc")
 		perform_action("build-gcc")
-	end
-	if a == "all-binutils"
+	elsif a == "all-binutils"
 		perform_action("download-binutils")
 		perform_action("patch-binutils")
 		perform_action("config-binutils")
 		perform_action("build-binutils")
-	end
-	if a == "all-newlib"
+	elsif a == "all-newlib"
 		perform_action("download-newlib")
 		perform_action("patch-newlib")
 		perform_action("populate-newlib")
 		perform_action("config-newlib")
 		perform_action("build-newlib")
 		perform_action("build-libgcc")
-	end
-	if a == "all"
+	elsif a == "all"
 		perform_action("download-binutils")
 		perform_action("download-gcc")
 		perform_action("download-newlib")
@@ -248,5 +302,7 @@ $actions.each do |a|
 		perform_action("build-newlib")
 		
 		perform_action("build-libgcc")
+	else
+		perform_action(a)
 	end
 end
