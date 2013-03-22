@@ -16,4 +16,4 @@ $automake = "automake-1.12"
 $aclocal = "aclocal-1.12"
 
 # change this... maybe -j3 or so?
-$make_flags = ""
+$make_flags = "-j2"
