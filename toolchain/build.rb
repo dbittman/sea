@@ -51,12 +51,12 @@ def patch_gcc()
 	end
 	`cp ../seaos.h ../seaos64.h gcc/config/`
 	Dir.chdir("libstdc++-v3")
-	out = `autoconf`
+	out = `#{$autoconf}`
 	if ! $?.success?
 		puts(out)
 		error("gcc autoconf failed")
 	end
-	Dir.chdir("..")
+	Dir.chdir("../..")
 end
 
 def patch_newlib()
@@ -255,6 +255,8 @@ end
 if ! $?.success? then error("automake variable not set (must be edited in var.rb)") end
 `which #{$aclocal} &> /dev/null`
 if ! $?.success? then error("aclocal variable not set (must be edited in var.rb)") end
+`which #{$autoconf} &> /dev/null`
+if ! $?.success? then error("autoconf variable not set (must be edited in var.rb)") end
 
 select_target()
 

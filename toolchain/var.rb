@@ -15,5 +15,8 @@ $automake = "automake-1.12"
 # path to aclocal version 1.12
 $aclocal = "aclocal-1.12"
 
+# and this is required by gcc :(
+$autoconf = "/opt/autoconf/2.64/bin/autoconf"
+
 # change this... maybe -j3 or so?
-$make_flags = "-j2"
+$make_flags = ""
