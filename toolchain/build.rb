@@ -1,15 +1,10 @@
+#!/usr/bin/ruby
 # the more advanced toolchain builder
-
-$binutils_ver = "2.22"
-$gcc_ver      = "4.7.1"
-$newlib_ver   = "1.20.0"
-
-$gcc_download = "http://ftp.gnu.org/gnu/gcc/gcc-#{$gcc_ver}/gcc-#{$gcc_ver}.tar.gz"
-$binutils_download = "http://ftp.gnu.org/gnu/binutils/binutils-#{$binutils_ver}.tar.gz"
-$newlib_download = "ftp://sourceware.org/pub/newlib/newlib-1.20.0.tar.gz"
 
 $install = ""
 $target = ""
+
+require "./var.rb"
 
 def select_target()
 	printf "target selection (i586, x86_64) [i586]? "
@@ -109,7 +104,7 @@ end
 def build_binutils()
 	create_build_dirs()
 	Dir.chdir("build-binutils-#{$binutils_ver}-#{$target}")
-	`make -j3 MAKEINFO=makeinfo all install &> binutils-#{$binutils_ver}-build-#{$target}.log`
+	`make #{$make_flags} MAKEINFO=makeinfo all install &> binutils-#{$binutils_ver}-build-#{$target}.log`
 	Dir.chdir("..")
 end
 
@@ -123,7 +118,7 @@ end
 def build_gcc()
 	create_build_dirs()
 	Dir.chdir("build-gcc-#{$gcc_ver}-#{$target}")
-	`make -j3 all-gcc install-gcc &> gcc-#{$gcc_ver}-build-#{$target}.log`
+	`make #{$make_flags} all-gcc install-gcc &> gcc-#{$gcc_ver}-build-#{$target}.log`
 	Dir.chdir("..")
 end
 
@@ -136,7 +131,7 @@ def conf_newlib()
 		error("error in autoconf of newlib (check newlib configure log)")
 	end
 	Dir.chdir("seaos")
-	`autoreconf &>> newlib-#{$newlib_ver}-configure-#{$target}.log`
+	`ACLOCAL=#{$aclocal} AUTOMAKE=#{$automake} autoreconf &>> newlib-#{$newlib_ver}-configure-#{$target}.log`
 	if ! $?.success?
 		error("error in autoreconf of newlib (check newlib configure log)")
 	end
@@ -149,14 +144,14 @@ end
 def build_newlib()
 	create_build_dirs()
 	Dir.chdir("build-newlib-#{$newlib_ver}-#{$target}")
-	`make all install &> newlib-#{$newlib_ver}-build-#{$target}.log`
+	`make #{$make_flags} all install &> newlib-#{$newlib_ver}-build-#{$target}.log`
 	Dir.chdir("..")
 end
 
 def build_libgcc()
 	create_build_dirs()
 	Dir.chdir("build-gcc-#{$gcc_ver}-#{$target}")
-	`make -j3 all-target-libgcc install-target-libgcc &> libgcc-#{$gcc_ver}-build-#{$target}.log`
+	`make #{$make_flags} all-target-libgcc install-target-libgcc &> libgcc-#{$gcc_ver}-build-#{$target}.log`
 	Dir.chdir("..")
 end
 
@@ -240,11 +235,27 @@ if ARGV.nil? or ARGV[0] == "" or ARGV[0] == "help" or ARGV[0] == "-h" or ARGV[0]
 	puts 
 	puts "  clean              remove build files"
 	puts "Note that most of these actions depend on other actions. 'all' is probably"
-	puts "the best choice"
-	puts "The install prefix is chosen by reading the file '../.toolchain', set"
-	puts "by the configure script in the parent directory"
+	puts "the best choice. The install prefix is chosen by reading the file"
+	puts "'../.toolchain', which is set by the configure script in the parent directory."
+	puts 
+	puts "To change while tool version to build, edit var.rb to contain the proper"
+	puts "version number."
+	puts
+	puts "The output (and error message) from the sub-processes invoked by the actions"
+	puts "will be redirected to a log file contained within the build directory"
+	puts "associated with the current action."
+	puts
+	puts "NOTE: you must specify a path to automake and aclocal version 1.12 for"
+	puts "newlib to compile correctly!!"
+	puts
 	exit 0
 end
+
+`which #{$automake} &> /dev/null`
+if ! $?.success? then error("automake variable not set (must be edited in var.rb)") end
+`which #{$aclocal} &> /dev/null`
+if ! $?.success? then error("aclocal variable not set (must be edited in var.rb)") end
+
 select_target()
 
 file = File.open("../.toolchain")
