@@ -24,3 +24,19 @@ $autoconf = "/opt/autoconf/2.64/bin/autoconf"
 
 # change this... maybe -j3 or so?
 $make_flags = ""
+
+# extra libraries
+$gmp_ver = "5.1.1"
+$mpfr_ver = "3.1.2"
+$mpc_ver = "1.0.1"
+$ncurses_ver = "5.9"
+$readline_ver = "6.2"
+$termcap_ver = "1.3.1"
+
+$gmp = "ftp://ftp.gnu.org/gnu/gmp/gmp-#{$gmp_ver}.tar.bz2"
+$mpfr = "ftp://ftp.gnu.org/gnu/mpfr/mpfr-#{$mpfr_ver}.tar.gz"
+$mpc = "ftp://ftp.gnu.org/gnu/mpc/mpc-#{$mpc_ver}.tar.gz"
+$ncurses = "ftp://ftp.gnu.org/gnu/ncurses/ncurses-#{$ncurses_ver}.tar.gz"
+$readline = "ftp://ftp.gnu.org/gnu/readline/readline-#{$readline_ver}.tar.gz"
+$termcap = "ftp://ftp.gnu.org/gnu/termcap/termcap-#{$termcap_ver}.tar.gz" 
+

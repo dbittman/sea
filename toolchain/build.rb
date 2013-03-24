@@ -192,6 +192,11 @@ def perform_action(act)
 		patch_newlib()
 	when "populate-newlib"
 		populate_newlib()
+	
+	when "build-extra"
+		Dir.chdir("extra")
+		exec("ruby build.rb #{$install} #{$target}")
+		Dir.chdir("..")
 	when "clean"
 		clean()
 	else
@@ -227,6 +232,9 @@ if ARGV.nil? or ARGV[0] == "" or ARGV[0] == "help" or ARGV[0] == "-h" or ARGV[0]
 	puts "  build-newlib"
 	puts "  build-binutils"
 	puts "  build-libgcc"
+	puts 
+	puts "  build-extra        builds extra libraries: mpfr, mpc, gmp, ncurses"
+	puts "                     readline, and termcap"
 	puts
 	puts "  all-gcc            executes all gcc actions in the proper order."
 	puts "                     does not include build-libgcc"
@@ -315,6 +323,7 @@ $actions.each do |a|
 		perform_action("build-newlib")
 		
 		perform_action("build-libgcc")
+		perform_action("build-extra")
 	else
 		perform_action(a)
 	end
