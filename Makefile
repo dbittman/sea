@@ -19,7 +19,7 @@ writehd:
 toolchain: toolchain/built
 
 toolchain/built:
-	@cd toolchain && sh install_toolchain.sh
+	@cd toolchain && ruby build.rb all
 
 seakernel/skernel:
 	@PATH=$$PATH:`cat .toolchain` $(MAKE) -j2 -s -C seakernel all
