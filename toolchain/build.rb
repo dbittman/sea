@@ -86,12 +86,17 @@ def create_build_dirs()
 	if ! Dir.exist?("build-newlib-#{$newlib_ver}-#{$target}")
 		Dir.mkdir("build-newlib-#{$newlib_ver}-#{$target}")
 	end
+	if ! Dir.exist?("build-extra-#{$extra_ver}-#{$target}")
+		Dir.mkdir("build-extra-#{$extra_ver}-#{$target}")
+	end
 end
 
 def clean()
 	`rm -r build-binutils-#{$binutils_ver}-#{$target}`
 	`rm -r build-gcc-#{$gcc_ver}-#{$target}`
 	`rm -r build-newlib-#{$newlib_ver}-#{$target}`
+	`rm -r build-extra-#{$extra_ver}-#{$target}`
+	`rm built`
 end
 
 def conf_binutils()
@@ -194,11 +199,12 @@ def perform_action(act)
 		populate_newlib()
 	
 	when "build-extra"
-		Dir.chdir("extra")
-		exec("ruby build.rb #{$install} #{$target}")
-		Dir.chdir("..")
+		create_build_dirs()
+		exec("ruby build-extra.rb #{$install} #{$target}")
 	when "clean"
 		clean()
+	when "mark-success"
+		`touch built`
 	else
 		error("unknown action: #{act}")
 	end
@@ -241,6 +247,7 @@ if ARGV.nil? or ARGV[0] == "" or ARGV[0] == "help" or ARGV[0] == "-h" or ARGV[0]
 	puts "  all-binutils"
 	puts "  all-newlib         includes build-libgcc"
 	puts 
+	puts "  mark-success       tells the build system that the toolchain is installed"
 	puts "  clean              remove build files"
 	puts "Note that most of these actions depend on other actions. 'all' is probably"
 	puts "the best choice. The install prefix is chosen by reading the file"
@@ -324,6 +331,7 @@ $actions.each do |a|
 		
 		perform_action("build-libgcc")
 		perform_action("build-extra")
+		perform_action("mark-success")
 	else
 		perform_action(a)
 	end

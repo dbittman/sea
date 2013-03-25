@@ -40,3 +40,5 @@ $ncurses = "ftp://ftp.gnu.org/gnu/ncurses/ncurses-#{$ncurses_ver}.tar.gz"
 $readline = "ftp://ftp.gnu.org/gnu/readline/readline-#{$readline_ver}.tar.gz"
 $termcap = "ftp://ftp.gnu.org/gnu/termcap/termcap-#{$termcap_ver}.tar.gz" 
 
+# increment this when anything within the extra libraries changes
+$extra_ver = "0001"
