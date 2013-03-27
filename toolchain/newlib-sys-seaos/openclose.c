@@ -25,6 +25,24 @@ int open (const char *buf, int flags, ...)
 	return ret;
 }
 
+int _open(const char *buf, int flags, ...)
+{
+	    va_list vargs;
+		    va_start(vargs, flags);
+			    mode_t mode=0;
+				    /* if we call with flags that ask for a mode, then we grab the third
+					 *      * argument */
+				    if(flags & O_CREAT)
+						        mode = va_arg(vargs, mode_t);
+					    va_end(vargs);
+						    int ret = syscall(SYS_OPEN, (int)buf, flags, (int)mode, 0, 0);
+							    if(ret < 0) {
+									        errno = -ret;
+											        return -1;
+													    }
+								    return ret;
+}
+
 int close (int fd)
 {
 	int ret = syscall(SYS_CLOSE, fd, 0, 0, 0, 0);
@@ -33,6 +51,11 @@ int close (int fd)
 		return -1;
 	}
 	return ret;
+}
+
+int _close(int f)
+{
+	return close(f);
 }
 
 int do_dup(int i, int f)

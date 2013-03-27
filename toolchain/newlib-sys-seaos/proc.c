@@ -23,6 +23,11 @@ int wait(int *stat)
 	return ret;
 }
 
+int _wait(int *s)
+{
+	return wait(s);
+}
+
 int waitagain()
 {
 	return syscall(SYS_WAITAGAIN, 0, 0, 0, 0, 0);
@@ -36,6 +41,11 @@ int sbrk (int nbytes)
 		return -1;
 	}
 	return ret;
+}
+
+int _sbrk(int n)
+{
+	return sbrk(n);
 }
 
 unsigned alarm(unsigned s)

@@ -16,6 +16,11 @@ off_t lseek (int fd, off_t offset, int whence)
 	return ret;
 }
 
+off_t _lseek (int fd, off_t offset, int whence)
+{
+	return lseek(fd, offset, whence); 
+}
+
 int write (int fd, const void *buf, size_t nbytes)
 {
 	int ret = syscall(SYS_WRITE, fd, (int)buf, nbytes, 0, 0);
@@ -25,6 +30,11 @@ int write (int fd, const void *buf, size_t nbytes)
 		return -1;
 	}
 	return ret;
+}
+
+int _write (int fd, const void *b, size_t n)
+{
+	return write(fd, b, n);
 }
 
 int read (int fd, void *buf, size_t nbytes)
@@ -37,3 +47,9 @@ int read (int fd, void *buf, size_t nbytes)
 	}
 	return ret;
 }
+
+int _read(int fd, void *b, size_t n)
+{
+	return read(fd, b, n);
+}
+

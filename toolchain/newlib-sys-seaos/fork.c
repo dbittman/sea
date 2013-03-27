@@ -30,3 +30,8 @@ int fork()
 	}
 	return ret;
 }
+
+int _fork()
+{
+	return fork();
+}

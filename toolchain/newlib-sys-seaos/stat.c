@@ -171,3 +171,9 @@ int fstat(int fd, struct stat *buf)
 	__internal_convert_kstat_stat(&k, buf);
 	return ret;
 }
+
+int _fstat(int f, struct stat *b)
+{
+	return fstat(f, b);
+}
+

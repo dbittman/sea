@@ -1,6 +1,6 @@
 diff -crB newlib-2.0.0/config.sub newlib-2.0.0-seaos/config.sub
 *** newlib-2.0.0/config.sub	Fri Dec  7 16:02:34 2012
---- newlib-2.0.0-seaos/config.sub	Thu Mar 21 21:55:16 2013
+--- newlib-2.0.0-seaos/config.sub	Tue Mar 26 19:12:44 2013
 ***************
 *** 1359,1365 ****
   	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
@@ -20,17 +20,20 @@ diff -crB newlib-2.0.0/config.sub newlib-2.0.0-seaos/config.sub
   	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
 diff -crB newlib-2.0.0/newlib/configure.host newlib-2.0.0-seaos/newlib/configure.host
 *** newlib-2.0.0/newlib/configure.host	Tue Dec  4 13:43:20 2012
---- newlib-2.0.0-seaos/newlib/configure.host	Thu Mar 21 21:55:16 2013
+--- newlib-2.0.0-seaos/newlib/configure.host	Tue Mar 26 19:13:52 2013
 ***************
-*** 450,456 ****
+*** 450,459 ****
   	##newlib_cflags="${newlib_cflags} -I`newlib-flags --kernel-dir`/include"
   	##newlib_cflags="${newlib_cflags} -idirafter ${gcc_dir}include"
   	;;
 ! 
     m68hc11-*-*|m6811-*-*|m6812-*-*|m68hc12-*-*)
   	;;
-  
---- 450,461 ----
+! 
+    m68k-sun-sunos*)
+  	unix_dir=unix
+  	;;
+--- 450,469 ----
   	##newlib_cflags="${newlib_cflags} -I`newlib-flags --kernel-dir`/include"
   	##newlib_cflags="${newlib_cflags} -idirafter ${gcc_dir}include"
   	;;
@@ -42,10 +45,18 @@ diff -crB newlib-2.0.0/newlib/configure.host newlib-2.0.0-seaos/newlib/configure
 ! 	;;
     m68hc11-*-*|m6811-*-*|m6812-*-*|m68hc12-*-*)
   	;;
-  
+!   x86_64-*-seaos*)
+! 	sys_dir=seaos
+! 	posix_dir=posix
+! 	unix_dir=unix
+! 	newlib_cflags="${newlib_cflags} -D_NO_EXECVE -DHAVE_GETOPT -D_I386MACH_ALLOW_HW_INTERRUPTS -DSIGNAL_PROVIDED -DHAVE_FCNT -DHAVE_OPENDIR -DHAVE_CLOSEDIR -DHAVE_READDIR -D_NO_GETCWD"
+! 	;;
+    m68k-sun-sunos*)
+  	unix_dir=unix
+  	;;
 diff -crB newlib-2.0.0/newlib/libc/stdio/local.h newlib-2.0.0-seaos/newlib/libc/stdio/local.h
 *** newlib-2.0.0/newlib/libc/stdio/local.h	Thu May 31 00:33:59 2012
---- newlib-2.0.0-seaos/newlib/libc/stdio/local.h	Thu Mar 21 21:55:16 2013
+--- newlib-2.0.0-seaos/newlib/libc/stdio/local.h	Tue Mar 26 19:12:44 2013
 ***************
 *** 109,115 ****
   	}
@@ -65,7 +76,7 @@ diff -crB newlib-2.0.0/newlib/libc/stdio/local.h newlib-2.0.0-seaos/newlib/libc/
   extern int    _EXFUN(__ssvfscanf_r,(struct _reent *,FILE *, _CONST char *,va_list));
 diff -crB newlib-2.0.0/newlib/libc/stdio/vfprintf.c newlib-2.0.0-seaos/newlib/libc/stdio/vfprintf.c
 *** newlib-2.0.0/newlib/libc/stdio/vfprintf.c	Tue Oct 16 12:03:01 2012
---- newlib-2.0.0-seaos/newlib/libc/stdio/vfprintf.c	Thu Mar 21 21:57:06 2013
+--- newlib-2.0.0-seaos/newlib/libc/stdio/vfprintf.c	Tue Mar 26 19:12:44 2013
 ***************
 *** 336,342 ****
    *
@@ -86,7 +97,7 @@ diff -crB newlib-2.0.0/newlib/libc/stdio/vfprintf.c newlib-2.0.0-seaos/newlib/li
          register FILE *fp   _AND
 diff -crB newlib-2.0.0/newlib/libc/stdlib/mbstowcs.c newlib-2.0.0-seaos/newlib/libc/stdlib/mbstowcs.c
 *** newlib-2.0.0/newlib/libc/stdlib/mbstowcs.c	Fri Apr 23 14:44:22 2004
---- newlib-2.0.0-seaos/newlib/libc/stdlib/mbstowcs.c	Thu Mar 21 21:55:16 2013
+--- newlib-2.0.0-seaos/newlib/libc/stdlib/mbstowcs.c	Tue Mar 26 19:12:44 2013
 ***************
 *** 59,64 ****
 --- 59,65 ----
@@ -99,7 +110,7 @@ diff -crB newlib-2.0.0/newlib/libc/stdlib/mbstowcs.c newlib-2.0.0-seaos/newlib/l
     state.__count = 0;
 diff -crB newlib-2.0.0/newlib/libc/sys/configure.in newlib-2.0.0-seaos/newlib/libc/sys/configure.in
 *** newlib-2.0.0/newlib/libc/sys/configure.in	Tue Feb 21 14:34:31 2012
---- newlib-2.0.0-seaos/newlib/libc/sys/configure.in	Thu Mar 21 21:55:16 2013
+--- newlib-2.0.0-seaos/newlib/libc/sys/configure.in	Tue Mar 26 19:12:44 2013
 ***************
 *** 36,41 ****
 --- 36,42 ----
