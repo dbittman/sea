@@ -6,6 +6,17 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+int _unlink(const char * path)
+{
+	int ret = syscall(SYS_UNLINK, (int)path, 0, 0, 0, 0);
+	if(ret < 0)
+	{
+		errno = -ret;
+		return -1;
+	}
+	return ret;
+}
+
 int unlink(const char * path)
 {
 	int ret = syscall(SYS_UNLINK, (int)path, 0, 0, 0, 0);

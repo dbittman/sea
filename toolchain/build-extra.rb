@@ -47,7 +47,7 @@ def do_build()
 
 	puts " * ncurses"
 	Dir.chdir("../ncurses-#{$ncurses_ver}")
-	`./configure --host=#{$target} --prefix=#{$install} --enable-termcap --disable-database --without-cxx --without-cxx-binding --oldincludedir=#{$install}/#{$target}/include --includedir=#{$install}/#{$target}/include &>> build.log`
+	`./configure --host=#{$target} --prefix=#{$install}/#{$target} --enable-termcap --disable-database --without-cxx --without-cxx-binding --oldincludedir=#{$install}/#{$target}/include --includedir=#{$install}/#{$target}/include &>> build.log`
 	if ! $?.success? then error("ncurses: config") end
 	`make #{$make_flags} all install &>> build.log`
 	if ! $?.success? then error("ncurses: build/install") end

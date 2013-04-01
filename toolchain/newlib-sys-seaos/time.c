@@ -12,7 +12,7 @@
 #include "ksyscall.h"
 #include <stdio.h>
 #include "sys/dirent.h"
-clock_t times(struct tms *b)
+clock_t _times(struct tms *b)
 {
 	int ret = syscall(SYS_TIMES, (int)b, 0, 0, 0, 0);
 	if(ret < 0) {
@@ -25,6 +25,17 @@ clock_t times(struct tms *b)
 int get_timer_ticks_hz()
 {
 	return syscall(SYS_TIMERTH, 0, 0, 0, 0, 0);
+}
+
+int _gettimeofday(struct timeval *tv, void *g)
+{
+	unsigned p;
+	unsigned hz = syscall(SYS_TIMERTH, &p, 0, 0, 0, 0);
+	struct tm t;
+	syscall(SYS_GETTIME, (int)&t, 0, 0, 0, 0);
+	tv->tv_sec = t.tm_sec + t.tm_min*60 + t.tm_hour*60*60;
+	tv->tv_usec=(p % hz)*1000;
+	return 0;
 }
 
 int gettimeofday(struct timeval *tv, void *g)

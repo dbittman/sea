@@ -14,6 +14,15 @@ int getpid()
 	}
 	return ret;
 }
+int _getpid()
+{
+	int ret = syscall(SYS_GETPID, 0, 0, 0, 0, 0);
+	if(ret < 0) {
+		errno = -ret;
+		return -1;
+	}
+	return ret;
+}
 
 uid_t get_uid()
 {
