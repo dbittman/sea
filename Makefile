@@ -36,9 +36,6 @@ defconfig:
 	@make -s -C seakernel defconfig
 
 build: seakernel/skernel
-	@sh tools/inc_build.sh
-	@echo -n "build: "
-	@cat build_number
 	@echo updating hd image...
 	@sh tools/open_hdimage.sh
 	@mkdir -p ./mnt/sys/modules-${KERNEL_VERSION}/
