@@ -19,7 +19,7 @@ writehd:
 toolchain: toolchain/built
 
 toolchain/built:
-	@cd toolchain && sh install_toolchain.sh
+	@cd toolchain && ruby build.rb all
 
 seakernel/skernel:
 	@PATH=$$PATH:`cat .toolchain` $(MAKE) -j2 -s -C seakernel all
@@ -53,7 +53,11 @@ clean:
 	@rm hd.img hd2.img
 
 test_t:
+# <<<<<<< HEAD
 	@qemu-system-i386 -localtime -smp 10 -enable-kvm -m 512 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_NET)
+# =======
+#	@qemu-system-i386 -localtime  -m 512 -serial stdio -smp 1 -drive file=hd.img,if=ide,cache=none $(QEMU_NET)
+#>>>>>>> 611ba890dff2d94d115633d7b9bed7d8e104eb09
 
 test_1:
 	@-sudo mkdir /tmp_t 2> /dev/null

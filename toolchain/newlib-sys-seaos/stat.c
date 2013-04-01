@@ -100,7 +100,7 @@ void __internal_convert_kstat_stat(struct kstat *k, struct stat *buf)
 	buf->st_ctime = k->st_ctime;
 }
 
-int stat(const char *path, struct stat *buf)
+int _stat(const char *path, struct stat *buf)
 {
 	
 	struct kstat k;
@@ -112,6 +112,11 @@ int stat(const char *path, struct stat *buf)
 	}
 	__internal_convert_kstat_stat(&k, buf);
 	return ret;
+}
+
+int stat(const char *path, struct stat *buf)
+{
+	return _stat(path, buf);
 }
 
 int lstat(const char *path, struct stat *buf)
@@ -171,3 +176,9 @@ int fstat(int fd, struct stat *buf)
 	__internal_convert_kstat_stat(&k, buf);
 	return ret;
 }
+
+int _fstat(int f, struct stat *b)
+{
+	return fstat(f, b);
+}
+

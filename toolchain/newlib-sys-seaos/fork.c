@@ -21,6 +21,16 @@ pid_t vfork(void)
 	}
 }
 
+int _fork()
+{
+	int ret = syscall(SYS_FORK, 0, 0, 0, 0, 0);
+	if(ret < 0) {
+		errno = -ret;
+		return -1;
+	}
+	return ret;
+}
+
 int fork()
 {
 	int ret = syscall(SYS_FORK, 0, 0, 0, 0, 0);

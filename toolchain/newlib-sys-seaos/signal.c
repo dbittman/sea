@@ -71,6 +71,16 @@ int pause()
 	return 0;
 }
 
+int _kill(int pid, int sig)
+{
+	int ret = syscall(SYS_SIGNAL, pid, sig, 0, 0, 0);
+	if(ret < 0) {
+		errno = -ret;
+		return -1;
+	}
+	return ret;
+}
+
 int kill(int pid, int sig)
 {
 	int ret = syscall(SYS_SIGNAL, pid, sig, 0, 0, 0);

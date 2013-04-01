@@ -1,7 +1,6 @@
 # Makefile for the toolchain
 # INSTALL_LOC should be provided by the script
 PREFIX=$(INSTALL_LOC)
-TARGET=i586-pc-seaos
 
 install_tools:
 	@./install_toolchain.sh
@@ -10,14 +9,15 @@ patch_binutils:
 	wget http://ftp.gnu.org/gnu/binutils/binutils-2.22.tar.bz2
 	tar xjf binutils-2.22.tar.bz2
 	cd binutils-2.22; patch -p1 -i ../binutils-2.22-seaos.patch
-	cp seaos_i386.sh binutils-2.22/ld/emulparams/
+	cp seaos_i386.sh seaos_x86_64.sh binutils-2.22/ld/emulparams/
 	rm binutils-2.22.tar.bz2
 
 patch_gcc:
 	wget http://ftp.gnu.org/gnu/gcc/gcc-4.7.1/gcc-4.7.1.tar.gz
 	tar xzf gcc-4.7.1.tar.gz
 	cd gcc-4.7.1; patch -p1 -i ../gcc-4.7.1-seaos.patch
-	cp seaos.h gcc-4.7.1/gcc/config/
+	cd gcc-4.7.1; patch -p1 -i ../gcc-4.7.2-texinfo.patch
+	cp seaos.h seaos64.h gcc-4.7.1/gcc/config/
 	cd gcc-4.7.1/libstdc++-v3; /opt/autoconf/2.64/bin/autoconf
 	rm gcc-4.7.1.tar.gz
 
