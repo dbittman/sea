@@ -44,11 +44,6 @@ def patch_gcc()
 		puts(out)
 		error("gcc patch failed")
 	end
-	out = `patch -p1 -i ../gcc-4.7.2-texinfo.patch`
-	if ! $?.success?
-		puts(out)
-		error("gcc texinfo patch failed")
-	end
 	`cp ../seaos.h ../seaos64.h gcc/config/`
 	Dir.chdir("libstdc++-v3")
 	out = `#{$autoconf}`

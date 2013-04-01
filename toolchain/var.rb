@@ -1,7 +1,7 @@
 # pick your versions here. Note that there may not be patches
 # available for every version...
 $binutils_ver = "2.22"
-$gcc_ver      = "4.7.1"
+$gcc_ver      = "4.8.0"
 $newlib_ver   = "2.0.0"
 
 # these shouldn't need to be edited...

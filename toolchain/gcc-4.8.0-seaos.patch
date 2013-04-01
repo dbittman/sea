@@ -1,0 +1,92 @@
+diff -crB gcc-4.8.0/config.sub gcc-4.8.0-seaos/config.sub
+*** gcc-4.8.0/config.sub	Fri Jan 11 05:02:58 2013
+--- gcc-4.8.0-seaos/config.sub	Mon Apr  1 12:49:06 2013
+***************
+*** 1358,1364 ****
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+  	      | -sym* | -kopensolaris* | -plan9* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* | -aros* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+--- 1358,1364 ----
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+  	      | -sym* | -kopensolaris* | -plan9* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* | -aros* | -seaos* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+diff -crB gcc-4.8.0/gcc/config.gcc gcc-4.8.0-seaos/gcc/config.gcc
+*** gcc-4.8.0/gcc/config.gcc	Wed Mar 13 02:47:41 2013
+--- gcc-4.8.0-seaos/gcc/config.gcc	Mon Apr  1 12:54:03 2013
+***************
+*** 624,629 ****
+--- 624,635 ----
+    # need_64bit_hwint=yes # system compiler has this for all arch!
+    use_gcc_stdint=wrap
+    ;;
++ *-*-seaos*)
++   extra_parts="crtbegin.o crtend.o"
++   gas=yes
++   gnu_ld=yes
++   default_use_cxa_atexit=yes
++   ;;
+  *-*-linux* | frv-*-*linux* | *-*-kfreebsd*-gnu | *-*-knetbsd*-gnu | *-*-gnu* | *-*-kopensolaris*-gnu)
+    extra_options="$extra_options gnu-user.opt"
+    gas=yes
+***************
+*** 1257,1262 ****
+--- 1263,1279 ----
+  	gas=yes
+  	gnu_ld=yes
+  	;;
++ i[3-7]86-*-seaos*)
++ 	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h i386/i386elf.h seaos.h"
++ 	tmake_file="${tmake_file} i386/t-i386elf t-svr4 i386/t-crtstuff"
++ 	use_fixproto=yes
++ 	;;
++ x86_64-*-seaos*)
++ 	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h \
++ 		 i386/x86-64.h seaos.h seaos64.h"
++ 	tmake_file="${tmake_file} i386/t-i386elf t-svr4 i386/t-crtstuff"
++ 	use_fixproto=yes
++ 	;;
+  i[34567]86-*-linux* | i[34567]86-*-kfreebsd*-gnu | i[34567]86-*-knetbsd*-gnu | i[34567]86-*-gnu* | i[34567]86-*-kopensolaris*-gnu)
+  			# Intel 80386's running GNU/*
+  			# with ELF format using glibc 2
+diff -crB gcc-4.8.0/libgcc/config.host gcc-4.8.0-seaos/libgcc/config.host
+*** gcc-4.8.0/libgcc/config.host	Mon Feb  4 11:06:20 2013
+--- gcc-4.8.0-seaos/libgcc/config.host	Mon Apr  1 12:55:56 2013
+***************
+*** 518,523 ****
+--- 518,527 ----
+  	;;
+  x86_64-*-openbsd*)
+  	;;
++ *-*-seaos*)
++ 	extra_parts="$extra_parts crtbegin.o crtbeginS.o crtbeginT.o crtend.o crtendS.o"
++ 	tmake_file="${tmake_file} i386/t-crtpc i386/t-crtstuff"
++ 	;;
+  i[34567]86-*-linux*)
+  	extra_parts="$extra_parts crtprec32.o crtprec64.o crtprec80.o crtfastmath.o"
+  	tmake_file="${tmake_file} i386/t-crtpc i386/t-crtfm i386/t-crtstuff t-dfprules"
+diff -crB gcc-4.8.0/libstdc++-v3/crossconfig.m4 gcc-4.8.0-seaos/libstdc++-v3/crossconfig.m4
+*** gcc-4.8.0/libstdc++-v3/crossconfig.m4	Wed May  2 12:34:31 2012
+--- gcc-4.8.0-seaos/libstdc++-v3/crossconfig.m4	Mon Apr  1 12:56:59 2013
+***************
+*** 141,146 ****
+--- 141,152 ----
+  	;;
+      esac
+      ;;
++   *-seaos*)
++     AC_CHECK_HEADERS([sys/types.h locale.h float.h])
++     GLIBCXX_CHECK_BUILTIN_MATH_SUPPORT
++     GLIBCXX_CHECK_COMPLEX_MATH_SUPPORT
++     GLIBCXX_CHECK_STDLIB_SUPPORT
++     ;;
+    *-linux* | *-uclinux* | *-gnu* | *-kfreebsd*-gnu | *-knetbsd*-gnu)
+      GLIBCXX_CHECK_COMPILER_FEATURES
+      GLIBCXX_CHECK_LINKER_FEATURES
