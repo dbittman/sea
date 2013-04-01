@@ -4,8 +4,8 @@ if [ ! -e /etc/firstbootdate ]; then
 	sh /sys/first_run.sh
 fi
 
-modprobe ethernet
-modprobe rtl8139
+#modprobe ethernet
+#modprobe rtl8139
 modprobe socket
 
 login </dev/tty1 >/dev/tty1 2>/dev/tty1 &
