@@ -22,6 +22,16 @@ clock_t _times(struct tms *b)
 	return ret;
 }
 
+clock_t times(struct tms *b)
+{
+	int ret = syscall(SYS_TIMES, (int)b, 0, 0, 0, 0);
+	if(ret < 0) {
+		errno = -ret;
+		return -1;
+	}
+	return ret;
+}
+
 int get_timer_ticks_hz()
 {
 	return syscall(SYS_TIMERTH, 0, 0, 0, 0, 0);
