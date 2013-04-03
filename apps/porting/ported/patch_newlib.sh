@@ -1,1 +1,1 @@
-cp -rfv ../../../toolchain/newlib-1.20.0 .
+cp -rfv ../../../toolchain/newlib-2.0.0 .
