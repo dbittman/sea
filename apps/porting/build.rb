@@ -1,3 +1,5 @@
+#!/usr/bin/ruby
+
 $packages = []
 $make_flags = "DESTDIR=\`pwd\`/../../../data-test/"
 $target=""
@@ -52,6 +54,15 @@ def inject(p)
 	if ! $?.success?
 		error("failed to inject #{p[P_NAME]}")
 	end
+end
+
+def prepare(p)
+	if ! File.exist?("scripts/#{p[P_NAME]}-#{p[P_VERSION]}-preparer.sh")
+		return
+	end
+	Dir.chdir("#{p[P_NAME]}-#{p[P_VERSION]}")
+	`sh scripts/#{p[P_NAME]}-#{p[P_VERSION]}-preparer.sh`
+	Dir.chdir("..")
 end
 
 def configure(p)
@@ -134,6 +145,8 @@ ARGV.each do |cmd|
 		patch(pac_arr)
 	when "inject"
 		inject(pac_arr)
+	when "prepare"
+		prepare(pac_arr)
 	when "config"
 		configure(pac_arr)
 	when "build"
@@ -147,6 +160,7 @@ ARGV.each do |cmd|
 		extract(pac_arr)
 		patch(pac_arr)
 		inject(pac_arr)
+		prepare(pac_arr)
 		configure(pac_arr)
 		build(pac_arr)
 	end
