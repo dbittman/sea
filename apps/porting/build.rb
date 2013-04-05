@@ -37,6 +37,9 @@ end
 
 def patch(p)
 	puts "patch #{p[P_NAME]}"
+	if ! File.exist?("patches/#{p[P_NAME]}-#{p[P_VERSION]}-seaos.patch")
+		return
+	end
 	Dir.chdir("#{p[P_NAME]}-#{p[P_VERSION]}")
 	`patch -p1 -i ../patches/#{p[P_NAME]}-#{p[P_VERSION]}-seaos.patch`
 	Dir.chdir("..")
@@ -56,12 +59,13 @@ def inject(p)
 	end
 end
 
-def prepare(p)
-	if ! File.exist?("scripts/#{p[P_NAME]}-#{p[P_VERSION]}-preparer.sh")
+def prepare(p, num)
+	puts "prepare-#{num} #{p[P_NAME]}"
+	if ! File.exist?("scripts/#{p[P_NAME]}-#{p[P_VERSION]}-preparer-#{num}.sh")
 		return
 	end
 	Dir.chdir("#{p[P_NAME]}-#{p[P_VERSION]}")
-	`sh scripts/#{p[P_NAME]}-#{p[P_VERSION]}-preparer.sh`
+	`sh ../scripts/#{p[P_NAME]}-#{p[P_VERSION]}-preparer-#{num}.sh #{$target}`
 	Dir.chdir("..")
 end
 
@@ -69,6 +73,8 @@ def configure(p)
 	puts "configure #{p[P_NAME]}"
 	`mkdir -p build-#{$target}-#{p[P_NAME]}-#{p[P_VERSION]}`
 	Dir.chdir("build-#{$target}-#{p[P_NAME]}-#{p[P_VERSION]}")
+	puts "../#{p[P_NAME]}-#{p[P_VERSION]}/configure --host=#{$target} --prefix=#{p[P_PREFIX]} #{p[P_CONFIG_F]}"
+	exit 1
 	out = `../#{p[P_NAME]}-#{p[P_VERSION]}/configure --host=#{$target} --prefix=#{p[P_PREFIX]} #{p[P_CONFIG_F]}`
 	Dir.chdir("..")
 	if ! $?.success?
@@ -80,7 +86,7 @@ end
 def build(p)
 	puts "build #{p[P_NAME]}"
 	Dir.chdir("build-#{$target}-#{p[P_NAME]}-#{p[P_VERSION]}")
-	out = `make #{$make_flags} #{p[P_MAKE_F]} all install`
+	out = `make #{$make_flags} #{p[P_MAKE_F]} #{p[P_TARGETS]}`
 	Dir.chdir("..")
 	if ! $?.success?
 		puts "#{out}"
@@ -101,7 +107,7 @@ end
 def find_package(package)
 	# gotta find the package data...
 	$packages.each do |x|
-		if x[P_NAME] == package
+		if !x.nil? and x[P_NAME] == package
 			return x
 		end
 	end
@@ -145,12 +151,16 @@ ARGV.each do |cmd|
 		patch(pac_arr)
 	when "inject"
 		inject(pac_arr)
-	when "prepare"
-		prepare(pac_arr)
+	when "prepare1"
+		prepare(pac_arr, "1")
 	when "config"
 		configure(pac_arr)
+	when "prepare2"
+		prepare(pac_arr, "2")
 	when "build"
 		build(pac_arr)
+	when "prepare3"
+		prepare(pac_arr, "3")
 	when "clean"
 		clean(pac_arr)
 	when "cleansrc"
@@ -160,9 +170,11 @@ ARGV.each do |cmd|
 		extract(pac_arr)
 		patch(pac_arr)
 		inject(pac_arr)
-		prepare(pac_arr)
+		prepare(pac_arr, "1")
 		configure(pac_arr)
+		prepare(pac_arr, "2")
 		build(pac_arr)
+		prepare(pac_arr, "3")
 	end
 end
 
