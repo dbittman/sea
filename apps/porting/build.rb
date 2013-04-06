@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
 $packages = []
-$make_flags = "DESTDIR=\`pwd\`/../../../data-test/"
+$make_flags = "DESTDIR=\`pwd\`/../../../data/"
 $target=""
 $install = ""
 $verbose = false
@@ -61,6 +61,9 @@ end
 
 def inject(p)
 	puts "inject #{p[P_NAME]}"
+	if p[P_CONFIGSUB] != ""
+		`cp -f scripts/config.sub #{p[P_NAME]}-#{p[P_VERSION]}/#{p[P_CONFIGSUB]}`
+	end
 	if ! File.exist?("files/#{p[P_NAME]}-#{p[P_VERSION]}")
 		return
 	end
@@ -167,6 +170,9 @@ def do_package(action, pac_arr)
 		prepare(pac_arr, "2")
 		build(pac_arr)
 		prepare(pac_arr, "3")
+	end
+	if pac_arr[P_COMMENT] != ""
+		puts "#{pac_arr[P_COMMENT]}"
 	end
 end
 
