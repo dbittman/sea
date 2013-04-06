@@ -7,10 +7,10 @@ QEMU_NET=-net nic,model=rtl8139,vlan=2 -net socket,vlan=2,connect=127.0.0.1:8010
 all: build
 
 apps_port:
-	@PATH=$$PATH:`cat .toolchain` cd apps/porting && sh install_ported.sh all
+	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb all-all
 
 apps_seaos:
-	@PATH=$$PATH:`cat .toolchain` cd apps/porting && sh install_ported.sh seaos-util
+	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb all-seaosutil
 
 newhd:
 	@zsh tools/chd.sh
