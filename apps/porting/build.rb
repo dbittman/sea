@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
 $packages = []
-$make_flags = "DESTDIR=\`pwd\`/../../../data/"
+$make_flags = ""
 $target=""
 $install = ""
 $verbose = false
@@ -15,6 +15,7 @@ def select_target()
 end
 
 select_target()
+$make_flags = "DESTDIR=\`pwd\`/../../../data-#{$target}/"
 require "./ported/packages.rb"
 
 def error(s)
