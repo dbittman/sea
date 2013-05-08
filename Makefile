@@ -24,7 +24,7 @@ toolchain/built:
 	@cd toolchain && ruby build.rb all
 
 seakernel/skernel:
-	@PATH=$$PATH:`cat .toolchain` $(MAKE) -j2 -s -C seakernel all
+	@PATH=$$PATH:`cat .toolchain`/bin $(MAKE) -j2 -s -C seakernel all
 
 man:
 	sh tools/gen_man.sh
