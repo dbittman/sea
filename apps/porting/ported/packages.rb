@@ -44,7 +44,7 @@ $fortune   = ["fortune", "001", "", "", "", "/usr", "", "", "", ""]
 $seaosutil = ["seaosutil", "1.0", "", "", "", "/", "all install", "host", "", ""]
 
 $newlib    = ["newlib", "2.0.0", "", "--exec-prefix=/usr --libdir=/usr/lib --includedir=/usr/include", "", "/usr", "all install", "target", "", ""]
-$gcc       = ["gcc", "4.7.1", "http://ftp.gnu.org/gnu/gcc/gcc-4.7.1/gcc-4.7.1.tar.gz", "--enable-lto --disable-nls --enable-languages=c,c++ CC_FOR_TARGET=#{$target}-gcc AR_FOR_TARGET=#{$target}-ar AS_FOR_TARGET=#{$target}-as RANLIB_FOR_TARGET=#{$target}-ranlib STRIP_FOR_TARGET=#{$target}-strip", "CC_FOR_TARGET=#{$target}-gcc AR_FOR_TARGET=#{$target}-ar AS_FOR_TARGET=#{$target}-as RANLIB_FOR_TARGET=#{$target}-ranlib STRIP_FOR_TARGET=#{$target}-strip", "/usr", "all-gcc install-gcc all-target-libgcc install-target-libgcc", "host", "", ""]
+$gcc       = ["gcc", "4.7.3", "http://ftp.gnu.org/gnu/gcc/gcc-4.7.3/gcc-4.7.3.tar.gz", "--enable-lto --disable-nls --enable-languages=c,c++ CC_FOR_TARGET=#{$target}-gcc AR_FOR_TARGET=#{$target}-ar AS_FOR_TARGET=#{$target}-as RANLIB_FOR_TARGET=#{$target}-ranlib STRIP_FOR_TARGET=#{$target}-strip", "CC_FOR_TARGET=#{$target}-gcc AR_FOR_TARGET=#{$target}-ar AS_FOR_TARGET=#{$target}-as RANLIB_FOR_TARGET=#{$target}-ranlib STRIP_FOR_TARGET=#{$target}-strip", "/usr", "all-gcc install-gcc all-target-libgcc install-target-libgcc", "host", "", ""]
 $gzip      = ["gzip", "1.4", "http://ftp.gnu.org/gnu/gzip/gzip-1.4.tar.gz", "", "", "/usr", "all install", "host", "", ""]
 
 $packages.insert(-1, $grep_dat)

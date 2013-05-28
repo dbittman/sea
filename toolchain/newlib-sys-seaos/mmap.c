@@ -14,7 +14,7 @@
 #include <netdb.h>
 
 /* mmap and munmap are not quite ready yet. They will be enabled soon */
-void *__mmap(void *addr, size_t len, int prot, int flags, int fildes, off_t off)
+void *__sea_mmap(void *addr, size_t len, int prot, int flags, int fildes, off_t off)
 {
 	struct mmapblock {
 		size_t len;
@@ -31,7 +31,7 @@ void *__mmap(void *addr, size_t len, int prot, int flags, int fildes, off_t off)
 	return (void *)ret;
 }
 
-int __munmap(void *addr, size_t sz)
+int __sea_munmap(void *addr, size_t sz)
 {
 	int ret = syscall(SYS_MUNMAP, (unsigned)addr, sz, 0, 0, 0);
 	if(ret < 0)

@@ -1,6 +1,6 @@
 #/bin/sh
 mkdir -p tools/man_gen_tmp
-cp -rf apps/data/usr/man apps/data/usr/share/man doc/man tools/man_gen_tmp/
+cp -rf apps/data-i586-pc-seaos/usr/man apps/data-i586-pc-seaos/usr/share/man doc/man tools/man_gen_tmp/
 rm -rf tools/man_gen_tmp/text
 mkdir -p tools/man_gen_tmp/text
 
