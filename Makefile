@@ -13,7 +13,7 @@ apps_seaos:
 	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb all-seaosutil
 
 newhd:
-	@zsh tools/chd.sh
+	@sudo zsh tools/chd.sh
 
 writehd:
 	@zsh tools/copy_to_hd.sh
@@ -39,24 +39,24 @@ defconfig:
 
 build: seakernel/skernel
 	@echo updating hd image...
-	@sh tools/open_hdimage.sh
-	@mkdir -p ./mnt/sys/modules-${KERNEL_VERSION}/
-	@-cp -rf seakernel/drivers/built/* ./mnt/sys/modules-${KERNEL_VERSION}/ 2>/dev/null
-	@cp -rf seakernel/initrd.img ./mnt/sys/initrd
-	@cp -rf seakernel/skernel ./mnt/sys/kernel
-	@mv seakernel/skernel skernel
-	@sh tools/close_hdimage.sh
-
+	@sudo sh tools/open_hdimage.sh
+	@sudo mkdir -p ./mnt/sys/modules-${KERNEL_VERSION}/
+	@sudo cp -rf seakernel/drivers/built/* ./mnt/sys/modules-${KERNEL_VERSION}/ 2>/dev/null
+	@sudo cp -rf seakernel/initrd.img ./mnt/sys/initrd
+	@sudo cp -rf seakernel/skernel ./mnt/sys/kernel
+	@sudo mv seakernel/skernel skernel
+	@sudo sh tools/close_hdimage.sh
+	@sudo chmod a+rw hd.img 
 clean:
 	@make -s -C seakernel clean
 	@rm hd.img hd2.img
 
 test_t:
-	@qemu-system-i386 -localtime -m 512 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_NET) $(QEMU_LOCAL)
+	@qemu-system-x86_64 -localtime -m 512 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_NET) $(QEMU_LOCAL)
 
 test_1:
 	@-sudo mkdir /tmp_t 2> /dev/null
 	@sudo mount -t tmpfs -o size=2g tmpfs /tmp_t
 	@cp hd.img /tmp_t/hd.img
-	@qemu-system-i386 -serial stdio -smp 1 -drive file=/tmp_t/hd.img,if=ide,cache=unsafe,media=disk -localtime -m 1024 -boot a
+	@qemu-system-x86_64 -serial stdio -smp 1 -drive file=/tmp_t/hd.img,if=ide,cache=unsafe,media=disk -localtime -m 1024 -boot a
 	@sudo umount /tmp_t
