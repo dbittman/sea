@@ -88,7 +88,7 @@ diff -crB coreutils-8.16/src/su.c coreutils-8.16-seaos/src/su.c
   #define DEFAULT_SHELL "/bin/sh"
   
   /* The user to become if none is specified.  */
-! #define DEFAULT_USER "god"
+! #define DEFAULT_USER "root"
   
   char *crypt (char const *key, char const *salt);
   
