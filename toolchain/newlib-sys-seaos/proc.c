@@ -5,7 +5,7 @@
 #include <errno.h>
 int waitpid(int pid, int *stat, int opt)
 {
-	int ret = syscall(SYS_WAITPID, pid, (int)stat, opt, 0, 0);
+	int ret = syscall(SYS_WAITPID, pid, (scarg_t)stat, opt, 0, 0);
 	if(ret < 0) {
 		errno = -ret;
 		return -1;
@@ -15,7 +15,7 @@ int waitpid(int pid, int *stat, int opt)
 
 int wait(int *stat)
 {
-	int ret = syscall(SYS_WAITPID, -1, (int)stat, 0, 0, 0);
+	int ret = syscall(SYS_WAITPID, -1, (scarg_t)stat, 0, 0, 0);
 	if(ret < 0) {
 		errno = -ret;
 		return -1;

@@ -18,7 +18,7 @@ static long int posix_pathconf (const char *path, int name);
 
 int uname(struct utsname *name)
 {
-	int ret = syscall(SYS_UNAME, (int)name, 0, 0, 0, 0);
+	int ret = syscall(SYS_UNAME, (scarg_t)name, 0, 0, 0, 0);
 	if(ret < 0) {
 		errno = -ret;
 		return -1;

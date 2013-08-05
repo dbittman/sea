@@ -31,7 +31,7 @@ int fchdir(int fd)
 
 int chmod(const char *p, mode_t m)
 {
-	int ret=syscall(SYS_CHMOD, (int)p, -1, m, 0, 0);
+	int ret=syscall(SYS_CHMOD, (scarg_t)p, -1, m, 0, 0);
 	if(ret < 0)
 	{
 		errno = -ret;
@@ -75,7 +75,7 @@ int fchown(int filedes, uid_t own, gid_t grp)
 
 int chroot(const char *path)
 {
-	int ret = syscall(SYS_CHROOT, (int)path, 0, 0, 0, 0);
+	int ret = syscall(SYS_CHROOT, (scarg_t)path, 0, 0, 0, 0);
 	if(ret < 0)
 	{
 		errno = -ret;

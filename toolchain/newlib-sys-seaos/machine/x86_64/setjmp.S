@@ -33,11 +33,11 @@
  
 SYM (setjmp):
 /*
-	pushl	ebp
-	movl	esp,ebp
+	pushq	rbp
+	movq 	rsp,rbp
 
-	pushl	edi
-	movl	8 (ebp),edi
+	pushq	rdi
+	movq	8 (ebp),edi
 
 	movl	eax,0 (edi)
 	movl	ebx,4 (edi)
@@ -60,10 +60,10 @@ SYM (setjmp):
 
 	popl	edi
 	movl	$0,eax
-*/
+
 	leave
 	ret
-
+*/
 SYM (__libc_longjmp):
 SYM (longjmp):
 	.weak longjmp

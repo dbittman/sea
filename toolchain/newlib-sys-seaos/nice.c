@@ -17,7 +17,7 @@ int nice(int inc)
 int setpriority(int which, unsigned who, int value)
 {
 	/* which, who, value, flags */
-	int ret = syscall(SYS_NICE, which, (int)who, value, 1, 0);
+	int ret = syscall(SYS_NICE, which, (scarg_t)who, value, 1, 0);
 	if(ret < 0)
 	{
 		errno = -ret;

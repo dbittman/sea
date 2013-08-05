@@ -2,7 +2,7 @@
 
 sh ./tools/open_hdimage.sh
 echo copying apps/data/ to hd.img...
-cp -f -r apps/data-i586-pc-seaos/* ./mnt
+cp -f -r apps/data-$1/* ./mnt
 rm -rf `find ./mnt -name man 2>/dev/null`
 echo copying data/ to hd.img...
 cp -f -r data/* ./mnt/

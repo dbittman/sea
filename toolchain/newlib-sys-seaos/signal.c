@@ -92,7 +92,7 @@ int kill(int pid, int sig)
 }
 
 int sigaction(int sig, const struct sigaction *act, struct sigaction *oact) {
-	int ret = syscall(SYS_SIGACT, sig, (int)act, (int)oact, 0, 0);
+	int ret = syscall(SYS_SIGACT, sig, (scarg_t)act, (scarg_t)oact, 0, 0);
 	if(ret < 0) {
 		errno = -ret;
 		return -1;

@@ -70,7 +70,7 @@ __attribute__ ((weak)) char *getcwd (char *buf, size_t size)
 
 int rmdir(const char *b)
 {
-	int ret= syscall(SYS_RMDIR, (int) b, 0, 0, 0, 0);
+	int ret= syscall(SYS_RMDIR, (scarg_t) b, 0, 0, 0, 0);
 	if(ret < 0)
 	{
 		errno = -ret;
@@ -81,7 +81,7 @@ int rmdir(const char *b)
 
 int getdents (int fd, void *dp, int count)
 {
-	int ret = syscall(SYS_GETDENTS, fd, (int)dp, count, 0, 0);
+	int ret = syscall(SYS_GETDENTS, fd, (scarg_t)dp, count, 0, 0);
 	if(ret < 0)
 	{
 		errno = -ret;

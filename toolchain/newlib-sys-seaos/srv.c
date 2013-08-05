@@ -16,7 +16,7 @@
 struct hostent ___internal_hostent;
 struct hostent *gethostbyaddr(const void *addr, socklen_t len, int type)
 {
-	int ret = syscall(SYS_GETHOST, (int)&___internal_hostent, (int)addr, (int)len, type, 0);
+	int ret = syscall(SYS_GETHOST, (scarg_t)&___internal_hostent, (scarg_t)addr, (int)len, type, 0);
 	if(ret < 0)
 	{
 		errno = -ret;

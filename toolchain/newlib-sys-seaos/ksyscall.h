@@ -1,6 +1,7 @@
 #ifndef SYSCALL_H
 #define SYSCALL_H
-
+#define scarg_t long
+scarg_t syscall(int num, scarg_t a, scarg_t b, scarg_t c, scarg_t d, scarg_t e);
 #define SYS_SETUP 		  0
 #define SYS_EXIT  		  1
 #define SYS_FORK  		  2

@@ -27,7 +27,7 @@ struct kstat {
 
 int mem_stat(struct mem_stat *s)
 {
-	int ret = syscall(SYS_MEMSTAT, (int)s, 0, 0, 0, 0);
+	int ret = syscall(SYS_MEMSTAT, (scarg_t)s, 0, 0, 0, 0);
 	if(ret < 0) {
 		errno = -ret;
 		return -1;
@@ -37,7 +37,7 @@ int mem_stat(struct mem_stat *s)
 
 int task_stat(unsigned p, struct task_stat *s)
 {
-	int ret = syscall(SYS_TSTAT, (int)p, (int)s, 0, 0, 0);
+	int ret = syscall(SYS_TSTAT, (scarg_t)p, (scarg_t)s, 0, 0, 0);
 	if(ret < 0) {
 		errno=-ret;
 		return -1;
@@ -69,7 +69,7 @@ int get_nodestr(char *path, char *node)
 
 int access(const char *path, int mode)
 {
-	int ret = syscall(SYS_ACCESS, (int)path, mode, 0, 0, 0);
+	int ret = syscall(SYS_ACCESS, (scarg_t)path, mode, 0, 0, 0);
 	if(ret < 0)
 	{
 		errno = -ret;
@@ -104,7 +104,7 @@ int _stat(const char *path, struct stat *buf)
 {
 	
 	struct kstat k;
-	int ret= syscall(SYS_STAT, (int)path, (int)&k, 0, 0, 0);
+	int ret= syscall(SYS_STAT, (scarg_t)path, (scarg_t)&k, 0, 0, 0);
 	if(ret < 0)
 	{
 		errno = -ret;
@@ -122,7 +122,7 @@ int stat(const char *path, struct stat *buf)
 int lstat(const char *path, struct stat *buf)
 {
 	struct kstat k;
-	int ret= syscall(SYS_STAT, (int)path, (int)&k, 1, 0, 0);
+	int ret= syscall(SYS_STAT, (scarg_t)path, (scarg_t)&k, 1, 0, 0);
 	if(ret < 0)
 	{
 		errno = -ret;
@@ -156,7 +156,7 @@ int fstatvfs(int fd, struct statfs *buf)
 
 int fstatfs(int fd, struct statfs *buf)
 {
-	int ret = syscall(SYS_POSFSSTAT, fd, (int)buf, 0, 0, 0);
+	int ret = syscall(SYS_POSFSSTAT, fd, (scarg_t)buf, 0, 0, 0);
 	if(ret < 0) {
 		errno = -ret;
 		return -1;
@@ -167,7 +167,7 @@ int fstatfs(int fd, struct statfs *buf)
 int fstat(int fd, struct stat *buf)
 {
 	struct kstat k;
-	int ret= syscall(SYS_FSTAT, fd, (int)&k, 0, 0, 0);
+	int ret= syscall(SYS_FSTAT, fd, (scarg_t)&k, 0, 0, 0);
 	if(ret < 0)
 	{
 		errno = -ret;

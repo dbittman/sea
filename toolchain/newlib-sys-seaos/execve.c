@@ -18,7 +18,7 @@ _DEFUN(execve, (path, argv, envp),
 
 int _execve(char *path, char **argv, char **env)
 {
-	int ret = syscall(SYS_EXECVE, (int)path, (int)argv, (int)env, 0, 0);
+	int ret = syscall(SYS_EXECVE, (scarg_t)path, (scarg_t)argv, (scarg_t)env, 0, 0);
 	errno = -ret;
 	return -1;
 }

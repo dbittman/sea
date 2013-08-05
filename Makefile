@@ -13,7 +13,10 @@ apps_seaos:
 	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb all-seaosutil
 
 newhd:
-	@sudo zsh tools/chd.sh
+	@sudo zsh tools/chd.sh i586-pc-seaos
+
+newhd64:
+	@sudo zsh tools/chd.sh x86_64-pc-seaos
 
 writehd:
 	@zsh tools/copy_to_hd.sh

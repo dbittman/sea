@@ -26,7 +26,7 @@ int unlinkat(int fd, const  char * path, int flags)
 	}
 	if(path[0] != '/' && fd >= 0) {
 		int ret;
-		if((ret=syscall(SYS_GETPATH, fd, (int)newpath, __internal_calc_path_length(syscall(SYS_GETDEPTH, fd, 0, 0, 0, 0)), 0, 0)) < 0) {
+		if((ret=syscall(SYS_GETPATH, fd, (scarg_t)newpath, __internal_calc_path_length(syscall(SYS_GETDEPTH, fd, 0, 0, 0, 0)), 0, 0)) < 0) {
 			errno = -ret;
 			free(newpath);
 			return -1;

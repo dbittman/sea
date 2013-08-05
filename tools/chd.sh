@@ -27,4 +27,4 @@ dd if=/dev/zero of=hd2.img bs=1024 count=1 2> /dev/null
 dd if=/dev/zero of=hd2.img bs=1024 count=1 seek=100000 2> /dev/null
 yes | (/sbin/mke2fs -q -I128 -b1024 hd2.img) > /dev/null
 
-sh ./tools/copy_to_hd.sh
+sh ./tools/copy_to_hd.sh $1

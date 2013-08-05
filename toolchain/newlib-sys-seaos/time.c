@@ -14,7 +14,7 @@
 #include "sys/dirent.h"
 clock_t _times(struct tms *b)
 {
-	int ret = syscall(SYS_TIMES, (int)b, 0, 0, 0, 0);
+	scarg_t ret = syscall(SYS_TIMES, (scarg_t)b, 0, 0, 0, 0);
 	if(ret < 0) {
 		errno = -ret;
 		return -1;
@@ -24,7 +24,7 @@ clock_t _times(struct tms *b)
 
 clock_t times(struct tms *b)
 {
-	int ret = syscall(SYS_TIMES, (int)b, 0, 0, 0, 0);
+	scarg_t ret = syscall(SYS_TIMES, (scarg_t)b, 0, 0, 0, 0);
 	if(ret < 0) {
 		errno = -ret;
 		return -1;
@@ -40,9 +40,9 @@ int get_timer_ticks_hz()
 int _gettimeofday(struct timeval *tv, void *g)
 {
 	unsigned p;
-	unsigned hz = syscall(SYS_TIMERTH, &p, 0, 0, 0, 0);
+	scarg_t hz = syscall(SYS_TIMERTH, &p, 0, 0, 0, 0);
 	struct tm t;
-	syscall(SYS_GETTIME, (int)&t, 0, 0, 0, 0);
+	syscall(SYS_GETTIME, (scarg_t)&t, 0, 0, 0, 0);
 	tv->tv_sec = t.tm_sec + t.tm_min*60 + t.tm_hour*60*60;
 	tv->tv_usec=(p % hz)*1000;
 	return 0;
@@ -51,9 +51,9 @@ int _gettimeofday(struct timeval *tv, void *g)
 int gettimeofday(struct timeval *tv, void *g)
 {
 	unsigned p;
-	unsigned hz = syscall(SYS_TIMERTH, &p, 0, 0, 0, 0);
+	scarg_t hz = syscall(SYS_TIMERTH, &p, 0, 0, 0, 0);
 	struct tm t;
-	syscall(SYS_GETTIME, (int)&t, 0, 0, 0, 0);
+	syscall(SYS_GETTIME, (scarg_t)&t, 0, 0, 0, 0);
 	tv->tv_sec = t.tm_sec + t.tm_min*60 + t.tm_hour*60*60;
 	tv->tv_usec=(p % hz)*1000;
 	return 0;
@@ -61,7 +61,7 @@ int gettimeofday(struct timeval *tv, void *g)
 
 int utime(const char *path, const struct utimbuf *times)
 {
-	int ret = syscall(SYS_UTIME, path, times ? times->actime : 0, times ? times->modtime : 0, 0, 0);
+	scarg_t ret = syscall(SYS_UTIME, path, times ? times->actime : 0, times ? times->modtime : 0, 0, 0);
 	if(ret < 0) {
 		errno = -ret;
 		return -1;

@@ -17,7 +17,7 @@ int open (const char *buf, int flags, ...)
 	if(flags & O_CREAT)
 		mode = va_arg(vargs, mode_t);
 	va_end(vargs);
-	int ret = syscall(SYS_OPEN, (int)buf, flags, (int)mode, 0, 0);
+	int ret = syscall(SYS_OPEN, (scarg_t)buf, flags, (scarg_t)mode, 0, 0);
 	if(ret < 0) {
 		errno = -ret;
 		return -1;
@@ -35,7 +35,7 @@ int _open(const char *buf, int flags, ...)
 				    if(flags & O_CREAT)
 						        mode = va_arg(vargs, mode_t);
 					    va_end(vargs);
-						    int ret = syscall(SYS_OPEN, (int)buf, flags, (int)mode, 0, 0);
+						    int ret = syscall(SYS_OPEN, (scarg_t)buf, flags, (scarg_t)mode, 0, 0);
 							    if(ret < 0) {
 									        errno = -ret;
 											        return -1;

@@ -7,7 +7,7 @@
 #include <errno.h>
 int sea_load_module(char *path, char *opts, int flags)
 {
-	int ret = syscall(SYS_LMOD, (int)path, opts, flags, 0, 0);
+	int ret = syscall(SYS_LMOD, (scarg_t)path, opts, flags, 0, 0);
 	if(ret < 0) {
 		errno = -ret;
 		return -1;
@@ -17,7 +17,7 @@ int sea_load_module(char *path, char *opts, int flags)
 
 int sea_unload_module(char *path, int flags)
 {
-	int ret = syscall(SYS_ULMOD, (int)path, flags, 0, 0, 0);
+	int ret = syscall(SYS_ULMOD, (scarg_t)path, flags, 0, 0, 0);
 	if(ret < 0) {
 		errno = -ret;
 		return -1;
