@@ -88,7 +88,8 @@ int main(int argc, char **argv)
 		/* Okay, login the user */
 		pid = fork();
 		if(pid) {
-			while(syscall(3, pid, -1, 0, 0, 0) == -EINTR);
+			int status;
+			while(waitpid(pid,&status,0) == -EINTR);
 			ioctl(1, 0, 0);
 		} else {
 			set_uid(pwd->pw_uid);
