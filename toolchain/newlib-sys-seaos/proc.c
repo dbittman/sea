@@ -33,7 +33,7 @@ int waitagain()
 	return syscall(SYS_WAITAGAIN, 0, 0, 0, 0, 0);
 }
 
-int sbrk (int nbytes)
+int sbrk (long nbytes)
 {
 	int ret = syscall(SYS_SBRK, nbytes, 0, 0, 0, 0);
 	if(ret < 0) {
