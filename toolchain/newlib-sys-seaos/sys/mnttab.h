@@ -59,6 +59,12 @@ struct mnttab {
 	char	*mt_mntopts;
 	char	*mt_time;
 	char *mt_dev;
+	char   __mt_special_buf[128];
+	char   __mt_mountp_buf[256];
+	char   __mt_filsys_buf[256];
+	char   __mt_mntopts_buf[128];
+	char   __mt_time_buf[12];
+	char   __mt_dev_buf[256];
 };
 
 /*
@@ -75,6 +81,12 @@ struct extmnttab {
 	char *mnt_dev;
 	unsigned	mnt_major;
 	unsigned	mnt_minor;
+	char   __mt_special_buf[128];
+	char   __mt_mountp_buf[256];
+	char   __mt_filsys_buf[256];
+	char   __mt_mntopts_buf[128];
+	char   __mt_time_buf[12];
+	char   __mt_dev_buf[256];
 };
 
 #if !defined(_KERNEL)
