@@ -6,7 +6,6 @@ fi
 
 #modprobe ethernet
 #modprobe rtl8139
-modprobe socket
 
 login </dev/tty1 >/dev/tty1 2>/dev/tty1 &
 login </dev/tty2 >/dev/tty2 2>/dev/tty2 &
