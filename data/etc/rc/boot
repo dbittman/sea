@@ -1,11 +1,20 @@
 #!/bin/sh
 
+printf "Initializing network... "
+
+if ! modprobe ethernet &>/dev/null; then
+  echo "failed";
+else
+  if ! modprobe ipv4 &>/dev/null; then
+    echo "failed";
+  else
+    echo "ok";
+  fi
+fi
+
 if [ ! -e /etc/firstbootdate ]; then
 	sh /sys/first_run.sh
 fi
-
-#modprobe ethernet
-#modprobe rtl8139
 
 login </dev/tty1 >/dev/tty1 2>/dev/tty1 &
 login </dev/tty2 >/dev/tty2 2>/dev/tty2 &
