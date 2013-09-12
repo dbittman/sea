@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 		pid = fork();
 		if(pid) {
 			int status;
-			while(waitpid(pid,&status,0) == -EINTR);
+			while(waitpid(-1,&status,0) == -EINTR);
 			ioctl(1, 0, 0);
 		} else {
 			set_uid(pwd->pw_uid);

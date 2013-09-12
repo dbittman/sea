@@ -1,7 +1,6 @@
 
                         W e l c o m e   t o   S e a o s !
                To see this message again, run `less /sys/greeting'
-
 The system is set up with only the root user initially, and no root password.
 It is recommended that you add a root password soon, with the command `passwd'.
 You may add users with the `useradd' command. Some useful commands:
