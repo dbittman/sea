@@ -14,7 +14,7 @@ $grep_dat  = ["grep", "2.12", "http://ftp.gnu.org/gnu/grep/grep-2.12.tar.xz", ""
 
 $autoconf  = ["autoconf", "2.69", "http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.xz", "", "", "/usr", "all install", "host", "", ""]
 $automake  = ["automake", "1.13", "http://ftp.gnu.org/gnu/automake/automake-1.13.tar.xz", "", "", "/usr", "all install", "host", "", ""]
-$bash      = ["bash", "4.2", "http://ftp.gnu.org/gnu/bash/bash-4.2.tar.gz", "--without-bash-malloc --without-curses --disable-job-control --datarootdir=/usr/share", "", "/", "all install", "host", "", ""]
+$bash      = ["bash", "4.2", "http://ftp.gnu.org/gnu/bash/bash-4.2.tar.gz", "--build=$(sh ../bash-4.2/support/config.guess) --without-bash-malloc --without-curses --disable-job-control --datarootdir=/usr/share", "", "/", "all install", "host", "", ""]
 
 $binutils  = ["binutils", "2.22", "http://ftp.gnu.org/gnu/binutils/binutils-2.22.tar.gz", "--disable-nls", "", "/usr", "all install", "host", "", ""]
 $coreutils = ["coreutils", "8.16", "http://ftp.gnu.org/gnu/coreutils/coreutils-8.16.tar.xz", "--disable-nls --enable-no-install-program=hostname,su --datarootdir=/usr/share", "OPTIONAL_PKGLIB_PROGS=", "/", "all install", "host", "", ""]
