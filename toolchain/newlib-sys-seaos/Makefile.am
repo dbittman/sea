@@ -43,7 +43,7 @@ extra_objs = getopt.o sysc.o \
 			execv.o \
 			execve.o \
 			execvp.o \
-			ftok.o at.o ch.o dir.o link.o openclose.o rw.o special.o stat.o sync.o truncate.o
+			ftok.o at.o ch.o dir.o link.o openclose.o rw.o special.o stat.o sync.o truncate.o mntent.o
 else
 extra_objs =
 endif
