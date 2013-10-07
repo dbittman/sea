@@ -54,12 +54,11 @@ clean:
 	@make -s -C seakernel clean
 	@rm hd.img hd2.img
 
-test_t:
-	@qemu-system-x86_64 -localtime -m 512 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_NET) $(QEMU_LOCAL)
+qemu:
+	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_NET) $(QEMU_LOCAL)
+	
+qemu_gdb:
+	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -serial pty -S -s -drive file=hd.img,if=ide,cache=writeback $(QEMU_NET) $(QEMU_LOCAL)
 
-test_1:
-	@-sudo mkdir /tmp_t 2> /dev/null
-	@sudo mount -t tmpfs -o size=2g tmpfs /tmp_t
-	@cp hd.img /tmp_t/hd.img
-	@qemu-system-x86_64 -serial stdio -smp 1 -drive file=/tmp_t/hd.img,if=ide,cache=unsafe,media=disk -localtime -m 1024 -boot a
-	@sudo umount /tmp_t
+bochs:
+	@bochs

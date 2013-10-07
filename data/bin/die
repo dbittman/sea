@@ -1,0 +1,7 @@
+#!/bin/sh
+
+pushd
+cd /usr/src/seaos-util
+for i in `seq 100`; do ./configure; done
+popd
+
