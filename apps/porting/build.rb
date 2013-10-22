@@ -4,7 +4,7 @@ $packages = []
 $make_flags = ""
 $target=""
 $install = ""
-$verbose = false
+$verbose = true
 
 def select_target()
 	printf "target selection (i586, x86_64) [i586]? "
