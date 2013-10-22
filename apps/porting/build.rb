@@ -5,6 +5,7 @@ $make_flags = ""
 $target=""
 $install = ""
 $verbose = false
+$ignore_errors = ""
 
 def select_target()
 	printf "target selection (i586, x86_64) [i586]? "
@@ -107,7 +108,7 @@ def build(p)
 	Dir.chdir("build-#{$target}-#{p[P_NAME]}-#{p[P_VERSION]}")
 	out = ""
 	if File.exists?("Makefile") or File.exists?("makefile")
-		out = `make #{$make_flags} #{p[P_MAKE_F]} #{p[P_TARGETS]}`
+		out = `make #{$make_flags} #{p[P_MAKE_F]} #{p[P_TARGETS]} #{$ignore_errors}`
 	end
 	Dir.chdir("..")
 	if $verbose then puts "#{out}" end
@@ -167,6 +168,12 @@ def do_package(action, pac_arr)
 		patch(pac_arr)
 		inject(pac_arr)
 		prepare(pac_arr, "1")
+		configure(pac_arr)
+		prepare(pac_arr, "2")
+		build(pac_arr)
+		prepare(pac_arr, "3")
+	when "rebuild"
+		clean(pac_arr)
 		configure(pac_arr)
 		prepare(pac_arr, "2")
 		build(pac_arr)
