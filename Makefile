@@ -4,7 +4,9 @@ include local_make.inc
 
 QEMU_NET=-net nic,model=rtl8139,vlan=2 -net socket,vlan=2,connect=127.0.0.1:8010 
 
-QEMU_EXTRA=-device ahci,id=ahci0 -drive if=none,file=hd2.img,format=raw,id=drive-sata0-0-0 -device ide-drive,bus=ahci0.0,drive=drive-sata0-0-0,id=sata0-0-0 
+QEMU_EXTRA=-device ahci,id=ahci0 -drive if=none,file=hd.img,format=raw,id=drive-sata0-0-0 -device ide-drive,bus=ahci0.0,drive=drive-sata0-0-0,id=sata0-0-0 
+
+QEMU_PCI_PASSTHROUGH=-device pci-assign,host=$(PCI_DEVICE)
 
 all: build
 
@@ -61,6 +63,9 @@ qemu:
 	
 qemu_gdb:
 	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -serial pty -S -s -drive file=hd.img,if=ide,cache=writeback $(QEMU_NET) $(QEMU_LOCAL)
+
+qemu_pci:
+	@sudo qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_PCI_PASSTHROUGH) $(QEMU_LOCAL)
 
 bochs:
 	@bochs

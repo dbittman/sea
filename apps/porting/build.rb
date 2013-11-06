@@ -5,7 +5,7 @@ $make_flags = ""
 $target=""
 $install = ""
 $verbose = false
-$ignore_errors = ""
+$ignore_errors = "-i"
 
 def select_target()
 	printf "target selection (i586, x86_64) [i586]? "
