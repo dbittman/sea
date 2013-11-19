@@ -8,7 +8,11 @@ else
   if ! modprobe ipv4 &>/dev/null; then
     echo "failed";
   else
-    echo "ok";
+    if ! modprobe i350 &>/dev/null; then
+      echo "failed";
+    else
+      echo "ok";
+    fi
   fi
 fi
 
