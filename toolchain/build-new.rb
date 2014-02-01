@@ -21,6 +21,7 @@ def error(s)
 end
 
 def download(package)
+	if package[DT_VERSION].nil? then return end
 	begin
 	file = File.open(File.basename(package[DT_REMOTE]))
 	rescue
@@ -47,197 +48,163 @@ def download(package)
 end
 
 def extract(package)
-	`tar xf #{File.basename(package[DT_REMOTE])}`
-	if ! $?.success? then error("extracting #{File.basename(rpath)} failed\n") end
+	if package[DT_VERSION].nil? then return end
+	if ! Dir.exist?("#{package[DT_NAME]}-#{package[DT_VERSION]}") then
+		puts "extracting #{package[DT_NAME]}"
+		`tar xf #{File.basename(package[DT_REMOTE])} 2>/dev/null`
+		if ! $?.success? then error("extracting #{File.basename(package[DT_REMOTE])} failed\n") end
+	else
+		puts "Skipping extraction (unneeded)"
+	end
 end
 
-def patch_binutils()
-	Dir.chdir("binutils-#{$binutils_ver}")
-	out = `patch -p1 -i ../binutils-#{$binutils_ver}-seaos.patch`
-	if ! $?.success?
-		puts(out)
-		error("binutils patch failed")
+def patch(package)
+	if package[DT_VERSION].nil? then return end
+	if ! package[DT_PATCH] then return end
+	patch_filename = "#{package[DT_NAME]}-#{package[DT_VERSION]}-seaos-all.patch"
+	Dir.chdir("#{package[DT_NAME]}-#{package[DT_VERSION]}")
+	if package[DT_NAME] != "newlib" then
+		`patch -p1 -N --dry-run --silent -i ../#{patch_filename}`
+		if ! $?.success? then
+			puts "Skipping patch apply!"
+			Dir.chdir("..")
+			return
+		end
 	end
-	`cp ../seaos_i386.sh ../seaos_x86_64.sh ld/emulparams/`
+	puts "patching #{package[DT_NAME]}"
+	`patch -p1 -N -i ../#{patch_filename}`
 	Dir.chdir("..")
 end
 
-def patch_gcc()
-	Dir.chdir("gcc-#{$gcc_ver}")
-	out = `patch -p1 -i ../gcc-#{$gcc_ver}-seaos.patch`
-	if ! $?.success?
-		puts(out)
-		error("gcc patch failed")
-	end
-	`cp ../seaos.h ../seaos64.h gcc/config/`
-	Dir.chdir("libstdc++-v3")
-	out = `#{$autoconf}`
-	if ! $?.success?
-		puts(out)
-		error("gcc autoconf failed")
-	end
-	Dir.chdir("../..")
-end
-
-def patch_newlib()
-	Dir.chdir("newlib-#{$newlib_ver}")
-	out = `patch -p1 -i ../newlib-#{$newlib_ver}-seaos.patch`
-	if ! $?.success?
-		puts(out)
-		error("newlib patch failed")
-	end
-	Dir.chdir("..")
-end
-
-def populate_newlib()
-	if ! Dir.exist?("newlib-#{$newlib_ver}/newlib/libc/sys/seaos")
-		Dir.mkdir("newlib-#{$newlib_ver}/newlib/libc/sys/seaos")
-	end
-	`cp -r newlib-sys-seaos/* newlib-#{$newlib_ver}/newlib/libc/sys/seaos/`
-end
-
-def create_build_dirs()
-	if ! Dir.exist?("build-binutils-#{$binutils_ver}-#{$target}")
-		Dir.mkdir("build-binutils-#{$binutils_ver}-#{$target}")
-	end
-	if ! Dir.exist?("build-gcc-#{$gcc_ver}-#{$target}")
-		Dir.mkdir("build-gcc-#{$gcc_ver}-#{$target}")
-	end
-	if ! Dir.exist?("build-newlib-#{$newlib_ver}-#{$target}")
-		Dir.mkdir("build-newlib-#{$newlib_ver}-#{$target}")
-	end
-	if ! Dir.exist?("build-extra-#{$extra_ver}-#{$target}")
-		Dir.mkdir("build-extra-#{$extra_ver}-#{$target}")
+def create_build_dir(package)
+	if package[DT_VERSION].nil? then return end
+	if ! Dir.exist?("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
+		Dir.mkdir("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
 	end
 end
 
-def clean()
-	`rm -r build-binutils-#{$binutils_ver}-#{$target}`
-	`rm -r build-gcc-#{$gcc_ver}-#{$target}`
-	`rm -r build-newlib-#{$newlib_ver}-#{$target}`
-	`rm -r build-extra-#{$extra_ver}-#{$target}`
-	`rm built`
+def clean(package)
+	if package[DT_VERSION].nil? then return end
+	`rm -r build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}`
+	`true`
 end
 
-def conf_binutils()
-	create_build_dirs()
-	Dir.chdir("build-binutils-#{$binutils_ver}-#{$target}")
-	`../binutils-#{$binutils_ver}/configure --target=#{$target} --prefix=#{$install} --disable-nls --disable-werror &> binutils-#{$binutils_ver}-configure-#{$target}.log`
-	Dir.chdir("..")
+def cleansrc(package)
+	if package[DT_VERSION].nil? then return end
+	`rm -r #{package[DT_NAME]}-#{package[DT_VERSION]}`
+	`true`
 end
 
-def build_binutils()
-	create_build_dirs()
-	Dir.chdir("build-binutils-#{$binutils_ver}-#{$target}")
-	`make #{$make_flags} MAKEINFO=makeinfo all install &> binutils-#{$binutils_ver}-build-#{$target}.log`
-	Dir.chdir("..")
+def execute_command(package)
+	if package[DT_COMMAND].nil? then return end
+	`#{package[DT_COMMAND]}`
+	if ! $?.success? then error("executing command '#{package[DT_COMMAND]}' for #{File.basename(package[DT_REMOTE])} failed\n") end
 end
 
-def conf_gcc()
-	create_build_dirs()
-	Dir.chdir("build-gcc-#{$gcc_ver}-#{$target}")
-	`../gcc-#{$gcc_ver}/configure --target=#{$target} --prefix=#{$install} --enable-languages=c,c++ --enable-lto --disable-nls &> gcc-#{$gcc_ver}-configure-#{$target}.log`
-	Dir.chdir("..")
-end
-
-def build_gcc()
-	create_build_dirs()
-	Dir.chdir("build-gcc-#{$gcc_ver}-#{$target}")
-	`make #{$make_flags} all-gcc install-gcc &> gcc-#{$gcc_ver}-build-#{$target}.log`
-	Dir.chdir("..")
-end
-
-def conf_newlib()
-	create_build_dirs()
+def configure(package)
+	execute_command(package)
+	if package[DT_VERSION].nil? then return end
+	create_build_dir(package)
+	puts "configuring #{package[DT_NAME]}"
+	Dir.chdir("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
 	
-	Dir.chdir("newlib-#{$newlib_ver}/newlib/libc/sys")
-	`autoconf &> newlib-#{$newlib_ver}-configure-#{$target}.log`
-	if ! $?.success?
-		error("error in autoconf of newlib (check newlib configure log)")
+	cross = package[DT_CROSS].split(" ")
+	conf = []
+	cross.each {|e|
+	           case e
+	           when "host"
+		           conf.insert(-1, "--host=#{$target}")
+	           when "target"
+		           conf.insert(-1, "--target=#{$target}")
+	           when "tarprefix"
+		           conf.insert(-1, "--prefix=#{$install}/#{$target}")
+	           when "prefix"
+		           conf.insert(-1, "--prefix=#{$install}")
+	           when "include"
+		           conf.insert(-1, "--includedir=#{$install}/#{$target}/include")
+	           when "oldinclude"
+		           conf.insert(-1, "--oldincludedir=#{$install}/#{$target}/include")
+	           end
+	           }
+	
+	`../#{package[DT_NAME]}-#{package[DT_VERSION]}/configure #{conf.join(" ")} #{package[DT_CONFIG]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-configure-#{$target}.log`
+	Dir.chdir("..")
+end
+
+def build(package)
+	execute_command(package)
+	puts "building #{package[DT_NAME]}"
+	cross = package[DT_MCROSS].split(" ")
+	conf = []
+	cross.each {|e|
+	           case e
+	           when "CC"
+		           conf.insert(-1, "CC=#{$target}-gcc")
+	           when "AR"
+		           conf.insert(-1, "AR=#{$target}-ar")
+	           when "RANLIB"
+		           conf.insert(-1, "RANLIB=#{$target}-ranlib")
+	           when "LD"
+		           conf.insert(-1, "LD=#{$target}-ld")
+	           end
+	           }
+	if package[DT_VERSION].nil? then
+		Dir.chdir("build-#{package[DT_REMOTE]}-#{$target}")
+		`make #{$make_flags} #{conf.join(" ")} #{package[DT_MAKE]} &> #{package[DT_NAME]}-build-#{$target}.log`
+		Dir.chdir("..")
+	else
+		create_build_dir(package)
+		Dir.chdir("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
+		`make #{$make_flags} #{conf.join(" ")} #{package[DT_MAKE]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-build-#{$target}.log`
+		Dir.chdir("..")
 	end
-	Dir.chdir("seaos")
-	`ACLOCAL=#{$aclocal} AUTOMAKE=#{$automake} autoreconf &>> newlib-#{$newlib_ver}-configure-#{$target}.log`
-	if ! $?.success?
-		error("error in autoreconf of newlib (check newlib configure log)")
-	end
-	Dir.chdir("../../../../..")
-	Dir.chdir("build-newlib-#{$newlib_ver}-#{$target}")
-	`../newlib-#{$newlib_ver}/configure --target=#{$target} --prefix=#{$install} &>> newlib-#{$newlib_ver}-configure-#{$target}.log`
-	Dir.chdir("..")
 end
-
-def build_newlib()
-	create_build_dirs()
-	Dir.chdir("build-newlib-#{$newlib_ver}-#{$target}")
-	`make #{$make_flags} all install &> newlib-#{$newlib_ver}-build-#{$target}.log`
-	Dir.chdir("..")
-end
-
-def build_libgcc()
-	create_build_dirs()
-	Dir.chdir("build-gcc-#{$gcc_ver}-#{$target}")
-	`make #{$make_flags} all-target-libgcc install-target-libgcc &> libgcc-#{$gcc_ver}-build-#{$target}.log`
-	Dir.chdir("..")
-end
-
 
 def perform_action(act)
 	
 	puts "performing #{act}..."
+	pack = nil
+	arr = act.split("-")
 	
-	case act
-	when "config-gcc"
-		conf_gcc()
-	when "config-binutils"
-		conf_binutils()
-	when "config-newlib"
-		conf_newlib()
+	if arr[1] == "all" then
+		$downloads_table.each {|d| perform_action("#{arr[0]}-#{d[DT_NAME]}") }
+		return
+	end
 	
-	when "download-gcc"
-		download_extract_file($gcc_download)
-	when "download-binutils"
-		download_extract_file($binutils_download)
-	when "download-newlib"
-		download_extract_file($newlib_download)
+	$downloads_table.each { |d| if d[DT_NAME] == arr[1] then pack = d; break end }
 	
-	when "build-gcc"
-		build_gcc()
-	when "build-binutils"
-		build_binutils()
-	when "build-newlib"
-		build_newlib()
-	when "build-libgcc"
-		build_libgcc()
-	
-	when "patch-gcc"
-		patch_gcc()
-	when "patch-binutils"
-		patch_binutils()
-	when "patch-newlib"
-		patch_newlib()
-	when "populate-newlib"
-		populate_newlib()
-	
-	when "build-extra"
-		create_build_dirs()
-		exec("ruby build-extra.rb #{$install} #{$target}")
+	if pack.nil? then error("unknown package: #{arr[1]}") end
+	case arr[0]
+	when "download"
+		download(pack)
+	when "extract"
+		if pack[DT_NAME] == "newlib" then cleansrc(pack) end
+		extract(pack)
+	when "patch"
+		patch(pack)
+	when "configure"
+		configure(pack)
+	when "build"
+		build(pack)
 	when "clean"
-		clean()
-	when "mark-success"
-		`touch built`
+		clean(pack)
+	when "cleansrc"
+		cleansrc(pack)
+	when "all"
+		download(pack)
+		if pack[DT_NAME] == "newlib" then cleansrc(pack) end
+		extract(pack)
+		patch(pack)
+		configure(pack)
+		build(pack)
 	else
 		error("unknown action: #{act}")
 	end
 	
-	if ! $?.success?
+	if ! $?.nil? and ! $?.success?
 		error("error in performing action #{act}")
 	end
 end
-
-
-download($downloads_table[0])
-extract($downloads_table[0])
-exit
 
 if ARGV.nil? or ARGV[0] == "" or ARGV[0] == "help" or ARGV[0] == "-h" or ARGV[0] == "--help" or ARGV.length == 0
 	puts "seaos toolchain builder"
@@ -291,13 +258,6 @@ if ARGV.nil? or ARGV[0] == "" or ARGV[0] == "help" or ARGV[0] == "-h" or ARGV[0]
 	exit 0
 end
 
-`which #{$automake} &> /dev/null`
-if ! $?.success? then error("automake variable not set (must be edited in var.rb)") end
-`which #{$aclocal} &> /dev/null`
-if ! $?.success? then error("aclocal variable not set (must be edited in var.rb)") end
-`which #{$autoconf} &> /dev/null`
-if ! $?.success? then error("autoconf variable not set (must be edited in var.rb)") end
-
 select_target()
 
 file = File.open("../.toolchain")
@@ -311,7 +271,7 @@ while $install.nil? or $install == ""
 	$install = $stdin.gets.chomp
 end
 
-ENV["PATH"] = ":#{$install}/bin" + ENV["PATH"]
+ENV["PATH"] = "#{$install}/bin:" + ENV["PATH"]
 
 $actions = ARGV
 
@@ -319,45 +279,5 @@ printf "will perform actions: #{$actions.join(", ")}\ninstalling to: #{$install}
 $stdin.gets
 
 $actions.each do |a|
-	if a == "all-gcc"
-		perform_action("download-gcc")
-		perform_action("patch-gcc")
-		perform_action("config-gcc")
-		perform_action("build-gcc")
-	elsif a == "all-binutils"
-		perform_action("download-binutils")
-		perform_action("patch-binutils")
-		perform_action("config-binutils")
-		perform_action("build-binutils")
-	elsif a == "all-newlib"
-		perform_action("download-newlib")
-		perform_action("patch-newlib")
-		perform_action("populate-newlib")
-		perform_action("config-newlib")
-		perform_action("build-newlib")
-		perform_action("build-libgcc")
-	elsif a == "all"
-		perform_action("download-binutils")
-		perform_action("download-gcc")
-		perform_action("download-newlib")
-		perform_action("patch-gcc")
-		perform_action("patch-binutils")
-		perform_action("patch-newlib")
-		perform_action("populate-newlib")
-		
-		perform_action("config-binutils")
-		perform_action("build-binutils")
-		
-		perform_action("config-gcc")
-		perform_action("build-gcc")
-		
-		perform_action("config-newlib")
-		perform_action("build-newlib")
-		
-		perform_action("build-libgcc")
-		perform_action("build-extra")
-		perform_action("mark-success")
-	else
-		perform_action(a)
-	end
+	perform_action(a)
 end
