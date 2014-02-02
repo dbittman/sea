@@ -21,7 +21,8 @@ def error(s)
 end
 
 def download(package)
-	if package[DT_VERSION].nil? then return end
+	if package[DT_VERSION].nil? then return false end
+	print " * downloading: "
 	begin
 	file = File.open(File.basename(package[DT_REMOTE]))
 	rescue
@@ -30,8 +31,8 @@ def download(package)
 		hash = Digest::MD5.hexdigest(file.read)
 		file.close
 		if package[DT_HASH] == hash then
-			puts "already downloaded!"
-			return
+			print "(skipping) " 
+			return true
 		end
 	end
 	`wget #{package[DT_REMOTE]} -O #{File.basename(package[DT_REMOTE])}`
@@ -40,7 +41,7 @@ def download(package)
 	hash = Digest::MD5.hexdigest(file.read)
 	file.close
 	if package[DT_HASH] == hash then
-		return
+		return true
 	end
 	rescue
 	end
@@ -48,51 +49,59 @@ def download(package)
 end
 
 def extract(package)
-	if package[DT_VERSION].nil? then return end
+	if package[DT_VERSION].nil? then return false end
+	print " * extracting: "
 	if ! Dir.exist?("#{package[DT_NAME]}-#{package[DT_VERSION]}") then
-		puts "extracting #{package[DT_NAME]}"
 		`tar xf #{File.basename(package[DT_REMOTE])} 2>/dev/null`
 		if ! $?.success? then error("extracting #{File.basename(package[DT_REMOTE])} failed\n") end
 	else
-		puts "Skipping extraction (unneeded)"
+		print "(skipping) "
 	end
+	return true
 end
 
 def patch(package)
-	if package[DT_VERSION].nil? then return end
-	if ! package[DT_PATCH] then return end
+	if package[DT_VERSION].nil? then return false end
+	if ! package[DT_PATCH] then return false end
+	print " * patching: "
 	patch_filename = "#{package[DT_NAME]}-#{package[DT_VERSION]}-seaos-all.patch"
 	Dir.chdir("#{package[DT_NAME]}-#{package[DT_VERSION]}")
 	if package[DT_NAME] != "newlib" then
 		`patch -p1 -N --dry-run --silent -i ../#{patch_filename}`
 		if ! $?.success? then
-			puts "Skipping patch apply!"
+			`true`
+			print "(skipping) "
 			Dir.chdir("..")
-			return
+			return true
 		end
 	end
-	puts "patching #{package[DT_NAME]}"
 	`patch -p1 -N -i ../#{patch_filename}`
 	Dir.chdir("..")
+	return true
 end
 
 def create_build_dir(package)
-	if package[DT_VERSION].nil? then return end
+	if package[DT_VERSION].nil? then return false end
 	if ! Dir.exist?("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
 		Dir.mkdir("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
 	end
+	return true
 end
 
 def clean(package)
-	if package[DT_VERSION].nil? then return end
+	if package[DT_VERSION].nil? then return false end
+	print " * cleaning build files: "
 	`rm -r build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}`
 	`true`
+	return true
 end
 
 def cleansrc(package)
-	if package[DT_VERSION].nil? then return end
+	if package[DT_VERSION].nil? then return false end
+	print " * cleaning source: "
 	`rm -r #{package[DT_NAME]}-#{package[DT_VERSION]}`
 	`true`
+	return true
 end
 
 def execute_command(package)
@@ -103,9 +112,9 @@ end
 
 def configure(package)
 	execute_command(package)
-	if package[DT_VERSION].nil? then return end
+	if package[DT_VERSION].nil? then return false end
 	create_build_dir(package)
-	puts "configuring #{package[DT_NAME]}"
+	print " * configuring: "
 	Dir.chdir("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
 	
 	cross = package[DT_CROSS].split(" ")
@@ -129,11 +138,12 @@ def configure(package)
 	
 	`../#{package[DT_NAME]}-#{package[DT_VERSION]}/configure #{conf.join(" ")} #{package[DT_CONFIG]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-configure-#{$target}.log`
 	Dir.chdir("..")
+	return true
 end
 
 def build(package)
 	execute_command(package)
-	puts "building #{package[DT_NAME]}"
+	print " * building: "
 	cross = package[DT_MCROSS].split(" ")
 	conf = []
 	cross.each {|e|
@@ -158,6 +168,15 @@ def build(package)
 		`make #{$make_flags} #{conf.join(" ")} #{package[DT_MAKE]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-build-#{$target}.log`
 		Dir.chdir("..")
 	end
+	return true
+end
+
+def check_error(act)
+	if ! $?.nil? and ! $?.success? then
+		error("FAILED\nerror in performing action #{act}")
+	else
+		puts "done"
+	end
 end
 
 def perform_action(act)
@@ -174,35 +193,35 @@ def perform_action(act)
 	$downloads_table.each { |d| if d[DT_NAME] == arr[1] then pack = d; break end }
 	
 	if pack.nil? then error("unknown package: #{arr[1]}") end
+	ret = false
 	case arr[0]
 	when "download"
 		download(pack)
 	when "extract"
 		if pack[DT_NAME] == "newlib" then cleansrc(pack) end
-		extract(pack)
+		ret = extract(pack)
 	when "patch"
-		patch(pack)
+		ret = patch(pack)
 	when "configure"
-		configure(pack)
+		ret = configure(pack)
 	when "build"
-		build(pack)
+		ret = build(pack)
 	when "clean"
-		clean(pack)
+		ret = clean(pack)
 	when "cleansrc"
-		cleansrc(pack)
+		ret = cleansrc(pack)
 	when "all"
-		download(pack)
-		if pack[DT_NAME] == "newlib" then cleansrc(pack) end
-		extract(pack)
-		patch(pack)
-		configure(pack)
-		build(pack)
+		if download(pack) then check_error(act) end
+		if pack[DT_NAME] == "newlib" then cleansrc(pack); check_error(act) end
+		if extract(pack) then check_error(act) end
+		if patch(pack) then check_error(act) end
+		if configure(pack) then check_error(act) end
+		ret = build(pack)
 	else
 		error("unknown action: #{act}")
 	end
-	
-	if ! $?.nil? and ! $?.success?
-		error("error in performing action #{act}")
+	if ret then
+		check_error(act)
 	end
 end
 
