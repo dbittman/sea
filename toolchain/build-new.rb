@@ -2,7 +2,13 @@
 # the more advanced toolchain builder
 
 $install = ""
-$target = ""
+$target = nil
+$reinstall = false
+$reinstall_deps = false
+
+$database = ""
+
+$all_packs = []
 
 require "digest/md5"
 require "./var-new.rb"
@@ -12,11 +18,11 @@ def select_target()
 	if ($target = $stdin.gets().chomp) == ""
 		$target = "i586"
 	end
-	$target = $target + "-pc-seaos"
 end
 
 def error(s)
 	printf "error: #{s}\n"
+	write_database()
 	exit 1
 end
 
@@ -179,24 +185,46 @@ def check_error(act)
 	end
 end
 
-def perform_action(act)
-	
-	puts "performing #{act}..."
-	pack = nil
-	arr = act.split("-")
-	
-	if arr[1] == "all" then
-		$downloads_table.each {|d| perform_action("#{arr[0]}-#{d[DT_NAME]}") }
+def read_database
+	file = File.open("#{$install}/manifest.dat", "a+")
+	$database = file.read
+	file.close
+end
+
+def search_database(name, version)
+	arr = $database.split("\n")
+	arr.each do |a|
+		pack = a.split(" ")
+		if (pack[0] == name) and ((pack[1] == version) or (version == "*"))
+			return true
+		end
+	end
+	return false
+end
+
+def append_database(package)
+	if search_database(package[DT_NAME], package[DT_VERSION]) then
 		return
 	end
-	
-	$downloads_table.each { |d| if d[DT_NAME] == arr[1] then pack = d; break end }
-	
-	if pack.nil? then error("unknown package: #{arr[1]}") end
+	$database = $database + "#{package[DT_NAME]} #{package[DT_VERSION]}\n"
+end
+
+def process_package(command, pack, isdep)
+	if search_database(pack[DT_NAME], pack[DT_VERSION]) and command == "all" then
+		if isdep and !($reinstall_deps) then
+			puts "package #{pack[DT_NAME]} is already installed. Skipping..."
+			return
+		end
+		if !isdep and !($reinstall)
+			puts "package #{pack[DT_NAME]} is already installed. Skipping..."
+			return
+		end
+	end
+	act = "#{command}-#{pack[DT_NAME]}"
 	ret = false
-	case arr[0]
+	case command
 	when "download"
-		download(pack)
+		ret = download(pack)
 	when "extract"
 		if pack[DT_NAME] == "newlib" then cleansrc(pack) end
 		ret = extract(pack)
@@ -217,12 +245,39 @@ def perform_action(act)
 		if patch(pack) then check_error(act) end
 		if configure(pack) then check_error(act) end
 		ret = build(pack)
+		if ret then append_database(pack) end
 	else
 		error("unknown action: #{act}")
 	end
 	if ret then
 		check_error(act)
 	end
+end
+
+def perform_action(act)
+	puts "performing #{act}..."
+	pack = nil
+	arr = act.split("-")
+	
+	if arr[1] == "all" then
+		$downloads_table.each {|d| perform_action("#{arr[0]}-#{d[DT_NAME]}") }
+		return
+	end
+	
+	$downloads_table.each { |d| if d[DT_NAME] == arr[1] then pack = d; break end }
+	if pack.nil? then error("unknown package: #{arr[1]}") end
+	process_package(arr[0], pack, false)
+end
+
+def write_database
+	file = File.open("#{$install}/manifest.dat", "w")
+	file.puts($database)
+	file.close
+end
+
+def find_package(name)
+	$downloads_table.each { |d| if d[DT_NAME] == name then return d; end }
+	return nil
 end
 
 if ARGV.nil? or ARGV[0] == "" or ARGV[0] == "help" or ARGV[0] == "-h" or ARGV[0] == "--help" or ARGV.length == 0
@@ -277,7 +332,25 @@ if ARGV.nil? or ARGV[0] == "" or ARGV[0] == "help" or ARGV[0] == "-h" or ARGV[0]
 	exit 0
 end
 
-select_target()
+ARGV.each do |a|
+	arr = a.split("=")
+	if ! arr[0][/^\-\-/].nil? then
+		case arr[0][2..-1]
+		when "target"
+			if arr[1].nil? then error("must specify architecture when using --target") end
+			$target = arr[1].clone
+		when "reinstall"
+			$reinstall = true
+		when "reinstall-deps"
+			$reinstall_deps = true
+		end
+	end
+end
+
+if $target.nil?
+	select_target()
+end
+$target = $target + "-pc-seaos"
 
 file = File.open("../.toolchain")
 
@@ -294,9 +367,82 @@ ENV["PATH"] = "#{$install}/bin:" + ENV["PATH"]
 
 $actions = ARGV
 
-printf "will perform actions: #{$actions.join(", ")}\ninstalling to: #{$install}\ntarget: #{$target}\n\npress enter to start..."
+printf "installing to: #{$install}\ntarget: #{$target}\n\npress enter to start..."
 $stdin.gets
 
+read_database()
+
+$list = []
+
 $actions.each do |a|
-	perform_action(a)
+	if a[/^\-\-/].nil? then
+		arr = a.split("-")
+		if arr[0] == "all"
+			if arr[1] == "all" then
+				$downloads_table.each do |i|
+					if $list.index(i).nil?
+						$list.insert(-1, i)
+					end
+				end
+			else
+				pack = find_package(arr[1])
+				if pack.nil? then error("could not resolve #{arr[1]}") end
+				if $list.index(pack).nil?
+					$list.insert(-1, pack)
+				end
+			end
+		else
+			perform_action(a)
+		end
+	end
 end
+
+# calculate all needed packages
+while $list.length > 0
+	$all_packs.insert(0, $list.clone)
+	arr = []
+	$list.each do |l|
+		deps = l[DT_DEPS]
+		deps.each do |d|
+			pack = find_package(d.split(" ")[0])
+			if pack.nil? then error("could not resolve #{d.split(" ")[0]}") end
+			if arr.index(pack).nil?
+				arr.insert(-1, pack)
+			end
+		end
+	end
+	
+	$list = arr.clone
+end
+
+# delete duplicates and generate depends
+$all_packs.each do |a1|
+	a1.each do |entry|
+		$all_packs.each do |a2|
+			if a1 != a2 then
+				a2.each do |ent2|
+					if ent2 == entry
+						a2.delete(ent2)
+					end
+				end
+			end
+		end
+	end
+end
+
+# and install
+$all_packs.each do |a1|
+	a1.each do |a2|
+		if $all_packs.index(a1) == ($all_packs.length-1)
+			puts "performing all-#{a2[DT_NAME]}"
+			process_package("all", a2, false)
+		else
+			puts "performing all-#{a2[DT_NAME]} (DEP)"
+			process_package("all", a2, true)
+		end
+	end
+end
+
+write_database()
+
+exit 0
