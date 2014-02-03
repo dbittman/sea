@@ -344,8 +344,8 @@ ENV["PATH"] = "#{$install}/bin:" + ENV["PATH"]
 
 $actions = ARGV
 
-printf "installing to: #{$install}\ntarget: #{$target}\n\npress enter to start..."
-$stdin.gets
+puts "installing to: #{$install}\ntarget: #{$target}\n\n"
+
 
 read_database()
 
@@ -406,7 +406,19 @@ $all_packs.each do |a1|
 		end
 	end
 end
+puts "selected packages:"
+$all_packs.each do |a1|
+	a1.each do |a2|
+	  print a2[DT_NAME]
+	  if ! a2[DT_VERSION].nil?
+	    print "-#{a2[DT_VERSION]}"
+	  end
+	  print "  "
+	end
+end
+puts "\n\npress enter to start"
 
+$stdin.gets
 # and install
 $all_packs.each do |a1|
 	a1.each do |a2|
