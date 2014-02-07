@@ -91,6 +91,19 @@ $downloads_table = [
       nil                                                            
   ],
 	
+  ["libstdc++", 
+      nil, 
+      true, 
+      "gcc-4.8.0", 
+      nil, 
+      ["binutils *", "gcc *", "newlib *", "libgcc *"], 
+      "target prefix",
+      nil, 
+      "", 
+      "all install",
+      nil                                                            
+  ],
+	
   ["termcap", 
       "1.3.1", 
       false, 

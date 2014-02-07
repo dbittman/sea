@@ -28,6 +28,7 @@ end
 
 def download(package)
 	if package[DT_VERSION].nil? then return false end
+	if package[DT_REMOTE].nil? then return false end
 	print " * downloading: "
 	begin
 	file = File.open(File.basename(package[DT_REMOTE]))
@@ -56,6 +57,7 @@ end
 
 def extract(package)
 	if package[DT_VERSION].nil? then return false end
+	if package[DT_REMOTE].nil? then return false end
 	print " * extracting: "
 	if ! Dir.exist?("#{package[DT_NAME]}-#{package[DT_VERSION]}") then
 		`tar xf #{File.basename(package[DT_REMOTE])} 2>/dev/null`
@@ -141,6 +143,8 @@ def configure(package)
 		           conf.insert(-1, "--oldincludedir=#{$install}/#{$target}/include")
 	           end
 	           }
+	#puts `pwd`
+	#puts "../#{package[DT_NAME]}-#{package[DT_VERSION]}/configure #{conf.join(" ")} #{package[DT_CONFIG]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-configure-#{$target}.log"
 	
 	`../#{package[DT_NAME]}-#{package[DT_VERSION]}/configure #{conf.join(" ")} #{package[DT_CONFIG]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-configure-#{$target}.log`
 	Dir.chdir("..")
@@ -171,6 +175,8 @@ def build(package)
 	else
 		create_build_dir(package)
 		Dir.chdir("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
+		#puts `pwd`
+		#puts "make #{$make_flags} #{conf.join(" ")} #{package[DT_MAKE]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-build-#{$target}.log"
 		`make #{$make_flags} #{conf.join(" ")} #{package[DT_MAKE]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-build-#{$target}.log`
 		Dir.chdir("..")
 	end
@@ -350,7 +356,7 @@ puts "installing to: #{$install}\ntarget: #{$target}\n\n"
 read_database()
 
 $list = []
-
+flag = false
 $actions.each do |a|
 	if a[/^\-\-/].nil? then
 		arr = a.split("-")
@@ -368,11 +374,14 @@ $actions.each do |a|
 					$list.insert(-1, pack)
 				end
 			end
+			flag = true
 		else
 			perform_action(a)
 		end
 	end
 end
+
+if ! flag then exit 0 end
 
 # calculate all needed packages
 while $list.length > 0
