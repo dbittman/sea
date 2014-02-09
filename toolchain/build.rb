@@ -74,14 +74,12 @@ def patch(package)
 	print " * patching: "
 	patch_filename = "#{package[DT_NAME]}-#{package[DT_VERSION]}-seaos-all.patch"
 	Dir.chdir("#{package[DT_NAME]}-#{package[DT_VERSION]}")
-	if package[DT_NAME] != "newlib" then
-		`patch -p1 -N --dry-run --silent -i ../#{patch_filename}`
-		if ! $?.success? then
-			`true`
-			print "(skipping) "
-			Dir.chdir("..")
-			return true
-		end
+	`patch -p1 -N --dry-run --silent -i ../#{patch_filename}`
+	if ! $?.success? then
+		`true`
+		print "(skipping) "
+		Dir.chdir("..")
+		return true
 	end
 	`patch -p1 -N -i ../#{patch_filename}`
 	Dir.chdir("..")
@@ -232,7 +230,6 @@ def process_package(command, pack, isdep)
 	when "download"
 		ret = download(pack)
 	when "extract"
-		if pack[DT_NAME] == "newlib" then cleansrc(pack) end
 		ret = extract(pack)
 	when "patch"
 		ret = patch(pack)
@@ -246,7 +243,6 @@ def process_package(command, pack, isdep)
 		ret = cleansrc(pack)
 	when "all"
 		if download(pack) then check_error(act) end
-		if pack[DT_NAME] == "newlib" then cleansrc(pack); check_error(act) end
 		if extract(pack) then check_error(act) end
 		if patch(pack) then check_error(act) end
 		if configure(pack) then check_error(act) end
@@ -408,7 +404,11 @@ $all_packs.each do |a1|
 			if a1 != a2 then
 				a2.each do |ent2|
 					if ent2 == entry
-						a2.delete(ent2)
+						if $all_packs.index(a2) == $all_packs.length-1 then
+							a1.delete(ent2)
+						else
+							a2.delete(ent2)
+						end
 					end
 				end
 			end
