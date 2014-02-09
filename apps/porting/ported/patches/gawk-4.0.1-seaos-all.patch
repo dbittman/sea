@@ -1,0 +1,20 @@
+diff -crB gawk-4.0.1/config.sub gawk-4.0.1-seaos/config.sub
+*** gawk-4.0.1/config.sub	2012-03-23 01:22:31.000000000 -0700
+--- gawk-4.0.1-seaos/config.sub	2012-04-30 00:16:24.225601817 -0700
+***************
+*** 1200,1206 ****
+  	      | -*vms* | -sco* | -esix* | -isc* | -aix* | -sunos | -sunos[34]*\
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -solaris* | -sym* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+--- 1200,1206 ----
+  	      | -*vms* | -sco* | -esix* | -isc* | -aix* | -sunos | -sunos[34]*\
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -solaris* | -sym* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* | -seaos* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \

@@ -1,0 +1,20 @@
+diff -crB patch-2.6/config.sub patch-2.6-seaos/config.sub
+*** patch-2.6/config.sub	2009-11-02 11:09:57.000000000 -0800
+--- patch-2.6-seaos/config.sub	2012-04-26 02:01:48.903837600 -0700
+***************
+*** 1263,1269 ****
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -solaris* | -sym* \
+  	      | -kopensolaris* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* | -aros* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+--- 1263,1269 ----
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -solaris* | -sym* \
+  	      | -kopensolaris* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* | -aros* | -seaos* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \

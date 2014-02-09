@@ -1,6 +1,6 @@
 diff -uprN gcc-4.8.0/config.sub gcc-4.8.0-seaos/config.sub
 --- gcc-4.8.0/config.sub	2013-01-11 05:02:58.000000000 -0800
-+++ gcc-4.8.0-seaos/config.sub	2014-02-06 21:49:38.090702642 -0800
++++ gcc-4.8.0-seaos/config.sub	2014-02-08 18:31:42.169378248 -0800
 @@ -1358,7 +1358,7 @@ case $os in
  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
  	      | -sym* | -kopensolaris* | -plan9* \
@@ -12,7 +12,7 @@ diff -uprN gcc-4.8.0/config.sub gcc-4.8.0-seaos/config.sub
  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
 diff -uprN gcc-4.8.0/gcc/config/seaos.h gcc-4.8.0-seaos/gcc/config/seaos.h
 --- gcc-4.8.0/gcc/config/seaos.h	1969-12-31 16:00:00.000000000 -0800
-+++ gcc-4.8.0-seaos/gcc/config/seaos.h	2014-02-08 18:11:29.749752475 -0800
++++ gcc-4.8.0-seaos/gcc/config/seaos.h	2014-02-08 18:31:42.481374294 -0800
 @@ -0,0 +1,22 @@
 +#define NO_IMPLICIT_EXTERN_C
 +
@@ -38,7 +38,7 @@ diff -uprN gcc-4.8.0/gcc/config/seaos.h gcc-4.8.0-seaos/gcc/config/seaos.h
 +  } while(0);
 diff -uprN gcc-4.8.0/gcc/config.gcc gcc-4.8.0-seaos/gcc/config.gcc
 --- gcc-4.8.0/gcc/config.gcc	2013-03-13 02:47:41.000000000 -0700
-+++ gcc-4.8.0-seaos/gcc/config.gcc	2014-02-08 16:38:51.264062428 -0800
++++ gcc-4.8.0-seaos/gcc/config.gcc	2014-02-08 18:31:42.482374282 -0800
 @@ -624,6 +624,12 @@ case ${target} in
    # need_64bit_hwint=yes # system compiler has this for all arch!
    use_gcc_stdint=wrap
@@ -72,7 +72,7 @@ diff -uprN gcc-4.8.0/gcc/config.gcc gcc-4.8.0-seaos/gcc/config.gcc
  			# with ELF format using glibc 2
 diff -uprN gcc-4.8.0/libgcc/config.host gcc-4.8.0-seaos/libgcc/config.host
 --- gcc-4.8.0/libgcc/config.host	2013-02-04 11:06:20.000000000 -0800
-+++ gcc-4.8.0-seaos/libgcc/config.host	2014-02-08 16:38:48.705094261 -0800
++++ gcc-4.8.0-seaos/libgcc/config.host	2014-02-08 18:31:42.649372167 -0800
 @@ -518,6 +518,10 @@ i[34567]86-*-openbsd*)
  	;;
  x86_64-*-openbsd*)
@@ -86,371 +86,14 @@ diff -uprN gcc-4.8.0/libgcc/config.host gcc-4.8.0-seaos/libgcc/config.host
  	tmake_file="${tmake_file} i386/t-crtpc i386/t-crtfm i386/t-crtstuff t-dfprules"
 diff -uprN gcc-4.8.0/libstdc++-v3/.directory gcc-4.8.0-seaos/libstdc++-v3/.directory
 --- gcc-4.8.0/libstdc++-v3/.directory	1969-12-31 16:00:00.000000000 -0800
-+++ gcc-4.8.0-seaos/libstdc++-v3/.directory	2014-02-06 21:49:38.091702630 -0800
++++ gcc-4.8.0-seaos/libstdc++-v3/.directory	2014-02-08 18:31:42.650372154 -0800
 @@ -0,0 +1,3 @@
 +[Dolphin]
 +Timestamp=2014,2,4,23,4,44
 +Version=3
-diff -uprN gcc-4.8.0/libstdc++-v3/config/os/seaos/ctype_base.h gcc-4.8.0-seaos/libstdc++-v3/config/os/seaos/ctype_base.h
---- gcc-4.8.0/libstdc++-v3/config/os/seaos/ctype_base.h	1969-12-31 16:00:00.000000000 -0800
-+++ gcc-4.8.0-seaos/libstdc++-v3/config/os/seaos/ctype_base.h	2014-02-08 15:43:26.589002184 -0800
-@@ -0,0 +1,69 @@
-+// Locale support -*- C++ -*-
-+
-+// Copyright (C) 2000-2013 Free Software Foundation, Inc.
-+//
-+// This file is part of the GNU ISO C++ Library.  This library is free
-+// software; you can redistribute it and/or modify it under the
-+// terms of the GNU General Public License as published by the
-+// Free Software Foundation; either version 3, or (at your option)
-+// any later version.
-+
-+// This library is distributed in the hope that it will be useful,
-+// but WITHOUT ANY WARRANTY; without even the implied warranty of
-+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+// GNU General Public License for more details.
-+
-+// Under Section 7 of GPL version 3, you are granted additional
-+// permissions described in the GCC Runtime Library Exception, version
-+// 3.1, as published by the Free Software Foundation.
-+
-+// You should have received a copy of the GNU General Public License and
-+// a copy of the GCC Runtime Library Exception along with this program;
-+// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
-+// <http://www.gnu.org/licenses/>.
-+
-+//
-+// ISO C++ 14882: 22.1  Locales
-+//
-+  
-+// Information as gleaned from /usr/include/ctype.h, for solaris2.5.1
-+
-+// Support for Solaris 2.5.1
-+  
-+namespace std _GLIBCXX_VISIBILITY(default)
-+{
-+_GLIBCXX_BEGIN_NAMESPACE_VERSION
-+#define _U      01
-+#define _L      02
-+#define _N      04
-+#define _S      010
-+#define _P      020
-+#define _C      040
-+#define _X      0100
-+#define _B      0200
-+extern const char    _ctype_[];
-+
-+  /// @brief  Base class for ctype.
-+  struct ctype_base
-+  {
-+    // Non-standard typedefs.
-+    typedef const int* 		__to_type;
-+
-+    // NB: Offsets into ctype<char>::_M_table force a particular size
-+    // on the mask type. Because of this, we don't use an enum.
-+    typedef char 		mask;
-+    static const mask upper    	= _U;
-+    static const mask lower 	= _L;
-+    static const mask alpha 	= _U | _L;
-+    static const mask digit 	= _N;
-+    static const mask xdigit 	= _X | _N;
-+    static const mask space 	= _S;
-+    static const mask print 	= _P | _U | _L | _N | _B;
-+    static const mask graph 	= _P | _U | _L | _N;
-+    static const mask cntrl 	= _C;
-+    static const mask punct 	= _P;
-+    static const mask alnum 	= _U | _L | _N;
-+  };
-+
-+_GLIBCXX_END_NAMESPACE_VERSION
-+} // namespace
-diff -uprN gcc-4.8.0/libstdc++-v3/config/os/seaos/ctype_configure_char.cc gcc-4.8.0-seaos/libstdc++-v3/config/os/seaos/ctype_configure_char.cc
---- gcc-4.8.0/libstdc++-v3/config/os/seaos/ctype_configure_char.cc	1969-12-31 16:00:00.000000000 -0800
-+++ gcc-4.8.0-seaos/libstdc++-v3/config/os/seaos/ctype_configure_char.cc	2014-02-08 15:43:26.589002184 -0800
-@@ -0,0 +1,146 @@
-+// Locale support -*- C++ -*-
-+
-+// Copyright (C) 2011-2013 Free Software Foundation, Inc.
-+//
-+// This file is part of the GNU ISO C++ Library.  This library is free
-+// software; you can redistribute it and/or modify it under the
-+// terms of the GNU General Public License as published by the
-+// Free Software Foundation; either version 3, or (at your option)
-+// any later version.
-+
-+// This library is distributed in the hope that it will be useful,
-+// but WITHOUT ANY WARRANTY; without even the implied warranty of
-+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+// GNU General Public License for more details.
-+
-+// Under Section 7 of GPL version 3, you are granted additional
-+// permissions described in the GCC Runtime Library Exception, version
-+// 3.1, as published by the Free Software Foundation.
-+
-+// You should have received a copy of the GNU General Public License and
-+// a copy of the GCC Runtime Library Exception along with this program;
-+// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
-+// <http://www.gnu.org/licenses/>.
-+
-+/** @file ctype_configure_char.cc */
-+
-+//
-+// ISO C++ 14882: 22.1  Locales
-+//
-+
-+#include <locale>
-+#include <cstdlib>
-+#include <cstring>
-+
-+#define _CTYPE_DATA_0_127 \
-+	_C,	_C,	_C,	_C,	_C,	_C,	_C,	_C, \
-+	_C,	_C|_S, _C|_S, _C|_S,	_C|_S,	_C|_S,	_C,	_C, \
-+	_C,	_C,	_C,	_C,	_C,	_C,	_C,	_C, \
-+	_C,	_C,	_C,	_C,	_C,	_C,	_C,	_C, \
-+	_S|_B,	_P,	_P,	_P,	_P,	_P,	_P,	_P, \
-+	_P,	_P,	_P,	_P,	_P,	_P,	_P,	_P, \
-+	_N,	_N,	_N,	_N,	_N,	_N,	_N,	_N, \
-+	_N,	_N,	_P,	_P,	_P,	_P,	_P,	_P, \
-+	_P,	_U|_X,	_U|_X,	_U|_X,	_U|_X,	_U|_X,	_U|_X,	_U, \
-+	_U,	_U,	_U,	_U,	_U,	_U,	_U,	_U, \
-+	_U,	_U,	_U,	_U,	_U,	_U,	_U,	_U, \
-+	_U,	_U,	_U,	_P,	_P,	_P,	_P,	_P, \
-+	_P,	_L|_X,	_L|_X,	_L|_X,	_L|_X,	_L|_X,	_L|_X,	_L, \
-+	_L,	_L,	_L,	_L,	_L,	_L,	_L,	_L, \
-+	_L,	_L,	_L,	_L,	_L,	_L,	_L,	_L, \
-+	_L,	_L,	_L,	_P,	_P,	_P,	_P,	_C
-+
-+#define _CTYPE_DATA_128_255 \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0, \
-+	0,	0,	0,	0,	0,	0,	0,	0
-+
-+
-+namespace std _GLIBCXX_VISIBILITY(default)
-+{
-+_GLIBCXX_BEGIN_NAMESPACE_VERSION
-+
-+// Information as gleaned from /usr/include/ctype.h
-+ _CONST char _ctype_[1 + 256] = {
-+	0,
-+	_CTYPE_DATA_0_127,
-+	_CTYPE_DATA_128_255
-+};
-+  const ctype_base::mask*
-+  ctype<char>::classic_table() throw()
-+  { return _ctype_ + 1; }
-+
-+  ctype<char>::ctype(__c_locale, const mask* __table, bool __del,
-+		     size_t __refs)
-+  : facet(__refs), _M_del(__table != 0 && __del),
-+  _M_toupper(NULL), _M_tolower(NULL),
-+  _M_table(__table ? __table : classic_table())
-+  {
-+    memset(_M_widen, 0, sizeof(_M_widen));
-+    _M_widen_ok = 0;
-+    memset(_M_narrow, 0, sizeof(_M_narrow));
-+    _M_narrow_ok = 0;
-+  }
-+
-+  ctype<char>::ctype(const mask* __table, bool __del, size_t __refs)
-+  : facet(__refs), _M_del(__table != 0 && __del),
-+  _M_toupper(NULL), _M_tolower(NULL),
-+  _M_table(__table ? __table : classic_table())
-+  {
-+    memset(_M_widen, 0, sizeof(_M_widen));
-+    _M_widen_ok = 0;
-+    memset(_M_narrow, 0, sizeof(_M_narrow));
-+    _M_narrow_ok = 0;
-+  }
-+
-+  char
-+  ctype<char>::do_toupper(char __c) const
-+  {
-+    int __x = __c;
-+    return (this->is(ctype_base::lower, __c) ? (__x - 'a' + 'A') : __x);
-+  }
-+
-+  const char*
-+  ctype<char>::do_toupper(char* __low, const char* __high) const
-+  {
-+    while (__low < __high)
-+      {
-+	*__low = this->do_toupper(*__low);
-+	++__low;
-+      }
-+    return __high;
-+  }
-+
-+  char
-+  ctype<char>::do_tolower(char __c) const
-+  {
-+    int __x = __c;
-+    return (this->is(ctype_base::upper, __c) ? (__x - 'A' + 'a') : __x);
-+  }
-+
-+  const char*
-+  ctype<char>::do_tolower(char* __low, const char* __high) const
-+  {
-+    while (__low < __high)
-+      {
-+	*__low = this->do_tolower(*__low);
-+	++__low;
-+      }
-+    return __high;
-+  }
-+
-+_GLIBCXX_END_NAMESPACE_VERSION
-+} // namespace
-diff -uprN gcc-4.8.0/libstdc++-v3/config/os/seaos/ctype_inline.h gcc-4.8.0-seaos/libstdc++-v3/config/os/seaos/ctype_inline.h
---- gcc-4.8.0/libstdc++-v3/config/os/seaos/ctype_inline.h	1969-12-31 16:00:00.000000000 -0800
-+++ gcc-4.8.0-seaos/libstdc++-v3/config/os/seaos/ctype_inline.h	2014-02-08 15:43:26.590002172 -0800
-@@ -0,0 +1,74 @@
-+// Locale support -*- C++ -*-
-+
-+// Copyright (C) 2000-2013 Free Software Foundation, Inc.
-+//
-+// This file is part of the GNU ISO C++ Library.  This library is free
-+// software; you can redistribute it and/or modify it under the
-+// terms of the GNU General Public License as published by the
-+// Free Software Foundation; either version 3, or (at your option)
-+// any later version.
-+
-+// This library is distributed in the hope that it will be useful,
-+// but WITHOUT ANY WARRANTY; without even the implied warranty of
-+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+// GNU General Public License for more details.
-+
-+// Under Section 7 of GPL version 3, you are granted additional
-+// permissions described in the GCC Runtime Library Exception, version
-+// 3.1, as published by the Free Software Foundation.
-+
-+// You should have received a copy of the GNU General Public License and
-+// a copy of the GCC Runtime Library Exception along with this program;
-+// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
-+// <http://www.gnu.org/licenses/>.
-+
-+/** @file bits/ctype_inline.h
-+ *  This is an internal header file, included by other library headers.
-+ *  Do not attempt to use it directly. @headername{locale}
-+ */
-+
-+//
-+// ISO C++ 14882: 22.1  Locales
-+//
-+
-+// ctype bits to be inlined go here. Non-inlinable (ie virtual do_*)
-+// functions go in ctype.cc
-+
-+namespace std _GLIBCXX_VISIBILITY(default)
-+{
-+_GLIBCXX_BEGIN_NAMESPACE_VERSION
-+
-+  bool
-+  ctype<char>::
-+  is(mask __m, char __c) const
-+  { return _M_table[static_cast<unsigned char>(__c)] & __m; }
-+
-+  const char*
-+  ctype<char>::
-+  is(const char* __low, const char* __high, mask* __vec) const
-+  {
-+    while (__low < __high)
-+      *__vec++ = _M_table[static_cast<unsigned char>(*__low++)];
-+    return __high;
-+  }
-+
-+  const char*
-+  ctype<char>::
-+  scan_is(mask __m, const char* __low, const char* __high) const
-+  {
-+    while (__low < __high && !this->is(__m, *__low))
-+      ++__low;
-+    return __low;
-+  }
-+
-+  const char*
-+  ctype<char>::
-+  scan_not(mask __m, const char* __low, const char* __high) const
-+  {
-+    while (__low < __high && this->is(__m, *__low) != 0)
-+      ++__low;
-+    return __low;
-+  }
-+
-+_GLIBCXX_END_NAMESPACE_VERSION
-+} // namespace
-diff -uprN gcc-4.8.0/libstdc++-v3/config/os/seaos/os_defines.h gcc-4.8.0-seaos/libstdc++-v3/config/os/seaos/os_defines.h
---- gcc-4.8.0/libstdc++-v3/config/os/seaos/os_defines.h	1969-12-31 16:00:00.000000000 -0800
-+++ gcc-4.8.0-seaos/libstdc++-v3/config/os/seaos/os_defines.h	2014-02-08 15:43:26.590002172 -0800
-@@ -0,0 +1,52 @@
-+// Specific definitions for newlib  -*- C++ -*-
-+
-+// Copyright (C) 2000-2013 Free Software Foundation, Inc.
-+//
-+// This file is part of the GNU ISO C++ Library.  This library is free
-+// software; you can redistribute it and/or modify it under the
-+// terms of the GNU General Public License as published by the
-+// Free Software Foundation; either version 3, or (at your option)
-+// any later version.
-+
-+// This library is distributed in the hope that it will be useful,
-+// but WITHOUT ANY WARRANTY; without even the implied warranty of
-+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+// GNU General Public License for more details.
-+
-+// Under Section 7 of GPL version 3, you are granted additional
-+// permissions described in the GCC Runtime Library Exception, version
-+// 3.1, as published by the Free Software Foundation.
-+
-+// You should have received a copy of the GNU General Public License and
-+// a copy of the GCC Runtime Library Exception along with this program;
-+// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
-+// <http://www.gnu.org/licenses/>.
-+
-+/** @file bits/os_defines.h
-+ *  This is an internal header file, included by other library headers.
-+ *  Do not attempt to use it directly. @headername{iosfwd}
-+ */
-+
-+#ifndef _GLIBCXX_OS_DEFINES
-+#define _GLIBCXX_OS_DEFINES 1
-+
-+// System-specific #define, typedefs, corrections, etc, go here.  This
-+// file will come before all others.
-+
-+#ifdef __CYGWIN__
-+#define _GLIBCXX_GTHREAD_USE_WEAK 0
-+
-+#if defined (_GLIBCXX_DLL)
-+#define _GLIBCXX_PSEUDO_VISIBILITY_default __attribute__ ((__dllimport__))
-+#else
-+#define _GLIBCXX_PSEUDO_VISIBILITY_default
-+#endif
-+#define _GLIBCXX_PSEUDO_VISIBILITY_hidden
-+
-+#define _GLIBCXX_PSEUDO_VISIBILITY(V) _GLIBCXX_PSEUDO_VISIBILITY_ ## V
-+
-+// See libstdc++/20806.
-+#define _GLIBCXX_HAVE_DOS_BASED_FILESYSTEM 1
-+#endif
-+
-+#endif
 diff -uprN gcc-4.8.0/libstdc++-v3/configure gcc-4.8.0-seaos/libstdc++-v3/configure
 --- gcc-4.8.0/libstdc++-v3/configure	2013-03-15 01:55:07.000000000 -0700
-+++ gcc-4.8.0-seaos/libstdc++-v3/configure	2014-02-08 15:43:26.595002110 -0800
++++ gcc-4.8.0-seaos/libstdc++-v3/configure	2014-02-08 18:31:42.660372027 -0800
 @@ -46017,6 +46017,5997 @@ $as_echo "#define HAVE_TLS 1" >>confdefs
  	;;
      esac
@@ -6451,20 +6094,20 @@ diff -uprN gcc-4.8.0/libstdc++-v3/configure gcc-4.8.0-seaos/libstdc++-v3/configu
    # All these tests are for C++; save the language and the compiler flags.
 diff -uprN gcc-4.8.0/libstdc++-v3/configure.host gcc-4.8.0-seaos/libstdc++-v3/configure.host
 --- gcc-4.8.0/libstdc++-v3/configure.host	2012-10-15 14:12:23.000000000 -0700
-+++ gcc-4.8.0-seaos/libstdc++-v3/configure.host	2014-02-08 15:43:26.596002097 -0800
++++ gcc-4.8.0-seaos/libstdc++-v3/configure.host	2014-02-09 01:30:43.269676437 -0800
 @@ -263,6 +263,9 @@ case "${host_os}" in
    freebsd*)
      os_include_dir="os/bsd/freebsd"
      ;;
 +  seaos*)
-+    os_include_dir="os/seaos"
++    os_include_dir="os/generic"
 +    ;;
    gnu* | linux* | kfreebsd*-gnu | knetbsd*-gnu)
      if [ "$uclibc" = "yes" ]; then
        os_include_dir="os/uclibc"
 diff -uprN gcc-4.8.0/libstdc++-v3/crossconfig.m4 gcc-4.8.0-seaos/libstdc++-v3/crossconfig.m4
 --- gcc-4.8.0/libstdc++-v3/crossconfig.m4	2012-05-02 12:34:31.000000000 -0700
-+++ gcc-4.8.0-seaos/libstdc++-v3/crossconfig.m4	2014-02-08 15:43:26.596002097 -0800
++++ gcc-4.8.0-seaos/libstdc++-v3/crossconfig.m4	2014-02-08 18:31:42.842369721 -0800
 @@ -141,6 +141,13 @@ case "${host}" in
  	;;
      esac

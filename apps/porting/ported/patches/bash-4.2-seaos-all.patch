@@ -1,0 +1,40 @@
+diff -crB bash-4.2/execute_cmd.c bash-4.2-s/execute_cmd.c
+*** bash-4.2/execute_cmd.c	2011-02-09 14:32:25.000000000 -0800
+--- bash-4.2-s/execute_cmd.c	2012-04-25 13:42:29.962434727 -0700
+***************
+*** 2202,2208 ****
+    /* If the `lastpipe' option is set with shopt, and job control is not
+       enabled, execute the last element of non-async pipelines in the
+       current shell environment. */
+!   if (lastpipe_opt && job_control == 0 && asynchronous == 0 && pipe_out == NO_PIPE && prev > 0)
+      {
+        lstdin = move_to_high_fd (0, 0, 255);
+        if (lstdin > 0)
+--- 2202,2208 ----
+    /* If the `lastpipe' option is set with shopt, and job control is not
+       enabled, execute the last element of non-async pipelines in the
+       current shell environment. */
+!   if (lastpipe_opt && asynchronous == 0 && pipe_out == NO_PIPE && prev > 0)
+      {
+        lstdin = move_to_high_fd (0, 0, 255);
+        if (lstdin > 0)
+diff -crB bash-4.2/support/config.sub bash-4.2-s/support/config.sub
+*** bash-4.2/support/config.sub	2009-11-19 10:43:37.000000000 -0800
+--- bash-4.2-s/support/config.sub	2012-04-25 13:40:42.455438618 -0700
+***************
+*** 1246,1252 ****
+  	      | -*vms* | -sco* | -esix* | -isc* | -aix* | -sunos | -sunos[34]*\
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -solaris* | -sym* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+--- 1246,1252 ----
+  	      | -*vms* | -sco* | -esix* | -isc* | -aix* | -sunos | -sunos[34]*\
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -solaris* | -sym* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* | -seaos* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
