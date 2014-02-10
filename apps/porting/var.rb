@@ -214,7 +214,7 @@ $downloads_table = [
 
   ["less",
      "443",
-     true,
+     false,
      "http://ftp.gnu.org/gnu/less/less-443.tar.gz",
      "47db098fb3cdaf847b3c4be05ee954fc",
      [],
