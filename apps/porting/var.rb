@@ -180,9 +180,9 @@ $downloads_table = [
      "6c16fa35ba422bf809effa106d022a39",
      [],
      "host",
-     "--prefix=/usr",
+     "--prefix=/usr M4=/usr/bin/m4",
      "DESTDIR",
-     "all install",
+     "all install M4=/usr/bin/m4",
      nil
   ],
 
