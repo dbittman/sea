@@ -95,6 +95,19 @@ $downloads_table = [
      nil
   ],
 	
+  ["bison",
+     "3.0",
+     true,
+     "http://ftp.gnu.org/gnu/bison/bison-3.0.tar.xz",
+     "a2624994561aa69f056c904c1ccb2880",
+     [],
+     "host",
+     "--prefix=/usr",
+     "DESTDIR",
+     "all install",
+     nil
+  ],
+	
   ["coreutils",
       "8.16",
       true,
@@ -159,6 +172,19 @@ $downloads_table = [
      "all install",
      nil
   ],
+	
+  ["flex",
+     "2.5.37",
+     true,
+     "http://downloads.sourceforge.net/project/flex/flex-2.5.37.tar.gz",
+     "6c16fa35ba422bf809effa106d022a39",
+     [],
+     "host",
+     "--prefix=/usr",
+     "DESTDIR",
+     "all install",
+     nil
+  ],
 
   ["gawk",
      "4.0.1",
@@ -191,6 +217,19 @@ $downloads_table = [
      true,
      "http://ftp.gnu.org/gnu/less/less-443.tar.gz",
      "47db098fb3cdaf847b3c4be05ee954fc",
+     [],
+     "host",
+     "--prefix=/usr",
+     "DESTDIR",
+     "all install",
+     nil
+  ],
+
+  ["m4",
+     "1.4.17",
+     true,
+     "ftp://ftp.gnu.org/gnu/m4/m4-1.4.17.tar.xz",
+     "12a3c829301a4fd6586a57d3fcf196dc",
      [],
      "host",
      "--prefix=/usr",
