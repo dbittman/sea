@@ -124,7 +124,7 @@ $downloads_table = [
       "8cb9c412e5f2d96bc6f459aa8c6282a1", 
       ["binutils *", "gcc *", "newlib *", "termcap *", "libgcc *"], 
       "host tarprefix include oldinclude", 
-      "--enable-termcap --disable-database --without-cxx --without-cxx-binding", 
+      "--enable-termcap --disable-database", 
       "", 
       "all install", 
       "cp config.sub ncurses-5.9/config.sub"                         

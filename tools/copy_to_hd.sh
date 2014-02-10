@@ -1,8 +1,9 @@
 #!/bin/sh
 
 sh ./tools/open_hdimage.sh
-echo copying apps/data/ to hd.img...
+echo copying ported programs to hd.img...
 cp -f -r apps/data-$1/* ./mnt
+cp -f -r apps/install-base-$1/* ./mnt
 rm -rf `find ./mnt -name man 2>/dev/null`
 echo copying data/ to hd.img...
 cp -f -r data/* ./mnt/

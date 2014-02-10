@@ -50,10 +50,10 @@ DT_COMMAND = 10
 #      nil
 #   ],
 
-# bash nasm
 # ncurses: --without-cxx
 # newlib install dir...
-# termcap
+# port the remaining things (seaosutils, etc)
+# merge this build.rb system with the toolchain one
 
 $downloads_table = [
   ["autoconf",
@@ -80,8 +80,21 @@ $downloads_table = [
      "DESTDIR",
      "all install",
      nil
-  ],	
-
+  ],
+	
+  ["bash",
+     "4.2",
+     true,
+     "http://ftp.gnu.org/gnu/bash/bash-4.2.tar.gz",
+     "3fb927c7c33022f1c327f14a81c0d4b0",
+     [],
+     "host",
+     "--prefix=/ --build=$(sh ../bash-4.2/support/config.guess) --without-bash-malloc --without-curses --disable-job-control --datarootdir=/usr/share",
+     "DESTDIR",
+     "all install",
+     nil
+  ],
+	
   ["coreutils",
       "8.16",
       true,
@@ -212,6 +225,19 @@ $downloads_table = [
      nil
   ],
 
+  ["nasm",
+     "2.10",
+     true,
+     "http://www.nasm.us/pub/nasm/releasebuilds/2.10/nasm-2.10.tar.gz",
+     "f489359ddb90ec672937da4dbc0f02f1",
+     [],
+     "host",
+     "--prefix=/usr",
+     "INSTALLROOT",
+     "CFLAGS=\"-I. -I../\" all install",
+     nil
+  ],
+	
   ["ncurses",
      "5.9",
      true,
@@ -219,7 +245,7 @@ $downloads_table = [
      "8cb9c412e5f2d96bc6f459aa8c6282a1",
      [],
      "host",
-     "--prefix=/usr --enable-termcap --disable-database --without-cxx --without-cxx-binding --oldincludedir=/usr/include --includedir=/usr/include",
+     "--prefix=/usr --enable-termcap --disable-database --oldincludedir=/usr/include --includedir=/usr/include",
      "DESTDIR",
      "all install",
      nil
@@ -238,6 +264,19 @@ $downloads_table = [
      nil
   ],
 
+  ["seaosutil",
+     "0.2",
+     false,
+     nil,
+     "",
+     [],
+     "host",
+     "--prefix=/",
+     "DESTDIR",
+     "all install",
+     "cp -rf ../../seaos-util seaosutil-0.2"
+  ],
+	
   ["sed",
      "4.2",
      true,
@@ -309,9 +348,9 @@ $downloads_table = [
      "http://ftp.gnu.org/gnu/gcc/gcc-4.8.0/gcc-4.8.0.tar.gz",
      "f1011d59961a43d3d7c22913815812b3",
      [],
-     "host cc_for_target ar_for_target as_for_target ranlib_for_target strip_for_target",
+     "host cc_for_target ar_for_target as_for_target ranlib_for_target strip_for_target cxx_for_target",
      "--prefix=/usr --enable-lto --disable-nls --enable-languages=c,c++",
-     "DESTDIR CC AR cc_for_target ar_for_target as_for_target ranlib_for_target strip_for_target",
+     "DESTDIR CC CXX AR cc_for_target ar_for_target as_for_target ranlib_for_target strip_for_target cxx_for_target",
      "all install",
      nil
   ],

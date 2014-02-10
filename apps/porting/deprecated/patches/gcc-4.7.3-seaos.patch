@@ -1,0 +1,111 @@
+diff -crB gcc-4.7.3/config.sub gcc-4.7.3-s/config.sub
+*** gcc-4.7.3/config.sub	Mon Aug  6 07:34:27 2012
+--- gcc-4.7.3-s/config.sub	Fri Jul 26 17:53:14 2013
+***************
+*** 1333,1339 ****
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+  	      | -sym* | -kopensolaris* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* | -aros* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+--- 1333,1339 ----
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+  	      | -sym* | -kopensolaris* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* | -aros* | -seaos* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+Only in gcc-4.7.3-s/gcc/config: seaos.h
+diff -crB gcc-4.7.3/gcc/config.gcc gcc-4.7.3-s/gcc/config.gcc
+*** gcc-4.7.3/gcc/config.gcc	Wed Mar  6 14:54:11 2013
+--- gcc-4.7.3-s/gcc/config.gcc	Fri Jul 26 17:55:26 2013
+***************
+*** 651,656 ****
+--- 651,662 ----
+        ;;
+    esac
+    ;;
++ *-*-seaos*)
++   extra_parts="crtbegin.o crtend.o"
++   gas=yes
++   gnu_ld=yes
++   default_use_cxa_atexit=yes
++   ;;
+  *-*-netbsd*)
+    tmake_file="t-slibgcc"
+    gas=yes
+***************
+*** 1245,1250 ****
+--- 1251,1261 ----
+  	gas=yes
+  	gnu_ld=yes
+  	;;
++ i[3-7]86-*-seaos*)
++ 	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h i386/i386elf.h seaos.h"
++ 	tmake_file="${tmake_file} i386/t-i386elf t-svr4 i386/t-crtstuff"
++ 	use_fixproto=yes
++ 	;;
+  i[34567]86-*-linux* | i[34567]86-*-kfreebsd*-gnu | i[34567]86-*-knetbsd*-gnu | i[34567]86-*-gnu* | i[34567]86-*-kopensolaris*-gnu)
+  			# Intel 80386's running GNU/*
+  			# with ELF format using glibc 2
+***************
+*** 1307,1312 ****
+--- 1318,1328 ----
+  		;;
+  	esac
+  	;;
++ x86_64-*-seaos*)
++ 	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h i386/x86-64.h i386/i386elf.h seaos.h"
++ 	tmake_file="${tmake_file} i386/t-i386elf t-svr4 i386/t-crtstuff"
++ 	use_fixproto=yes
++ 	;;
+  x86_64-*-linux* | x86_64-*-kfreebsd*-gnu | x86_64-*-knetbsd*-gnu)
+  	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h gnu-user.h glibc-stdint.h \
+  		 i386/x86-64.h i386/gnu-user64.h"
+Only in gcc-4.7.3-s/gcc: config.gcc.orig
+diff -crB gcc-4.7.3/libgcc/config.host gcc-4.7.3-s/libgcc/config.host
+*** gcc-4.7.3/libgcc/config.host	Wed Mar  6 09:42:45 2013
+--- gcc-4.7.3-s/libgcc/config.host	Fri Jul 26 18:03:12 2013
+***************
+*** 546,555 ****
+--- 546,563 ----
+  	tmake_file="${tmake_file} i386/t-crtpc i386/t-crtfm i386/t-crtstuff t-dfprules"
+  	md_unwind_header=i386/linux-unwind.h
+  	;;
++ i[3-7]86-*-seaos*)
++ 	extra_parts="$extra_parts crtbegin.o crtbeginS.o crtbeginT.o crtend.o crtendS.o"
++ 	tmake_file="${tmake_file} i386/t-crtpc i386/t-crtstuff"
++ 	;;
+  i[34567]86-*-kfreebsd*-gnu | i[34567]86-*-knetbsd*-gnu | i[34567]86-*-gnu* | i[34567]86-*-kopensolaris*-gnu)
+  	extra_parts="$extra_parts crtprec32.o crtprec64.o crtprec80.o crtfastmath.o"
+  	tmake_file="${tmake_file} i386/t-crtpc i386/t-crtfm i386/t-crtstuff t-dfprules"
+  	;;
++ x86_64-*-seaos*)
++ 	extra_parts="$extra_parts crtbegin.o crtbeginS.o crtbeginT.o crtend.o crtendS.o"
++ 	tmake_file="${tmake_file} i386/t-crtpc i386/t-crtstuff"
++ 	;;
+  x86_64-*-linux*)
+  	extra_parts="$extra_parts crtprec32.o crtprec64.o crtprec80.o crtfastmath.o"
+  	tmake_file="${tmake_file} i386/t-crtpc i386/t-crtfm i386/t-crtstuff t-dfprules"
+Only in gcc-4.7.3-s/libgcc: config.host.orig
+diff -crB gcc-4.7.3/libstdc++-v3/crossconfig.m4 gcc-4.7.3-s/libstdc++-v3/crossconfig.m4
+*** gcc-4.7.3/libstdc++-v3/crossconfig.m4	Mon Jul 18 04:04:18 2011
+--- gcc-4.7.3-s/libstdc++-v3/crossconfig.m4	Fri Jul 26 17:53:14 2013
+***************
+*** 150,155 ****
+--- 150,161 ----
+      GCC_CHECK_TLS
+      AM_ICONV
+      ;;
++   *-seaos*)
++     AC_CHECK_HEADERS([sys/types.h locale.h float.h])
++     GLIBCXX_CHECK_BUILTIN_MATH_SUPPORT
++     GLIBCXX_CHECK_COMPLEX_MATH_SUPPORT
++     GLIBCXX_CHECK_STDLIB_SUPPORT
++     ;;
+    *-mingw32*)
+      GLIBCXX_CHECK_LINKER_FEATURES
+      GLIBCXX_CHECK_MATH_SUPPORT

@@ -1,0 +1,11 @@
+.loop
+.toolchain
+data/test/
+local_make.inc
+mnt/
+seakernel/
+tools/make_gen_tmp/
+*.img
+skernel
+apps/porting/ported
+

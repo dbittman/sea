@@ -1,0 +1,121 @@
+diff -crB coreutils-8.16/build-aux/config.sub coreutils-8.16-seaos/build-aux/config.sub
+*** coreutils-8.16/build-aux/config.sub	2012-03-08 23:31:00.000000000 -0800
+--- coreutils-8.16-seaos/build-aux/config.sub	2012-04-25 13:56:06.000000000 -0700
+***************
+*** 1342,1348 ****
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+  	      | -sym* | -kopensolaris* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* | -aros* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+--- 1342,1348 ----
+  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+  	      | -sym* | -kopensolaris* \
+  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+! 	      | -aos* | -aros* | -seaos* \
+  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+diff -crB coreutils-8.16/lib/getaddrinfo.c coreutils-8.16-seaos/lib/getaddrinfo.c
+*** coreutils-8.16/lib/getaddrinfo.c	2012-02-11 01:53:08.000000000 -0800
+--- coreutils-8.16-seaos/lib/getaddrinfo.c	2012-04-25 13:56:27.000000000 -0700
+***************
+*** 431,440 ****
+        case AF_INET6:
+  #endif
+          {
+!           unsigned short int port
+!             = ntohs (((const struct sockaddr_in *) sa)->sin_port);
+!           if (servicelen <= snprintf (service, servicelen, "%u", port))
+!             return EAI_OVERFLOW;
+          }
+          break;
+        }
+--- 431,440 ----
+        case AF_INET6:
+  #endif
+          {
+!          // unsigned short int port
+!          //   = ntohs (((const struct sockaddr_in *) sa)->sin_port);
+!          // if (servicelen <= snprintf (service, servicelen, "%u", port))
+!          //   return EAI_OVERFLOW;
+          }
+          break;
+        }
+diff -crB coreutils-8.16/src/su.c coreutils-8.16-seaos/src/su.c
+*** coreutils-8.16/src/su.c	2012-03-24 11:22:13.000000000 -0700
+--- coreutils-8.16-seaos/src/su.c	2012-04-25 14:02:15.275392036 -0700
+***************
+*** 95,115 ****
+  #ifdef _PATH_DEFPATH
+  # define DEFAULT_LOGIN_PATH _PATH_DEFPATH
+  #else
+! # define DEFAULT_LOGIN_PATH ":/usr/ucb:/bin:/usr/bin"
+  #endif
+  
+  /* The default PATH for simulated logins to superuser accounts.  */
+  #ifdef _PATH_DEFPATH_ROOT
+  # define DEFAULT_ROOT_LOGIN_PATH _PATH_DEFPATH_ROOT
+  #else
+! # define DEFAULT_ROOT_LOGIN_PATH "/usr/ucb:/bin:/usr/bin:/etc"
+  #endif
+  
+  /* The shell to run if none is given in the user's passwd entry.  */
+  #define DEFAULT_SHELL "/bin/sh"
+  
+  /* The user to become if none is specified.  */
+! #define DEFAULT_USER "root"
+  
+  char *crypt (char const *key, char const *salt);
+  
+--- 95,115 ----
+  #ifdef _PATH_DEFPATH
+  # define DEFAULT_LOGIN_PATH _PATH_DEFPATH
+  #else
+! # define DEFAULT_LOGIN_PATH ":/usr/bin:/bin:/usr/sbin:/usr/libexec:/usr/i586-pc-seaos/bin"
+  #endif
+  
+  /* The default PATH for simulated logins to superuser accounts.  */
+  #ifdef _PATH_DEFPATH_ROOT
+  # define DEFAULT_ROOT_LOGIN_PATH _PATH_DEFPATH_ROOT
+  #else
+! # define DEFAULT_ROOT_LOGIN_PATH ":/usr/bin:/bin:/usr/sbin:/usr/libexec:/usr/i586-pc-seaos/bin"
+  #endif
+  
+  /* The shell to run if none is given in the user's passwd entry.  */
+  #define DEFAULT_SHELL "/bin/sh"
+  
+  /* The user to become if none is specified.  */
+! #define DEFAULT_USER "root"
+  
+  char *crypt (char const *key, char const *salt);
+  
+***************
+*** 211,216 ****
+--- 211,217 ----
+  static bool
+  correct_password (const struct passwd *pw)
+  {
++ 	return true;
+    char *unencrypted, *encrypted, *correct;
+  #if HAVE_GETSPNAM && HAVE_STRUCT_SPWD_SP_PWDP
+    /* Shadow passwd stuff for SVR3 and maybe other systems.  */
+***************
+*** 232,238 ****
+        error (0, 0, _("getpass: cannot open /dev/tty"));
+        return false;
+      }
+!   encrypted = crypt (unencrypted, correct);
+    memset (unencrypted, 0, strlen (unencrypted));
+    return STREQ (encrypted, correct);
+  }
+--- 233,239 ----
+        error (0, 0, _("getpass: cannot open /dev/tty"));
+        return false;
+      }
+!   //encrypted = crypt (unencrypted, correct);
+    memset (unencrypted, 0, strlen (unencrypted));
+    return STREQ (encrypted, correct);
+  }

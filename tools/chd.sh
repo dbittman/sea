@@ -1,10 +1,10 @@
 #!/bin/sh
 loop=`cat .loop`
 
-rm hd.img 2>/dev/null
+rm -f hd.img 2>/dev/null
 echo -n "processing hd.img..."
 dd if=/dev/zero of=hd.img bs=1024 count=1 2> /dev/null
-dd if=/dev/zero of=hd.img bs=1024 count=1 seek=999999 2> /dev/null
+dd if=/dev/zero of=hd.img bs=1024 count=1 seek=1999999 2> /dev/null
 
 sfdisk -q -L -u -S63 -H16 hd.img 2>/dev/null << EOF
 2048,,,*

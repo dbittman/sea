@@ -11,6 +11,8 @@ $database = ""
 $all_packs = []
 
 require "digest/md5"
+require "net/http"
+require "net/ftp"
 require "./var.rb"
 
 def select_target()
@@ -29,7 +31,7 @@ end
 def download(package)
 	if package[DT_VERSION].nil? then return false end
 	if package[DT_REMOTE].nil? then return false end
-	print " * downloading: "
+	print " * downloading: \r"
 	begin
 	file = File.open(File.basename(package[DT_REMOTE]))
 	rescue
@@ -38,11 +40,51 @@ def download(package)
 		hash = Digest::MD5.hexdigest(file.read)
 		file.close
 		if package[DT_HASH] == hash then
-			print "(skipping) " 
+			print " * downloading: (skipping) " 
 			return true
 		end
 	end
-	`wget #{package[DT_REMOTE]} -O #{File.basename(package[DT_REMOTE])}`
+	file_size = 0
+	if package[DT_REMOTE][0] == 'h'
+		http = Net::HTTP.start(package[DT_REMOTE].split('/')[2])
+		response = http.request_head(package[DT_REMOTE])
+		file_size = response['content-length']
+	elsif package[DT_REMOTE][0] == 'f'
+		ftp = Net::FTP.new(package[DT_REMOTE].split('/')[2])
+		ftp.login
+		name = package[DT_REMOTE].gsub(package[DT_REMOTE].split('/')[2], "")
+		name.gsub!("ftp://", "")
+		file_size = ftp.size(name)
+		ftp.close
+	end
+	t = Thread.new {
+		`wget -q #{package[DT_REMOTE]} -O #{File.basename(package[DT_REMOTE])}`
+	}
+	time = 0
+	while (t.alive?)
+		sleep 0.1
+		time += 1
+		cfs = File.size(File.basename(package[DT_REMOTE]))
+		percent = (cfs * 100) / file_size.to_i
+		printf " * downloading: %4.2f/%4.2f MB [", cfs.to_f / (1024*1024), file_size.to_f / (1024*1024)
+		num = percent / 5
+		for i in 0..20
+			if i < num then 
+				print "=" 
+			elsif i == num
+				print ">"
+			else
+				print " "
+			end
+		end
+		if time >= 10 then
+			printf "] %3d%% (%5.3f MB/s)        \r", percent, (cfs.to_f / (time / 10))/(1024 * 1024)
+		else
+			printf "] %3d%%                     \r", percent
+		end
+	end
+	print " * download:                                                                 \r"
+	print " * download: "
 	begin
 	file = File.open(File.basename(package[DT_REMOTE]))
 	hash = Digest::MD5.hexdigest(file.read)
@@ -139,6 +181,18 @@ def configure(package)
 		           conf.insert(-1, "--includedir=#{$install}/#{$target}/include")
 	           when "oldinclude"
 		           conf.insert(-1, "--oldincludedir=#{$install}/#{$target}/include")
+	           when "cc_for_target"
+		           conf.insert(-1, "CC_FOR_TARGET=#{$target}-gcc")
+	           when "ar_for_target"
+		           conf.insert(-1, "AR_FOR_TARGET=#{$target}-ar")
+	           when "as_for_target"
+		           conf.insert(-1, "AS_FOR_TARGET=#{$target}-as")
+	           when "ranlib_for_target"
+		           conf.insert(-1, "RANLIB_FOR_TARGET=#{$target}-ranlib")
+	           when "strip_for_target"
+		           conf.insert(-1, "STRIP_FOR_TARGET=#{$target}-strip")
+	           when "cxx_for_target"
+		           conf.insert(-1, "CXX_FOR_TARGET=#{$target}-g++")
 	           end
 	           }
 	#puts `pwd`
@@ -158,12 +212,30 @@ def build(package)
 	           case e
 	           when "CC"
 		           conf.insert(-1, "CC=#{$target}-gcc")
+	           when "CXX"
+		           conf.insert(-1, "CXX=#{$target}-g++")
 	           when "AR"
 		           conf.insert(-1, "AR=#{$target}-ar")
 	           when "RANLIB"
 		           conf.insert(-1, "RANLIB=#{$target}-ranlib")
 	           when "LD"
 		           conf.insert(-1, "LD=#{$target}-ld")
+	           when "DESTDIR"
+		           conf.insert(-1, "DESTDIR=#{`pwd`.chomp}/install-base-#{$target}")
+	           when "INSTALLROOT"
+		           conf.insert(-1, "INSTALLROOT=#{`pwd`.chomp}/install-base-#{$target}")
+	           when "cc_for_target"
+		           conf.insert(-1, "CC_FOR_TARGET=#{$target}-gcc")
+	           when "ar_for_target"
+		           conf.insert(-1, "AR_FOR_TARGET=#{$target}-ar")
+	           when "as_for_target"
+		           conf.insert(-1, "AS_FOR_TARGET=#{$target}-as")
+	           when "ranlib_for_target"
+		           conf.insert(-1, "RANLIB_FOR_TARGET=#{$target}-ranlib")
+	           when "strip_for_target"
+		           conf.insert(-1, "STRIP_FOR_TARGET=#{$target}-strip")
+	           when "cxx_for_target"
+		           conf.insert(-1, "CXX_FOR_TARGET=#{$target}-g++")
 	           end
 	           }
 	if package[DT_VERSION].nil? then
@@ -348,6 +420,8 @@ $actions = ARGV
 
 puts "installing to: #{$install}\ntarget: #{$target}\n\n"
 
+`mkdir -p build`
+Dir.chdir("build")
 
 read_database()
 
@@ -442,5 +516,7 @@ $all_packs.each do |a1|
 end
 
 write_database()
+
+Dir.chdir("..")
 
 exit 0
