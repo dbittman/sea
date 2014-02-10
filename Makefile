@@ -24,12 +24,10 @@ newhd64:
 
 writehd:
 	@zsh tools/copy_to_hd.sh
-
-toolchain: toolchain/built
-
-toolchain/built:
-	@cd toolchain && ruby build.rb all
-
+.PHONY : toolchain
+toolchain:
+	@cd toolchain && ruby build.rb all-all
+	
 seakernel/skernel:
 	@PATH=$$PATH:`cat .toolchain`/bin $(MAKE) -j2 -s -C seakernel all
 

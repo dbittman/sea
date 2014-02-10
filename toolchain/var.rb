@@ -127,7 +127,7 @@ $downloads_table = [
       "--enable-termcap --disable-database", 
       "", 
       "all install", 
-      "cp config.sub ncurses-5.9/config.sub"                         
+      "cp ../config.sub ncurses-5.9/config.sub"                         
   ],  
 	
   ["readline", 
@@ -140,7 +140,7 @@ $downloads_table = [
       "--without-curses --disable-shared", 
       "", 
       "all install", 
-      "cp config.sub readline-6.2/support/config.sub"                
+      "cp ../config.sub readline-6.2/support/config.sub"                
   ],
 	
   ["gmp", 
@@ -153,7 +153,7 @@ $downloads_table = [
       "", 
       "", 
       "all install", 
-      "cp config.sub gmp-5.1.1/configfsf.sub"                        
+      "cp ../config.sub gmp-5.1.1/configfsf.sub"                        
   ],
 	
   ["mpfr", 
@@ -166,7 +166,7 @@ $downloads_table = [
       "CFLAGS='-fno-stack-protector'", 
       "", 
       "all install", 
-      "cp config.sub mpfr-3.1.2/config.sub"                          
+      "cp ../config.sub mpfr-3.1.2/config.sub"                          
   ],
 	
   ["mpc", 
@@ -179,7 +179,7 @@ $downloads_table = [
       "", 
       "CC AR LD", 
       "all install", 
-      "cp config.sub mpc-1.0.1/config.sub"                           
+      "cp ../config.sub mpc-1.0.1/config.sub"                           
   ],
 ]
 

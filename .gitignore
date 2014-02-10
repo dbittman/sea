@@ -4,8 +4,9 @@ data/test/
 local_make.inc
 mnt/
 seakernel/
-tools/make_gen_tmp/
+tools/man_gen_tmp/
 *.img
 skernel
 apps/porting/ported
+toolchain/build
 

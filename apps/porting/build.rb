@@ -9,8 +9,9 @@ $reinstall_deps = false
 $all_packs = []
 
 require "digest/md5"
-require 'net/http'
-require 'net/ftp'
+require "net/http"
+require "net/ftp"
+require "uri"
 require "./var.rb"
 
 def select_target()
@@ -43,15 +44,24 @@ def download(package)
 	end
 	file_size = 0
 	if package[DT_REMOTE][0] == 'h'
-		http = Net::HTTP.start(package[DT_REMOTE].split('/')[2])
-		response = http.request_head(package[DT_REMOTE])
-		file_size = response['content-length']
+		remote = package[DT_REMOTE]
+		while file_size == 0
+			uri = URI.parse(remote)
+			http = Net::HTTP.new(uri.host, uri.port)
+			response = http.request_head(uri.request_uri)
+			case response
+			when Net::HTTPRedirection
+				print " * downloading: redirecting...\r"
+				remote = response['location']
+			when Net::HTTPSuccess
+				file_size = response['content-length']
+			end
+		end
 	elsif package[DT_REMOTE][0] == 'f'
-		ftp = Net::FTP.new(package[DT_REMOTE].split('/')[2])
+		uri = URI.parse(package[DT_REMOTE])
+		ftp = Net::FTP.new(uri.host)
 		ftp.login
-		name = package[DT_REMOTE].gsub(package[DT_REMOTE].split('/')[2], "")
-		name.gsub!("ftp://", "")
-		file_size = ftp.size(name)
+		file_size = ftp.size(uri.path)
 		ftp.close
 	end
 	t = Thread.new {
