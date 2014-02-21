@@ -1,0 +1,315 @@
+diff -uprN --no-dereference openssl-1.0.1f/Configure openssl-1.0.1f-seaos/Configure
+--- openssl-1.0.1f/Configure	2014-01-06 05:47:42.000000000 -0800
++++ openssl-1.0.1f-seaos/Configure	2014-02-20 23:37:29.875540951 -0800
+@@ -158,7 +158,8 @@ my %table=(
+ # File 'TABLE' (created by 'make TABLE') contains the data from this list,
+ # formatted for better readability.
+ 
+-
++"i586-pc-seaos", "i586-pc-seaos-gcc:-DNO_SYS_UN_H::::::::::::::::::::::::::i586-pc-seaos-ranlib::",
++"x86_64-pc-seaos", "x86_64-pc-seaos-gcc:-DNO_SYS_UN_H::::::::::::::::::::::::::x86_64-pc-seaos-ranlib::",
+ #"b",		"${tcc}:${tflags}::${tlib}:${bits1}:${tbn_mul}::",
+ #"bl-4c-2c",	"${tcc}:${tflags}::${tlib}:${bits1}BN_LLONG RC4_CHAR MD2_CHAR:${tbn_mul}::",
+ #"bl-4c-ri",	"${tcc}:${tflags}::${tlib}:${bits1}BN_LLONG RC4_CHAR RC4_INDEX:${tbn_mul}::",
+diff -uprN --no-dereference openssl-1.0.1f/Makefile openssl-1.0.1f-seaos/Makefile
+--- openssl-1.0.1f/Makefile	2014-01-06 06:36:07.000000000 -0800
++++ openssl-1.0.1f-seaos/Makefile	2014-02-20 23:44:25.476400638 -0800
+@@ -11,10 +11,10 @@ SHLIB_VERSION_NUMBER=1.0.0
+ SHLIB_VERSION_HISTORY=
+ SHLIB_MAJOR=1
+ SHLIB_MINOR=0.0
+-SHLIB_EXT=
+-PLATFORM=dist
+-OPTIONS= no-ec_nistp_64_gcc_128 no-gmp no-jpake no-krb5 no-md2 no-rc5 no-rfc3779 no-sctp no-shared no-store no-zlib no-zlib-dynamic static-engine
+-CONFIGURE_ARGS=dist
++SHLIB_EXT=i586-pc-seaos-ranlib
++PLATFORM=i586-pc-seaos
++OPTIONS=--prefix=/opt/sea-toolchain/i586-pc-seaos no-ec_nistp_64_gcc_128 no-gmp no-jpake no-krb5 no-md2 no-rc5 no-rfc3779 no-sctp no-shared no-store no-zlib no-zlib-dynamic static-engine
++CONFIGURE_ARGS=no-shared --prefix=/opt/sea-toolchain/i586-pc-seaos i586-pc-seaos
+ SHLIB_TARGET=
+ 
+ # HERE indicates where this Makefile lives.  This can be used to indicate
+@@ -26,10 +26,10 @@ HERE=.
+ # for, say, /usr/ and yet have everything installed to /tmp/somedir/usr/.
+ # Normally it is left empty.
+ INSTALL_PREFIX=
+-INSTALLTOP=/usr/local/ssl
++INSTALLTOP=/opt/sea-toolchain/i586-pc-seaos
+ 
+ # Do not edit this manually. Use Configure --openssldir=DIR do change this!
+-OPENSSLDIR=/usr/local/ssl
++OPENSSLDIR=/opt/sea-toolchain/i586-pc-seaos/ssl
+ 
+ # NO_IDEA - Define to build without the IDEA algorithm
+ # NO_RC4  - Define to build without the RC4 algorithm
+@@ -59,17 +59,17 @@ OPENSSLDIR=/usr/local/ssl
+ # equal 4.
+ # PKCS1_CHECK - pkcs1 tests.
+ 
+-CC= cc
+-CFLAG= -O
++CC= i586-pc-seaos-gcc
++CFLAG= -DOPENSSL_THREADS  -DNO_SYS_UN_H
+ DEPFLAG= -DOPENSSL_NO_EC_NISTP_64_GCC_128 -DOPENSSL_NO_GMP -DOPENSSL_NO_JPAKE -DOPENSSL_NO_MD2 -DOPENSSL_NO_RC5 -DOPENSSL_NO_RFC3779 -DOPENSSL_NO_SCTP -DOPENSSL_NO_STORE
+ PEX_LIBS= 
+ EX_LIBS= 
+ EXE_EXT= 
+ ARFLAGS= 
+ AR= ar $(ARFLAGS) r
+-RANLIB= /usr/bin/ranlib
++RANLIB= /bin/ranlib
+ NM= nm
+-PERL= /usr/bin/perl
++PERL= /bin/perl
+ TAR= tar
+ TARFLAGS= --no-recursion --record-size=10240
+ MAKEDEPPROG=makedepend
+@@ -608,12 +608,12 @@ install_sw:
+ 			sed -e '1,/^$$/d' doc/openssl-shared.txt; \
+ 		fi; \
+ 	fi
+-	cp libcrypto.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
+-	chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/libcrypto.pc
+-	cp libssl.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
+-	chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/libssl.pc
+-	cp openssl.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
+-	chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/openssl.pc
++	-cp libcrypto.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
++	-chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/libcrypto.pc
++	-cp libssl.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
++	-chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/libssl.pc
++	-cp openssl.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
++	-chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/openssl.pc
+ 
+ install_html_docs:
+ 	here="`pwd`"; \
+diff -uprN --no-dereference openssl-1.0.1f/Makefile.bak openssl-1.0.1f-seaos/Makefile.bak
+--- openssl-1.0.1f/Makefile.bak	2014-01-06 06:35:53.000000000 -0800
++++ openssl-1.0.1f-seaos/Makefile.bak	2014-02-20 23:33:15.533697383 -0800
+@@ -4,17 +4,17 @@
+ ## Makefile for OpenSSL
+ ##
+ 
+-VERSION=1.0.1f-dev
++VERSION=1.0.1f
+ MAJOR=1
+ MINOR=0.1
+ SHLIB_VERSION_NUMBER=1.0.0
+ SHLIB_VERSION_HISTORY=
+ SHLIB_MAJOR=1
+ SHLIB_MINOR=0.0
+-SHLIB_EXT=
+-PLATFORM=gcc
+-OPTIONS= no-ec_nistp_64_gcc_128 no-gmp no-jpake no-krb5 no-md2 no-rc5 no-rfc3779 no-sctp no-shared no-store no-zlib no-zlib-dynamic static-engine
+-CONFIGURE_ARGS=gcc
++SHLIB_EXT=i586-pc-seaos-ranlib
++PLATFORM=i586-pc-seaos
++OPTIONS=--prefix=/opt/sea-toolchain/i586-pc-seaos --openssldir=/opt/sea-toolchain/i586-pc-seaos no-ec_nistp_64_gcc_128 no-gmp no-jpake no-krb5 no-md2 no-rc5 no-rfc3779 no-sctp no-shared no-store no-zlib no-zlib-dynamic static-engine
++CONFIGURE_ARGS=no-shared --prefix=/opt/sea-toolchain/i586-pc-seaos --openssldir=/opt/sea-toolchain/i586-pc-seaos i586-pc-seaos
+ SHLIB_TARGET=
+ 
+ # HERE indicates where this Makefile lives.  This can be used to indicate
+@@ -26,10 +26,10 @@ HERE=.
+ # for, say, /usr/ and yet have everything installed to /tmp/somedir/usr/.
+ # Normally it is left empty.
+ INSTALL_PREFIX=
+-INSTALLTOP=/usr/local/ssl
++INSTALLTOP=/opt/sea-toolchain/i586-pc-seaos
+ 
+ # Do not edit this manually. Use Configure --openssldir=DIR do change this!
+-OPENSSLDIR=/usr/local/ssl
++OPENSSLDIR=/opt/sea-toolchain/i586-pc-seaos
+ 
+ # NO_IDEA - Define to build without the IDEA algorithm
+ # NO_RC4  - Define to build without the RC4 algorithm
+@@ -59,20 +59,20 @@ OPENSSLDIR=/usr/local/ssl
+ # equal 4.
+ # PKCS1_CHECK - pkcs1 tests.
+ 
+-CC= gcc
+-CFLAG= -O3
++CC= i586-pc-seaos-gcc
++CFLAG= -DOPENSSL_THREADS  -DNO_SYS_UN_H
+ DEPFLAG= -DOPENSSL_NO_EC_NISTP_64_GCC_128 -DOPENSSL_NO_GMP -DOPENSSL_NO_JPAKE -DOPENSSL_NO_MD2 -DOPENSSL_NO_RC5 -DOPENSSL_NO_RFC3779 -DOPENSSL_NO_SCTP -DOPENSSL_NO_STORE
+ PEX_LIBS= 
+ EX_LIBS= 
+ EXE_EXT= 
+ ARFLAGS= 
+ AR= ar $(ARFLAGS) r
+-RANLIB= /usr/bin/ranlib
++RANLIB= /bin/ranlib
+ NM= nm
+-PERL= /usr/bin/perl
++PERL= /bin/perl
+ TAR= tar
+ TARFLAGS= --no-recursion --record-size=10240
+-MAKEDEPPROG= gcc
++MAKEDEPPROG=makedepend
+ LIBDIR=lib
+ 
+ # We let the C compiler driver to take care of .s files. This is done in
+@@ -608,12 +608,12 @@ install_sw:
+ 			sed -e '1,/^$$/d' doc/openssl-shared.txt; \
+ 		fi; \
+ 	fi
+-	cp libcrypto.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
+-	chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/libcrypto.pc
+-	cp libssl.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
+-	chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/libssl.pc
+-	cp openssl.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
+-	chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/openssl.pc
++	-cp libcrypto.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
++	-chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/libcrypto.pc
++	-cp libssl.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
++	-chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/libssl.pc
++	-cp openssl.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
++	-chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/openssl.pc
+ 
+ install_html_docs:
+ 	here="`pwd`"; \
+diff -uprN --no-dereference openssl-1.0.1f/Makefile.org openssl-1.0.1f-seaos/Makefile.org
+--- openssl-1.0.1f/Makefile.org	2014-01-06 05:47:42.000000000 -0800
++++ openssl-1.0.1f-seaos/Makefile.org	2014-02-20 23:32:16.664429183 -0800
+@@ -606,12 +606,12 @@ install_sw:
+ 			sed -e '1,/^$$/d' doc/openssl-shared.txt; \
+ 		fi; \
+ 	fi
+-	cp libcrypto.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
+-	chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/libcrypto.pc
+-	cp libssl.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
+-	chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/libssl.pc
+-	cp openssl.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
+-	chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/openssl.pc
++	-cp libcrypto.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
++	-chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/libcrypto.pc
++	-cp libssl.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
++	-chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/libssl.pc
++	-cp openssl.pc $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig
++	-chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/pkgconfig/openssl.pc
+ 
+ install_html_docs:
+ 	here="`pwd`"; \
+diff -uprN --no-dereference openssl-1.0.1f/apps/CA.pl openssl-1.0.1f-seaos/apps/CA.pl
+--- openssl-1.0.1f/apps/CA.pl	2014-01-06 06:36:09.000000000 -0800
++++ openssl-1.0.1f-seaos/apps/CA.pl	2014-02-20 23:44:26.679385789 -0800
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/bin/perl
+ #
+ # CA - wrapper around ca to make it easier to use ... basically ca requires
+ #      some setup stuff to be done before you can use it and this makes
+diff -uprN --no-dereference openssl-1.0.1f/apps/Makefile openssl-1.0.1f-seaos/apps/Makefile
+--- openssl-1.0.1f/apps/Makefile	2014-01-06 06:36:07.000000000 -0800
++++ openssl-1.0.1f-seaos/apps/Makefile	2014-02-20 23:28:43.805077886 -0800
+@@ -99,23 +99,23 @@ files:
+ 
+ install:
+ 	@[ -n "$(INSTALLTOP)" ] # should be set by top Makefile...
+-	@set -e; for i in $(EXE); \
++	@-set -e; for i in $(EXE); \
+ 	do  \
+ 	(echo installing $$i; \
+ 	 cp $$i $(INSTALL_PREFIX)$(INSTALLTOP)/bin/$$i.new; \
+ 	 chmod 755 $(INSTALL_PREFIX)$(INSTALLTOP)/bin/$$i.new; \
+ 	 mv -f $(INSTALL_PREFIX)$(INSTALLTOP)/bin/$$i.new $(INSTALL_PREFIX)$(INSTALLTOP)/bin/$$i ); \
+ 	 done;
+-	@set -e; for i in $(SCRIPTS); \
++	@-set -e; for i in $(SCRIPTS); \
+ 	do  \
+ 	(echo installing $$i; \
+ 	 cp $$i $(INSTALL_PREFIX)$(OPENSSLDIR)/misc/$$i.new; \
+ 	 chmod 755 $(INSTALL_PREFIX)$(OPENSSLDIR)/misc/$$i.new; \
+ 	 mv -f $(INSTALL_PREFIX)$(OPENSSLDIR)/misc/$$i.new $(INSTALL_PREFIX)$(OPENSSLDIR)/misc/$$i ); \
+ 	 done
+-	@cp openssl.cnf $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf.new; \
+-	chmod 644 $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf.new; \
+-	mv -f  $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf.new $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf
++	@-cp openssl.cnf $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf.new; \
++	-chmod 644 $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf.new; \
++	-mv -f  $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf.new $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf
+ 
+ tags:
+ 	ctags $(SRC)
+diff -uprN --no-dereference openssl-1.0.1f/apps/Makefile.save openssl-1.0.1f-seaos/apps/Makefile.save
+--- openssl-1.0.1f/apps/Makefile.save	2014-01-06 06:36:06.000000000 -0800
++++ openssl-1.0.1f-seaos/apps/Makefile.save	2014-02-20 23:32:43.175099572 -0800
+@@ -99,23 +99,23 @@ files:
+ 
+ install:
+ 	@[ -n "$(INSTALLTOP)" ] # should be set by top Makefile...
+-	@set -e; for i in $(EXE); \
++	@-set -e; for i in $(EXE); \
+ 	do  \
+ 	(echo installing $$i; \
+ 	 cp $$i $(INSTALL_PREFIX)$(INSTALLTOP)/bin/$$i.new; \
+ 	 chmod 755 $(INSTALL_PREFIX)$(INSTALLTOP)/bin/$$i.new; \
+ 	 mv -f $(INSTALL_PREFIX)$(INSTALLTOP)/bin/$$i.new $(INSTALL_PREFIX)$(INSTALLTOP)/bin/$$i ); \
+ 	 done;
+-	@set -e; for i in $(SCRIPTS); \
++	@-set -e; for i in $(SCRIPTS); \
+ 	do  \
+ 	(echo installing $$i; \
+ 	 cp $$i $(INSTALL_PREFIX)$(OPENSSLDIR)/misc/$$i.new; \
+ 	 chmod 755 $(INSTALL_PREFIX)$(OPENSSLDIR)/misc/$$i.new; \
+ 	 mv -f $(INSTALL_PREFIX)$(OPENSSLDIR)/misc/$$i.new $(INSTALL_PREFIX)$(OPENSSLDIR)/misc/$$i ); \
+ 	 done
+-	@cp openssl.cnf $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf.new; \
+-	chmod 644 $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf.new; \
+-	mv -f  $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf.new $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf
++	@-cp openssl.cnf $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf.new; \
++	-chmod 644 $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf.new; \
++	-mv -f  $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf.new $(INSTALL_PREFIX)$(OPENSSLDIR)/openssl.cnf
+ 
+ tags:
+ 	ctags $(SRC)
+diff -uprN --no-dereference openssl-1.0.1f/configure openssl-1.0.1f-seaos/configure
+--- openssl-1.0.1f/configure	1969-12-31 16:00:00.000000000 -0800
++++ openssl-1.0.1f-seaos/configure	2014-02-21 00:03:01.226502075 -0800
+@@ -0,0 +1,3 @@
++#!/bin/sh
++cp -rf ../openssl-1.0.1f/* .
++./Configure "$@"
+diff -uprN --no-dereference openssl-1.0.1f/crypto/opensslconf.h openssl-1.0.1f-seaos/crypto/opensslconf.h
+--- openssl-1.0.1f/crypto/opensslconf.h	2014-01-06 06:36:07.000000000 -0800
++++ openssl-1.0.1f-seaos/crypto/opensslconf.h	2014-02-20 23:44:25.476400638 -0800
+@@ -35,6 +35,9 @@
+ 
+ #endif /* OPENSSL_DOING_MAKEDEPEND */
+ 
++#ifndef OPENSSL_THREADS
++# define OPENSSL_THREADS
++#endif
+ #ifndef OPENSSL_NO_DYNAMIC_ENGINE
+ # define OPENSSL_NO_DYNAMIC_ENGINE
+ #endif
+@@ -80,8 +83,8 @@
+ 
+ #if !(defined(VMS) || defined(__VMS)) /* VMS uses logical names instead */
+ #if defined(HEADER_CRYPTLIB_H) && !defined(OPENSSLDIR)
+-#define ENGINESDIR "/usr/local/ssl/lib/engines"
+-#define OPENSSLDIR "/usr/local/ssl"
++#define ENGINESDIR "/opt/sea-toolchain/i586-pc-seaos/lib/engines"
++#define OPENSSLDIR "/opt/sea-toolchain/i586-pc-seaos/ssl"
+ #endif
+ #endif
+ 
+diff -uprN --no-dereference openssl-1.0.1f/tools/c_rehash openssl-1.0.1f-seaos/tools/c_rehash
+--- openssl-1.0.1f/tools/c_rehash	2014-01-06 06:36:09.000000000 -0800
++++ openssl-1.0.1f-seaos/tools/c_rehash	2014-02-20 23:44:26.678385801 -0800
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/bin/perl
+ 
+ 
+ # Perl c_rehash script, scan all files in a directory
+@@ -6,8 +6,8 @@
+ 
+ my $openssl;
+ 
+-my $dir = "/usr/local/ssl";
+-my $prefix = "/usr/local/ssl";
++my $dir = "/opt/sea-toolchain/i586-pc-seaos/ssl";
++my $prefix = "/opt/sea-toolchain/i586-pc-seaos";
+ 
+ if(defined $ENV{OPENSSL}) {
+ 	$openssl = $ENV{OPENSSL};

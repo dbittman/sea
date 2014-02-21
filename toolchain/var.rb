@@ -181,6 +181,18 @@ $downloads_table = [
       "all install", 
       "cp ../config.sub mpc-1.0.1/config.sub"                           
   ],
+  ["openssl", 
+      "1.0.1f", 
+      true, 
+      "http://www.openssl.org/source/openssl-1.0.1f.tar.gz", 
+      "f26b09c028a0541cab33da697d522b25", 
+      ["binutils *", "gcc *", "newlib *", "libgcc *"], 
+      "puretarget tarprefix openssldir", 
+      "no-shared", 
+      "", 
+      "build_libs install_sw", 
+      "chmod a+x openssl-1.0.1f/configure"                         
+  ],
 ]
 
 # Global make flags - applied to every build process
