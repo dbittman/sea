@@ -432,6 +432,18 @@ $downloads_table = [
      "SHOBJ_LDFLAGS=-ltermcap SHOBJ_CFLAGS= all install",
      nil
   ],
+  ["openssl", 
+      "1.0.1f", 
+      true, 
+      "http://www.openssl.org/source/openssl-1.0.1f.tar.gz", 
+      "f26b09c028a0541cab33da697d522b25", 
+      [], 
+      "puretarget", 
+      "no-shared --prefix=/usr --openssldir=/usr", 
+      "INSTALL_PREFIX", 
+      "build_libs install_sw", 
+      "chmod a+x openssl-1.0.1f/configure"                         
+  ],
 
 ]
 

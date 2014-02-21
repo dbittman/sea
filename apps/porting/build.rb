@@ -174,13 +174,17 @@ def configure(package)
 	create_build_dir(package)
 	print " * configuring: "
 	Dir.chdir("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
-	
+	puretarget=""
 	cross = package[DT_CROSS].split(" ")
 	conf = []
 	cross.each {|e|
 	           case e
 	           when "host"
 		           conf.insert(-1, "--host=#{$target}")
+	           when "puretarget"
+		           puretarget = "#{$target}"
+	           when "openssldir"
+		           conf.insert(-1, "--openssldir=#{$install}/#{$target}")
 	           when "target"
 		           conf.insert(-1, "--target=#{$target}")
 	           when "cc_for_target"
@@ -199,7 +203,7 @@ def configure(package)
 	           }
 	#puts `pwd`
 	#puts "../#{package[DT_NAME]}-#{package[DT_VERSION]}/configure #{conf.join(" ")} #{package[DT_CONFIG]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-configure-#{$target}.log"
-	`../#{package[DT_NAME]}-#{package[DT_VERSION]}/configure #{conf.join(" ")} #{package[DT_CONFIG]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-configure-#{$target}.log`
+	`../#{package[DT_NAME]}-#{package[DT_VERSION]}/configure #{conf.join(" ")} #{package[DT_CONFIG]} #{puretarget} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-configure-#{$target}.log`
 	Dir.chdir("..")
 	return true
 end
@@ -225,6 +229,8 @@ def build(package)
 		           conf.insert(-1, "DESTDIR=#{`pwd`.chomp}/install-base-#{$target}")
 	           when "INSTALLROOT"
 		           conf.insert(-1, "INSTALLROOT=#{`pwd`.chomp}/install-base-#{$target}")
+	           when "INSTALL_PREFIX"
+		           conf.insert(-1, "INSTALL_PREFIX=#{`pwd`.chomp}/install-base-#{$target}")
 	           when "cc_for_target"
 		           conf.insert(-1, "CC_FOR_TARGET=#{$target}-gcc")
 	           when "ar_for_target"
