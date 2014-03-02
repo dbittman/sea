@@ -179,11 +179,6 @@ int main(int argc, char **argv)
 		}
 		err_exit("failed to rename /etc/shadow.new");
 	}
-	if(shadow_old) {
-		if(unlink("/etc/shadow.old") == -1) {
-			err_exit("failed to unlink /etc/shadow.old (but /etc/shadow was updated)");
-		}
-	}
 	
 	return 0;
 }
