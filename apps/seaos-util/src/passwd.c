@@ -141,30 +141,30 @@ int main(int argc, char **argv)
 
 		fclose(shadow_old);
 	}
-	
-	if(fprintf(shadow_new, "%s:$6$", login) < 0){
-		err_exit("error writing /etc/shadow_new");
-	}
-	
-	int j;
-	for(j=0;j<SHA512_DIGEST_LENGTH;j++) {
-		if(fprintf(shadow_new, "%02x", *(salt+j)) < 0){
+	if(new[0]) {
+		if(fprintf(shadow_new, "%s:$6$", login) < 0){
+			err_exit("error writing /etc/shadow_new");
+		}
+		
+		int j;
+		for(j=0;j<SHA512_DIGEST_LENGTH;j++) {
+			if(fprintf(shadow_new, "%02x", *(salt+j)) < 0){
+				err_exit("error writing /etc/shadow_new");
+			}
+		}
+		if(fputc('$', shadow_new) == EOF){
+			err_exit("error writing /etc/shadow_new");
+		}
+		for(j=0;j<SHA512_DIGEST_LENGTH;j++) {
+			if(fprintf(shadow_new, "%02x", *(hash+j)) < 0){
+				err_exit("error writing /etc/shadow_new");
+			}
+		}
+		
+		if(fputc('\n', shadow_new) == EOF){
 			err_exit("error writing /etc/shadow_new");
 		}
 	}
-	if(fputc('$', shadow_new) == EOF){
-		err_exit("error writing /etc/shadow_new");
-	}
-	for(j=0;j<SHA512_DIGEST_LENGTH;j++) {
-		if(fprintf(shadow_new, "%02x", *(hash+j)) < 0){
-			err_exit("error writing /etc/shadow_new");
-		}
-	}
-	
-	if(fputc('\n', shadow_new) == EOF){
-		err_exit("error writing /etc/shadow_new");
-	}
-	
 	fclose(shadow_new);
 	
 	if(shadow_old) {
