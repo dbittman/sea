@@ -149,7 +149,7 @@ end
 def clean(package)
 	if package[DT_VERSION].nil? then return false end
 	print " * cleaning build files: "
-	`rm -r build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}`
+	`rm -rf build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}`
 	`true`
 	return true
 end
@@ -157,7 +157,7 @@ end
 def cleansrc(package)
 	if package[DT_VERSION].nil? then return false end
 	print " * cleaning source: "
-	`rm -r #{package[DT_NAME]}-#{package[DT_VERSION]}`
+	`rm -rf #{package[DT_NAME]}-#{package[DT_VERSION]}`
 	`true`
 	return true
 end
