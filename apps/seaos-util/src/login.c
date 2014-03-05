@@ -38,10 +38,10 @@ int main(int argc, char **argv)
 {
 	name = basename(argv[0]);
 	/* First do some checks */
-	unsigned myuid = getuid();
+	unsigned myuid = geteuid();
 	if(myuid)
 	{
-		fprintf(stderr, "%s: login cannot be invoked as non-root user.\n", argv[0]);
+		fprintf(stderr, "%s: login being executed with EUID > 0!\n", argv[0]);
 		return -1;
 	}
 	FILE *f = fopen("/etc/passwd", "r");
