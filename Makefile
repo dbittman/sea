@@ -14,7 +14,7 @@ apps_port:
 	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb all-all
 
 apps_seaos:
-	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb all-seaosutil
+	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb clean-seaosutil cleansrc-seaosutil all-seaosutil
 
 newhd:
 	@sudo zsh tools/chd.sh i586-pc-seaos
