@@ -125,6 +125,12 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 	
+	if(fchmod(fileno(shadow_new), 0600) == -1)
+	{
+		fprintf(stderr, "%s: could not change permissions of /etc/shadow.new: %s\n", prog, strerror(errno));
+		exit(1);
+	}
+	
 	if(shadow_old) {
 		unsigned char buffer[4096];
 		memset(buffer, 0, 4096);
