@@ -24,6 +24,7 @@ chown -R root ./mnt/*
 chgrp -R 0 ./mnt/*
 chmod u+s ./mnt/bin/login
 chmod u+s ./mnt/bin/passwd
+chmod u+s ./mnt/bin/useradd
 chmod o-r ./mnt/etc/shadow
 chmod g-r ./mnt/etc/shadow
 
