@@ -24,8 +24,11 @@
 #include <libgen.h>
 #include <sys/utsname.h>
 #include <sys/seaos.h>
+#include <ctype.h>
 char *prog=0;
 char *directory=0; /* directory to look for modules in */
+
+#define DEPEND_FILE "modules.deps"
 
 char *get_default_dir()
 {
@@ -46,8 +49,64 @@ char *get_module_path(char *name)
 	return path;
 }
 
+char *skip_space(char *s)
+{
+	if(!s) return 0;
+	while(*s && isspace(*s))
+		s++;
+	return *s ? s : 0;
+}
+
+int check_module_exists(char *name)
+{
+	return sea_load_module(name, 0, SEA_MODULE_CHECK);
+}
+
+int check_depend(char *name)
+{
+	char depend_file[strlen(directory) + 1 + strlen(DEPEND_FILE) + 1];
+	memset(depend_file, 0, strlen(directory) + 1 + strlen(DEPEND_FILE) + 1);
+	strcpy(depend_file, directory);
+	strcat(depend_file, "/");
+	strcat(depend_file, DEPEND_FILE);
+	
+	FILE *f = fopen(depend_file, "r");
+	if(!f)
+		return 1;
+	/* find line for this module */
+	char buffer[1024];
+	while(fgets(buffer, 1024, f)) {
+		char *nl = strchr(buffer, '\n');
+		if(nl) *nl=0;
+		char *col = strchr(buffer, ':');
+		if(!col) {
+			fprintf(stderr, "%s: depend file syntax error\n", prog);
+		} else {
+			*col = 0;
+			if(!strcmp(name, buffer)) {
+				char *list = col+1;
+				while((list = skip_space(list))) {
+					char *del = strchr(list, ' ');
+					if(del) *del = 0;
+					if(!check_module_exists(list))
+						return 0;
+					if(del)
+					{
+						*del=' ';
+						list = del+1;
+					} else
+						list=0;
+				}
+			}
+		}
+	}
+	return 1;
+}
+
 int load(char *name, char *args, int force)
 {
+	if(!force && !check_depend(name))
+		return -EINVAL;
 	char *path = get_module_path(name);
 	int r = sea_load_module(path, args, force ? SEA_MODULE_FORCE : 0);
 	free(path);
@@ -57,11 +116,6 @@ int load(char *name, char *args, int force)
 int unload(char *name, int force)
 {
 	return sea_unload_module(name, force ? SEA_MODULE_FORCE : 0);
-}
-
-int check_module_exists(char *name)
-{
-	return sea_load_module(name, 0, SEA_MODULE_CHECK);
 }
 
 void usage()
