@@ -2,7 +2,7 @@ include seakernel/make.inc
 
 include local_make.inc
 
-QEMU_NET=-net nic,model=rtl8139,vlan=2 -net socket,vlan=2,connect=127.0.0.1:8010 
+QEMU_NET=-netdev tap,helper=/usr/lib/qemu/qemu-bridge-helper,id=br0 -device rtl8139,netdev=br0,id=nic1
 
 QEMU_EXTRA=-device ahci,id=ahci0 -drive if=none,file=hd.img,format=raw,id=drive-sata0-0-0 -device ide-drive,bus=ahci0.0,drive=drive-sata0-0-0,id=sata0-0-0 
 
@@ -57,6 +57,9 @@ clean:
 	@rm hd.img hd2.img
 
 qemu:
+	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_LOCAL)
+
+qemu_net:
 	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_NET) $(QEMU_LOCAL)
 	
 qemu_gdb:
