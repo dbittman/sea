@@ -69,4 +69,4 @@ bochs:
 	@bochs
 
 gcc_print_optimizers:
-	@PATH=$$PATH:`cat .toolchain` make -s -C seakernel gcc_print_optimizers
+	@PATH=$$PATH:`cat .toolchain`/bin $(MAKE) -s -C seakernel gcc_print_optimizers
