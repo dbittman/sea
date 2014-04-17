@@ -1,0 +1,7 @@
+Description="Bridge connection for kvm"
+Interface=br0
+Connection=bridge
+BindsToInterfaces=(enp1s0f1)
+IP=static
+Address=('10.0.1.1')
+
