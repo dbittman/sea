@@ -74,6 +74,9 @@ def download(package)
 	while (t.alive?)
 		sleep 0.1
 		time += 1
+		if ! File.exists?(File.basename(package[DT_REMOTE]))
+			next
+		end
 		cfs = File.size(File.basename(package[DT_REMOTE]))
 		percent = (cfs * 100) / file_size.to_i
 		printf " * downloading: %4.2f/%4.2f MB [", cfs.to_f / (1024*1024), file_size.to_f / (1024*1024)
