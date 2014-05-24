@@ -382,10 +382,10 @@ $downloads_table = [
   ],
 	
   ["gcc",
-     "4.8.0",
+     "4.9.0",
      true,
-     "http://ftp.gnu.org/gnu/gcc/gcc-4.8.0/gcc-4.8.0.tar.gz",
-     "f1011d59961a43d3d7c22913815812b3",
+     "http://ftp.gnu.org/gnu/gcc/gcc-4.9.0/gcc-4.9.0.tar.bz2",
+     "9709b49ae0e904cbb0a6a1b62853b556",
      [],
      "host cc_for_target ar_for_target as_for_target ranlib_for_target strip_for_target cxx_for_target",
      "--prefix=/usr --enable-lto --disable-nls --enable-languages=c,c++",
