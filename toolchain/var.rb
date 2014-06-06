@@ -81,7 +81,7 @@ $downloads_table = [
   ["libgcc", 
       nil, 
       true, 
-      "gcc-4.8.0", 
+      "gcc-4.9.0", 
       nil, 
       ["binutils *", "gcc *", "newlib *"], 
       "target prefix", 
