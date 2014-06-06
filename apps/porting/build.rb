@@ -5,6 +5,8 @@ $toolchain = ""
 $target = nil
 $reinstall = false
 $reinstall_deps = false
+$individual_install = false
+$arch = "x86"
 
 $all_packs = []
 
@@ -16,8 +18,12 @@ require "./var.rb"
 
 def select_target()
 	printf "target selection (i586, x86_64) [i586]? "
+	$arch = "x86"
 	if ($target = $stdin.gets().chomp) == ""
 		$target = "i586"
+	end
+	if $target == "x86_64"
+		$arch = "x86_64"
 	end
 end
 
@@ -139,12 +145,17 @@ def patch(package)
 end
 
 def create_build_dir(package)
+	if $individual_install
+		install_base = "install-bases-individual-#{$target}"
+	else
+		install_base = "install-base-#{$target}"
+	end
 	if package[DT_VERSION].nil? then return false end
 	if ! Dir.exist?("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
 		Dir.mkdir("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
 	end
-	if ! Dir.exist?("install-base-#{$target}")
-		Dir.mkdir("install-base-#{$target}")
+	if ! Dir.exist?("#{install_base}/#{package[DT_NAME]}-#{package[DT_VERSION]}")
+		Dir.mkdir("#{install_base}/#{package[DT_NAME]}-#{package[DT_VERSION]}")
 	end
 	return true
 end
@@ -213,6 +224,11 @@ end
 
 def build(package)
 	execute_command(package)
+	if $individual_install
+		install_base = "install-bases-individual-#{$target}/#{package[DT_NAME]}-#{package[DT_VERSION]}"
+	else
+		install_base = "install-base-#{$target}"
+	end
 	print " * building: "
 	cross = package[DT_MCROSS].split(" ")
 	conf = []
@@ -229,11 +245,11 @@ def build(package)
 	           when "LD"
 		           conf.insert(-1, "LD=#{$target}-ld")
 	           when "DESTDIR"
-		           conf.insert(-1, "DESTDIR=#{`pwd`.chomp}/install-base-#{$target}")
+		           conf.insert(-1, "DESTDIR=#{`pwd`.chomp}/#{install_base}")
 	           when "INSTALLROOT"
-		           conf.insert(-1, "INSTALLROOT=#{`pwd`.chomp}/install-base-#{$target}")
+		           conf.insert(-1, "INSTALLROOT=#{`pwd`.chomp}/#{install_base}")
 	           when "INSTALL_PREFIX"
-		           conf.insert(-1, "INSTALL_PREFIX=#{`pwd`.chomp}/install-base-#{$target}")
+		           conf.insert(-1, "INSTALL_PREFIX=#{`pwd`.chomp}/#{install_base}")
 	           when "cc_for_target"
 		           conf.insert(-1, "CC_FOR_TARGET=#{$target}-gcc")
 	           when "ar_for_target"
@@ -259,6 +275,26 @@ def build(package)
 		#puts "make #{$make_flags} #{conf.join(" ")} #{package[DT_MAKE]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-build-#{$target}.log"
 		`make #{$make_flags} #{conf.join(" ")} #{package[DT_MAKE]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-build-#{$target}.log`
 		Dir.chdir("..")
+	end
+	if $individual_install
+		file = nil
+		count=0
+		if(File.exist?("#{install_base}/buildnr"))
+			file = File.open("#{install_base}/buildnr", "r+t")
+			count = file.read.to_i
+			puts "read count: " + count.to_s
+		else
+			file = File.open("#{install_base}/buildnr", "wt")
+		end
+		count += 1
+		puts "write count: " + count.to_s
+		file.seek(0, :SET)
+		file.print(count.to_s)
+		file.close
+		
+		file = File.open("#{install_base}/#{package[DT_NAME]}-#{package[DT_VERSION]}.manifest", "wt")
+		file.puts("#{package[DT_NAME]}:#{package[DT_VERSION]}:#{count}:#{$arch}:#{package[DT_DEPS].join(",")}")
+		file.close
 	end
 	return true
 end
@@ -359,6 +395,8 @@ ARGV.each do |a|
 		when "target"
 			if arr[1].nil? then error("must specify architecture when using --target") end
 			$target = arr[1].clone
+		when "sep"
+			$individual_install = true
 		end
 	end
 end
