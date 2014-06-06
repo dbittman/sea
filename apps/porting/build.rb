@@ -286,12 +286,10 @@ def build(package)
 		if(File.exist?("#{install_base}/buildnr"))
 			file = File.open("#{install_base}/buildnr", "r+t")
 			count = file.read.to_i
-			puts "read count: " + count.to_s
 		else
 			file = File.open("#{install_base}/buildnr", "wt")
 		end
 		count += 1
-		puts "write count: " + count.to_s
 		file.seek(0, :SET)
 		file.print(count.to_s)
 		file.close
