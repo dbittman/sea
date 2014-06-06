@@ -154,6 +154,10 @@ def create_build_dir(package)
 	if ! Dir.exist?("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
 		Dir.mkdir("build-#{package[DT_NAME]}-#{package[DT_VERSION]}-#{$target}")
 	end
+
+	if ! Dir.exist?("#{install_base}")
+		Dir.mkdir("#{install_base}")
+	end
 	if ! Dir.exist?("#{install_base}/#{package[DT_NAME]}-#{package[DT_VERSION]}")
 		Dir.mkdir("#{install_base}/#{package[DT_NAME]}-#{package[DT_VERSION]}")
 	end
