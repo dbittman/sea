@@ -401,7 +401,7 @@ $downloads_table = [
      "8b3ad7090e3989810943aa19103fdb83", 
      [],
      "host",
-     "--prefix=/usr --disable-nls",
+     "--prefix=/usr --disable-nls --disable-werror",
      "DESTDIR",
      "all install",
      nil
