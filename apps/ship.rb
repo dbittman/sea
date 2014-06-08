@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 # Package Management System
 require "net/http"
 require "net/ftp"
@@ -8,7 +9,7 @@ REMOTE = "http://dbittman.mooo.com/sea/repo/core.manifest"
 LOCAL  = "local_database"
 ARCH   = "x86"
 ARCH2  = "i586"
-ROOT   = "install-base-#{ARCH2}-pc-seaos"
+ROOT   = "porting/ported/install-base-#{ARCH2}-pc-seaos"
 
 $manifest = nil
 
@@ -348,7 +349,7 @@ if ! Dir.exist?(LOCAL)
 end
 
 if ! Dir.exist?(ROOT)
-	Dir.mkdir(ROOT)
+	`mkdir -p #{ROOT}`
 end
 if File.exist?(LOCAL + "/" + File.basename(REMOTE))
 	print "loading remote manifest..."
@@ -379,9 +380,11 @@ ARGV.each { |arg|
 			arg = arg.dup
 			if /ALL$/ =~ arg
 				ar = []
-				$manifest.each_value{|x|
-					ar << x[:name]
-				}
+				if !$manifest.nil?
+					$manifest.each_value{|x|
+						ar << x[:name]
+					}
+				end
 				arg.slice!("ALL")
 			elsif /INSTALLED$/ =~ arg
 				ar = []

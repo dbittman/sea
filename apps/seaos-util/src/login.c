@@ -100,12 +100,12 @@ int main(int argc, char **argv)
 			time_t now;
 			time(&now);
 			printf("Logged in as '%s' on %s\n", username, ctime(&now));
-			execl(shell, shell, "--login");
+			execl(shell, shell, "--login", 0);
 			if(shell != def_shell) 
 			{
 				shell = def_shell;
 				fprintf(stderr, "%s: failed to start user's shell. Falling back to default...\n", name);
-				execl(shell, shell, "-l");
+				execl(shell, shell, "-l", 0);
 			}
 			fprintf(stderr, "%s: could not start a login shell.\n", name);
 			exit(1);
