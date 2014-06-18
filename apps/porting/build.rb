@@ -295,7 +295,7 @@ def build(package)
 		file.close
 		
 		file = File.open("#{install_base}/#{package[DT_NAME]}-#{package[DT_VERSION]}.manifest", "wt")
-		file.puts("#{package[DT_NAME]}:#{package[DT_VERSION]}:#{count}:#{$arch}:#{package[DT_DEPS].join(",")}")
+		file.puts("#{package[DT_NAME]}:#{package[DT_VERSION]}:#{count}:#{$arch}:#{package[DT_DEPS].join(",")}:")
 		file.close
 	end
 	return true

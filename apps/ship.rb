@@ -162,6 +162,10 @@ def parse_manifest(path)
 		if vals[4].nil?
 			hash[:deps] = ""
 		end
+		hash[:conficts] = vals[5]
+		if vals[5].nil?
+			hash[:conflicts] = ""
+		end
 		ret[vals[0].to_sym] = hash
 	}
 	return ret
@@ -204,6 +208,7 @@ def do_install(name)
 	if $? != 0
 		return false
 	end
+	list = []
 	Dir.chdir("/tmp/ship-tmp") {
 		`tar xJf #{File.basename(rpath)}`
 		if $? != 0
@@ -215,12 +220,25 @@ def do_install(name)
 			`rm buildnr *.manifest`
 			`cp -r * ../install`
 		}
+		
+		archive = `tar tJf #{File.basename(rpath)}`.split("\n")
+		archive.each{ |ent|
+			file = ent.sub("#{package[:name]}-#{package[:version]}", "")
+			if !(file == "/" or file == "/#{package[:name]}-#{package[:version]}.manifest" or file == "/buildnr")
+				list << file
+			end
+		}
+
 	}
 	puts " * installing files"
 	`cp -rf /tmp/ship-tmp/install/* #{ROOT}`
 	`cp -rf /tmp/ship-tmp/*.manifest #{LOCAL}`
 	`rm -rf /tmp/ship-tmp`
 
+	fl = File.open("#{LOCAL}/" + package[:name] + "-" + package[:version] \
+				   + "-" + package[:release] + "-" + ARCH + ".filelist", "w")
+	fl.puts(list.join("\n"))
+	fl.close
 	$installed[name.to_sym] = $manifest[name.to_sym]
 	write_manifest(LOCAL + "/installed.manifest", $installed)
 	return true
@@ -233,6 +251,27 @@ def do_remove(name)
 		return false
 	end
 	puts "removing #{name}"
+	
+	# remove files listed in filelist in reverse order
+	list = File.open("#{LOCAL}/" + package[:name] + "-" + package[:version] \
+				   + "-" + package[:release] + "-" + ARCH + ".filelist", "r").read.split("\n")
+
+	Dir.chdir(ROOT) {
+		list.reverse_each{ |file|
+			# Convert to current directory
+			file = "." + file
+			puts file
+			if Dir.exist?(file)
+				if(Dir.entries(file) == [".", ".."]) # is empty?
+					Dir.rmdir(file)
+				end
+			elsif File.exist?(file)
+				File.unlink(file)
+			else
+				puts "error: cannot remove #{file}"
+			end
+		}
+	}
 
 	$installed.delete(name.to_sym)
 	write_manifest(LOCAL + "/installed.manifest", $installed)
