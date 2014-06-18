@@ -181,6 +181,14 @@ def parse_manifest(path)
 	return ret
 end
 
+def is_installed?(name, ver)
+	if ver == "*"
+		return ! $installed[name.to_sym].nil?
+	else
+		return (!$installed[name.to_sym].nil?) && $installed[name.to_sym][:version] == ver
+	end
+end
+
 def do_install(name)
 	package = $manifest[name.to_sym]
 	if package.nil?
@@ -410,9 +418,23 @@ def do_list(list)
 end
 
 def execute(type, list)
+	if type == "" then return true end
 	if type != "update" and type != "" and !File.exists?(LOCAL + "/" + File.basename(REMOTE))
 		puts "error: local manifest doesn't exist (run update)"
 		return
+	end
+	list.uniq!
+
+	if type != "update" and type != "list"
+	if list.size == 0 then return true end
+	puts "--- perform action #{type} ---"
+	puts "affected packages:"
+	puts list.join(" ")
+	
+	print "\nContinue [Y/n]? "
+	
+	inp = $stdin.gets.chomp
+	if inp == "n" or inp == "N" then return true end
 	end
 	r = false
 	case type
@@ -432,6 +454,45 @@ def execute(type, list)
 	return r
 end
 
+def resolve_deps(list)
+	newlist = []
+	num=0
+	list.each {|name|
+		action = ""
+		if (name[0] =~ /[A-Za-z0-9]/).nil?
+			action = name[0]
+			name.sub!(name[0], "")
+		end
+		if action != "+"
+			newlist << action + name
+			next
+		end
+		if $manifest[name.to_sym].nil?
+			puts "error: could not find or resolve #{name}"
+			return nil
+		end
+		deps = $manifest[name.to_sym][:deps].split(",")
+		deps.each {|d|
+			vn = d.split(' ')
+			if ! is_installed?(vn[0], vn[1])
+				if vn[1] == "*"
+					dn = vn[0]
+				else
+					dn = d
+				end
+				if !list.include?(dn)
+					newlist << action + dn
+					num += 1
+				end
+			end
+		}
+		newlist << action + name
+	}
+	if num != 0
+		return resolve_deps(newlist)
+	end
+	return newlist
+end
 
 if ! Dir.exist?(LOCAL)
 	Dir.mkdir(LOCAL)
@@ -482,12 +543,17 @@ ARGV.each { |arg|
 				}
 				arg.slice!("INSTALLED")
 			end
-
+			tmp_list = []
 			if !ar.nil?
-				list += (arg + ar.join(" " + arg)).split(" ")
+				tmp_list += (arg + ar.join(" " + arg)).split(" ")
 			else
-				list << arg
+				tmp_list << arg
 			end
+			arr = resolve_deps(tmp_list)
+			if arr.nil?
+				next
+			end
+			list += arr
 	end
 }
 execute(type, list)
