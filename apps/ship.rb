@@ -240,8 +240,25 @@ def do_install(name)
 		}
 
 	}
-	puts " * installing files"
-	`cp -rf /tmp/ship-tmp/install/* #{ROOT}`
+	num=0
+	list.each { |file|
+		reset_line
+		print " * installing files(#{num}/#{list.size}): "
+		draw_progress(num, list.size)
+		print " (installing #{File.basename(file)})"
+		num += 1
+		if file[-1] == '/' and !File.symlink?("/tmp/ship-tmp/install/#{file}")
+			begin
+				Dir.mkdir(ROOT + file)
+			rescue
+			end
+		else
+			`cp --no-dereference --preserve=mode,ownership,links -f \
+			/tmp/ship-tmp/install/#{file} #{ROOT}/#{File.dirname(file)}/`
+		end
+	}
+	reset_line
+	puts " * installing files: success"
 	`cp -rf /tmp/ship-tmp/*.manifest #{LOCAL}`
 	`rm -rf /tmp/ship-tmp`
 
