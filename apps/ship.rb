@@ -13,6 +13,26 @@ ROOT   = "porting/ported/install-base-#{ARCH2}-pc-seaos"
 
 $manifest = nil
 
+def draw_progress(complete, total)
+	percent = (complete * 100) / total
+	print "["
+	num = percent / 5
+	for i in 0..20
+		if i < num then 
+			print "=" 
+		elsif i == num
+			print ">"
+		else
+			print " "
+		end
+	end
+	printf "] %3d%%", percent
+end
+
+def reset_line()
+	print("\r\e[0K")
+end
+
 def download_file(url, correcthash, local_dir, name)
 	if name.nil?
 		name = ""
@@ -90,24 +110,14 @@ def download_file(url, correcthash, local_dir, name)
 			next
 		end
 		cfs = File.size(local_dir + "/" + File.basename(url))
-		percent = (cfs * 100) / file_size.to_i
-		printf " * download#{name}: %4.2f/%4.2f MB [", cfs.to_f / (1024*1024), file_size.to_f / (1024*1024)
-		num = percent / 5
-		for i in 0..20
-			if i < num then 
-				print "=" 
-			elsif i == num
-				print ">"
-			else
-				print " "
-			end
-		end
+		reset_line()
+		printf " * download#{name}: %4.2f/%4.2f MB", cfs.to_f / (1024*1024), file_size.to_f / (1024*1024)
+		draw_progress(cfs, file_size.to_i)
 		if time >= 10 then
-			printf "] %3d%% (%5.3f MB/s)        \r", percent, (cfs.to_f / (time / 10))/(1024 * 1024)
-		else
-			printf "] %3d%%                     \r", percent
+			printf " (%5.3f MB/s)", (cfs.to_f / (time / 10))/(1024 * 1024)
 		end
 	end
+	reset_line
 	print " * download#{name}:                                                                 \r"
 	if t[:output] != 0
 		print " * download#{name}: failed (wget returned #{t[:output]})\n"
@@ -255,22 +265,26 @@ def do_remove(name)
 	# remove files listed in filelist in reverse order
 	list = File.open("#{LOCAL}/" + package[:name] + "-" + package[:version] \
 				   + "-" + package[:release] + "-" + ARCH + ".filelist", "r").read.split("\n")
-
+	num=0
 	Dir.chdir(ROOT) {
 		list.reverse_each{ |file|
 			# Convert to current directory
 			file = "." + file
-			puts file
+			reset_line()
+			print " * removing files (#{num}/#{list.size}): "
+			draw_progress(num, list.size)
+			print(" (removing #{File.basename(file)})")
+			num += 1
 			if Dir.exist?(file)
 				if(Dir.entries(file) == [".", ".."]) # is empty?
 					Dir.rmdir(file)
 				end
-			elsif File.exist?(file)
-				File.unlink(file)
-			else
-				puts "error: cannot remove #{file}"
+			elsif File.exist?(file) or File.symlink?(file)
+				File.delete(file)
 			end
 		}
+		reset_line
+		puts " * removing files: success"
 	}
 
 	$installed.delete(name.to_sym)
