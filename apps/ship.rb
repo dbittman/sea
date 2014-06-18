@@ -372,6 +372,15 @@ def do_list(list)
 		}
 	else
 		list.each {|p|
+			list_files = false
+			list_hash = true
+			if p[0] == '+'
+				p = p.sub("+", "")
+				list_files = true
+			elsif p[0] == '-'
+				p = p.sub("-", "")
+				list_hash = false
+			end
 			x = $installed[p.to_sym]
 			if !x.nil?
 				puts "#{p} - INSTALLED"
@@ -384,7 +393,16 @@ def do_list(list)
 			if x.nil?
 				puts "#{p} - NOT FOUND"
 			else
-				puts "    " + x.to_s
+				if list_hash
+					puts "    " + x.to_s
+				end
+				if list_files
+					list = File.open("#{LOCAL}/" + x[:name] + "-" + x[:version] \
+								+ "-" + x[:release] + "-" + ARCH + ".filelist", "r").read.split("\n")
+					list.each {|f|
+						puts (" :: #{f}")
+					}
+				end
 			end
 		}
 	end
