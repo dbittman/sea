@@ -172,7 +172,7 @@ def parse_manifest(path)
 		if vals[4].nil?
 			hash[:deps] = ""
 		end
-		hash[:conficts] = vals[5]
+		hash[:conflicts] = vals[5]
 		if vals[5].nil?
 			hash[:conflicts] = ""
 		end
@@ -198,7 +198,8 @@ def do_install(name)
 	end
 	puts
 
-	rpath = File.dirname(REMOTE) + "/pkg/" + ARCH + "/" + package[:name] + "-" + package[:version] + "-" + package[:release] + "-" + ARCH + ".tar.xz"
+	rpath = File.dirname(REMOTE) + "/pkg/" + ARCH + "/" + package[:name] + "-" \
+		+ package[:version] + "-" + package[:release] + "-" + ARCH + ".tar.xz"
 	
 	if ! download_file(rpath + ".md5", nil, LOCAL, "hash")
 		return false
