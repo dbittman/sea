@@ -126,3 +126,20 @@ def download_file(url, correcthash, local_dir, name)
 	end
 end
 
+def get_package(name)
+	$manifests.each{|m|
+		pack = m.read(name)
+		if ! pack.nil? then return pack end
+	}
+	return nil
+end
+
+def is_installed?(name, ver)
+	if ver == "*"
+		return ! $installed.read(name).nil?
+	else
+		return (!$installed.read(name).nil?) && $installed.read(name)[:version] == ver
+	end
+end
+
+

@@ -8,6 +8,7 @@ require "digest/md5"
 require_relative "manifest.rb"
 require_relative "util.rb"
 require_relative "sync.rb"
+require_relative "actions.rb"
 
 REMOTE = "http://dbittman.mooo.com/sea/repo/core.manifest"
 LOCAL  = "local_database"
@@ -15,88 +16,9 @@ ARCH   = "x86"
 ARCH2  = "i586"
 ROOT   = "porting/ported/install-base-#{ARCH2}-pc-seaos"
 
-$manifest = nil
+$no_confirm = false
 
-def is_installed?(name, ver)
-	if ver == "*"
-		return ! $installed.read(name).nil?
-	else
-		return (!$installed.read(name).nil?) && $installed.read(name)[:version] == ver
-	end
-end
-
-def do_update(list)
-	return $manifest.remote_sync
-end
-
-def do_upgrade(list)
-	$old = $installed.dup
-	$old.each_value { |pack|
-		man = $manifest.read(pack[:name])
-		if man.nil?
-			next
-		end
-		raise "wrong!" unless man[:name] == pack[:name]
-
-		up=false
-		if Gem::Version.new(pack[:version]) < Gem::Version.new(man[:version])
-			up = true
-		elsif Gem::Version.new(pack[:release]) < Gem::Version.new(man[:release])
-			up=true
-		end
-		if up
-			puts "upgrading #{pack[:name]}"
-			do_install(pack[:name])
-		else
-			puts "skipping #{pack[:name]}"
-		end
-	}
-end
-
-def do_list(list)
-	if(list.nil? or list.length == 0)
-		$installed.each_value {|p|
-			puts "#{p[:name]} - INSTALLED"
-			puts "    " + p.to_s
-		}
-	else
-		list.each {|p|
-			list_files = false
-			list_hash = true
-			if p[0] == '+'
-				p = p.sub("+", "")
-				list_files = true
-			elsif p[0] == '-'
-				p = p.sub("-", "")
-				list_hash = false
-			end
-			x = $installed.read(p)
-			if !x.nil?
-				puts "#{p} - INSTALLED"
-			else
-				x = $manifest.read(p)
-				if(!x.nil?)
-					puts "#{p}"
-				end
-			end
-			if x.nil?
-				puts "#{p} - NOT FOUND"
-			else
-				if list_hash
-					puts "    " + x.to_s
-				end
-				if list_files
-					list = File.open("#{LOCAL}/" + x[:name] + "-" + x[:version] \
-								+ "-" + x[:release] + "-" + ARCH + ".filelist", "r").read.split("\n")
-					list.each {|f|
-						puts (" :: #{f}")
-					}
-				end
-			end
-		}
-	end
-	return true
-end
+$manifests = []
 
 def execute(type, list)
 	if type == "" then return true end
@@ -111,11 +33,12 @@ def execute(type, list)
 	puts "--- perform action #{type} ---"
 	puts "affected packages:"
 	puts list.join(" ")
-	
+	if !$no_confirm
 	print "\nContinue [Y/n]? "
 	
 	inp = $stdin.gets.chomp
 	if inp == "n" or inp == "N" then return true end
+	end
 	end
 	r = false
 	case type
@@ -135,46 +58,6 @@ def execute(type, list)
 	return r
 end
 
-def resolve_deps(list)
-	newlist = []
-	num=0
-	list.each {|name|
-		action = ""
-		if (name[0] =~ /[A-Za-z0-9]/).nil?
-			action = name[0]
-			name.sub!(name[0], "")
-		end
-		if action != "+"
-			newlist << action + name
-			next
-		end
-		if $manifest.read(name).nil?
-			puts "error: could not find or resolve #{name}"
-			return nil
-		end
-		deps = $manifest.read(name)[:deps].split(",")
-		deps.each {|d|
-			vn = d.split(' ')
-			if ! is_installed?(vn[0], vn[1])
-				if vn[1] == "*"
-					dn = vn[0]
-				else
-					dn = d
-				end
-				if !list.include?(dn)
-					newlist << action + dn
-					num += 1
-				end
-			end
-		}
-		newlist << action + name
-	}
-	if num != 0
-		return resolve_deps(newlist)
-	end
-	return newlist
-end
-
 if ! Dir.exist?(LOCAL)
 	Dir.mkdir(LOCAL)
 end
@@ -184,7 +67,7 @@ if ! Dir.exist?(ROOT)
 end
 if File.exist?(LOCAL + "/" + File.basename(REMOTE))
 	print "loading remote manifest..."
-	$manifest = Manifest.new(LOCAL + "/" + File.basename(REMOTE), REMOTE)
+	$manifests << Manifest.new(LOCAL + "/" + File.basename(REMOTE), REMOTE)
 	puts " ok"
 end
 
@@ -197,8 +80,47 @@ puts " ok"
 
 list = []
 type = ""
+if ARGV[0] == "help" or ARGV[0] == "--help"
+	puts $PROGRAM_NAME + " - SeaOS package manager"
+	puts "usage: #{$PROGRAM_NAME} [options] <action1> <package list 1> <action2> <package list 2> ..."
+	puts "options:"
+	puts "  --yes   - Don't ask for confirmation"
+	puts "actions:"
+	puts "  sync    - Install or remove packages"
+	puts "  update  - Synchronize manifest files"
+	puts "  upgrade - Upgrade packages"
+	puts "  list    - List packages (and information)"
+	puts
+	puts "Actions that take a package list (sync, upgrade, list) read the packages as a list of directions and names: <direction><name>. Directions are single character and non-alphanumeric. Their meaning depends on the action specified for this package list."
+	puts " Direction   | Action | Meaning"
+	puts "     +       | sync   | Install package"
+	puts "     +       | list   | List package's files"
+	puts "     +       | upgrade| Upgrade package"
+	puts "     -       | sync   | Uninstall package"
+	puts "     -       | list   | Only display if package is installed or not"
+	puts "The action 'upgrade' does not require directions, they are optional for this action."
+	puts
+	puts "Groups are also supported. A group is a set of packages that can be collectively referred to by a single name. They are in all caps. Built-in groups are 'ALL' and 'INSTALLED'. ALL refers to all packages available in all repos. INSTALLED refers to all packages listed in the installedmanifest (all installed packages). When referred to with a direction (e.g. +ALL), the direction is applies to all packages in the group."
+	puts 
+	puts "Examples:"
+	puts "Install and remove programs: "
+	puts "    #{$PROGRAM_NAME} sync +bash -gcc -binutils +flex"
+	puts "        This will install bash and flex, while removing gcc and binutils"
+	puts "    #{$PROGRAM_NAME} sync -INSTALLED"
+	puts "        Uninstall everything that is currently installed"
+	puts "    #{$PROGRAM_NAME} sync +ALL"
+	puts "        Install all available packages"
+	puts "Sync repositories:"
+	puts "    #{$PROGRAM_NAME} update"
+	puts "Combining actions:"
+	puts "    #{$PROGRAM_NAME} update sync +bash +findutils -diffutils upgrade INSTALLED"
+	puts "        Sync repos, install bash and findutils, remove diffutils, upgrade all installed programs."
+	
+end
 ARGV.each { |arg|
 	case arg
+		when "--yes"
+			$no_confirm = true
 		when "sync", "update", "upgrade", "list"
 			if ! execute(type, list)
 				puts "quitting..."
@@ -211,11 +133,11 @@ ARGV.each { |arg|
 			arg = arg.dup
 			if /ALL$/ =~ arg
 				ar = []
-				if !$manifest.nil?
-					$manifest.each_value{|x|
+				$manifests.each{|m|
+					m.each_value{|x|
 						ar << x[:name]
 					}
-				end
+				}
 				arg.slice!("ALL")
 			elsif /INSTALLED$/ =~ arg
 				ar = []
