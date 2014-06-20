@@ -4,17 +4,14 @@ require "net/http"
 require "net/ftp"
 require "uri"
 require "digest/md5"
+require "yaml"
 
 require_relative "manifest.rb"
 require_relative "util.rb"
 require_relative "sync.rb"
 require_relative "actions.rb"
 
-REMOTE = "http://dbittman.mooo.com/sea/repo/core.manifest"
-LOCAL  = "local_database"
-ARCH   = "x86"
-ARCH2  = "i586"
-ROOT   = "porting/ported/install-base-#{ARCH2}-pc-seaos"
+CONFIG = "ship.yaml"
 
 $no_confirm = false
 
@@ -22,10 +19,11 @@ $manifests = []
 
 def execute(type, list)
 	if type == "" then return true end
-	if type != "update" and type != "" and !File.exists?(LOCAL + "/" + File.basename(REMOTE))
-		puts "error: local manifest doesn't exist (run update)"
+	if type != "update" and type != "" and ($manifests.size == 0 || !$manifests.each{|m| break if m.loaded?}.nil?)
+		puts "error: no local manifests exist (run update)"
 		return
 	end
+	# God damn I love ruby.
 	list.uniq!
 
 	if type != "update" and type != "list"
@@ -58,6 +56,17 @@ def execute(type, list)
 	return r
 end
 
+# load configuration
+yaml = YAML::load_file(CONFIG)
+ROOT = yaml["root"]
+LOCAL = yaml["database"]
+ARCH  = yaml["arch"]
+
+if ROOT.nil? or LOCAL.nil? or ARCH.nil?
+	puts "configuration file error"
+	exit 1
+end
+
 if ! Dir.exist?(LOCAL)
 	Dir.mkdir(LOCAL)
 end
@@ -65,17 +74,29 @@ end
 if ! Dir.exist?(ROOT)
 	`mkdir -p #{ROOT}`
 end
-if File.exist?(LOCAL + "/" + File.basename(REMOTE))
-	print "loading remote manifest..."
-	$manifests << Manifest.new(LOCAL + "/" + File.basename(REMOTE), REMOTE)
-	puts " ok"
+
+puts "loading remote manifests..."
+mans = yaml["manifests"]
+if mans.nil? or mans.size == 0
+	puts "no remote manifests specified: cannot continue"
+	exit 1
 end
+mans.each{ |m|
+	print " * " + m["name"] + "..."
+	manifest = Manifest.new(LOCAL + "/" + File.basename(m["remote"]), m["remote"], m["name"])
+	$manifests << manifest
+	if manifest.loaded?
+		puts " ok"
+	else
+		puts " not present (run update)"
+	end
+}
 
 if ! File.exist?(LOCAL + "/installed.manifest")
 	File.new(LOCAL + "/installed.manifest", "w").close
 end
 print "loading local manifest..."
-$installed = Manifest.new(LOCAL + "/installed.manifest", nil)
+$installed = Manifest.new(LOCAL + "/installed.manifest", nil, nil)
 puts " ok"
 
 list = []

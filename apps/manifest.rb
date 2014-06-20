@@ -1,9 +1,10 @@
 class Manifest
 include Enumerable
 # returns a hash of of hashes, referenced by package name
-def initialize(lpath, rpath)
+def initialize(lpath, rpath, name)
 	@local = lpath
 	@remote = rpath
+	@name = name
 	@packages = parse()
 end
 
@@ -12,6 +13,7 @@ def each(&block)
 end
 
 def each_value(&block)
+	throw "Manifest Not Present (#{@name})" unless @packages != nil
 	@packages.each_value(&block)
 end
 
@@ -25,6 +27,10 @@ end
 
 def delete(name)
 	@packages.delete(name.to_sym)
+end
+
+def get_remote_dir()
+	return File.dirname(@remote)
 end
 
 def remote_sync
@@ -49,6 +55,7 @@ def parse
 	ret = Hash.new
 	if ! File.exist?(@local)
 		@packages = ret
+		return
 	end
 	file = File.open(@local)
 	file.each_line{ |line|
@@ -74,6 +81,7 @@ def parse
 		if vals[5].nil?
 			hash[:conflicts] = ""
 		end
+		hash[:manifest] = @name
 		ret[vals[0].to_sym] = hash
 	}
 	@packages = ret
@@ -87,5 +95,22 @@ def flush
 	file.close
 end
 
+def loaded?
+	return @packages != nil
+end
+
+def get_name
+	return @name
+end
+
+end
+
+def get_manifest(name)
+	$manifests.each{ |m|
+		if m.get_name == name
+			return m
+		end
+	}
+	return nil
 end
 

@@ -1,0 +1,9 @@
+root: porting/ported/install-base-i586-pc-seaos
+database: local_database
+arch: x86
+manifests:
+    - name: core
+      remote: http://dbittman.mooo.com/sea/repo/core.manifest
+    - name: extra
+      remote: http://dbittman.mooo.com/sea/extra/extra.manifest
+

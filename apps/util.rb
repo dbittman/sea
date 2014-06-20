@@ -1,3 +1,4 @@
+# Simple progress bar
 def draw_progress(complete, total)
 	percent = (complete * 100) / total
 	print "["
@@ -14,10 +15,16 @@ def draw_progress(complete, total)
 	printf "] %3d%%", percent
 end
 
+# clears entire line for the current line that this cursor is on. This only works
+# for terminals that support this command, TODO: use termcap or something.
 def reset_line()
 	print("\r\e[0K")
 end
 
+# Download a file from <url>, with the known-good MD5 hash of <correcthash>, into the directory
+# <local_dir>. <name> is the name to display while downloading. 
+# local_dir defaults to ., name defaults to the basename of <url>
+# and if correcthash is nil, the file is not checked. <url> is required.
 def download_file(url, correcthash, local_dir, name)
 	if name.nil?
 		name = ""
@@ -41,13 +48,14 @@ def download_file(url, correcthash, local_dir, name)
 		end
 	end
 
+	# it failed the hash test, or we can't verify. Re-download.
 	if File.exists?(local_dir + "/" + File.basename(url))
 		File.delete(local_dir + "/" + File.basename(url))
 	end
+	# calculate file size
 	file_size = 0
 	remote = url
 	uri = URI.parse(remote)
-
 	case uri.scheme
 	when "http"
 		redir_count=0
@@ -56,6 +64,7 @@ def download_file(url, correcthash, local_dir, name)
 			response = http.request_head(uri.request_uri)
 			case response
 			when Net::HTTPRedirection
+				# need to redirect here...
 				redir_count += 1
 				if redir_count > 16
 					printf " * download#{name}: error: maximum redirect count reached\n"
@@ -81,14 +90,15 @@ def download_file(url, correcthash, local_dir, name)
 		file_size = ftp.size(uri.path)
 		ftp.close
 	end
-
-
+	
+	# fire off a new thread to run wget to actually download the file
 	t = Thread.new {
 		`wget -q #{url} -O #{local_dir}/#{File.basename(url)}`
 		Thread.current[:output] = $?
 	}
 	time = 0
 	while (t.alive?)
+		# meanwhile, draw out the progress.
 		sleep 0.1
 		time += 1
 		if ! File.exists?(local_dir + "/" + File.basename(url))
@@ -102,12 +112,14 @@ def download_file(url, correcthash, local_dir, name)
 			printf " (%5.3f MB/s)", (cfs.to_f / (time / 10))/(1024 * 1024)
 		end
 	end
-	reset_line
+	reset_line()
 	print " * download#{name}:                                                                 \r"
+	# return value of wget
 	if t[:output] != 0
 		print " * download#{name}: failed (wget returned #{t[:output]})\n"
 		return false
 	end
+	# verify the download
 	if !correcthash.nil?
 		begin
 			file = File.open(local_dir + "/" + File.basename(url))
@@ -126,6 +138,7 @@ def download_file(url, correcthash, local_dir, name)
 	end
 end
 
+# get a package hash from the manifests
 def get_package(name)
 	$manifests.each{|m|
 		pack = m.read(name)
@@ -134,6 +147,7 @@ def get_package(name)
 	return nil
 end
 
+# is this package of this version installed?
 def is_installed?(name, ver)
 	if ver == "*"
 		return ! $installed.read(name).nil?
@@ -141,5 +155,4 @@ def is_installed?(name, ver)
 		return (!$installed.read(name).nil?) && $installed.read(name)[:version] == ver
 	end
 end
-
 

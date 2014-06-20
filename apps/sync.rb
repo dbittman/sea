@@ -83,7 +83,9 @@ def do_install(name)
 	end
 	puts
 
-	rpath = File.dirname(REMOTE) + "/pkg/" + ARCH + "/" + package[:name] + "-" \
+	source = get_manifest(package[:manifest])
+	throw "What the fuck?" unless source != nil
+	rpath = source.get_remote_dir + "/pkg/" + ARCH + "/" + package[:name] + "-" \
 		+ package[:version] + "-" + package[:release] + "-" + ARCH + ".tar.xz"
 	
 	if ! download_file(rpath + ".md5", nil, LOCAL, "hash")
