@@ -70,10 +70,10 @@ $downloads_table = [
   ],
 	
   ["automake",
-     "1.13",
+     "1.14",
      true,
-     "http://ftp.gnu.org/gnu/automake/automake-1.13.tar.xz",
-     "bb37ffad523a1928efdd157b6561b631",
+     "http://ftp.gnu.org/gnu/automake/automake-1.14.tar.xz",
+     "cb3fba6d631cddf12e230fd0cc1890df",
      [],
      "host",
      "--prefix=/usr",
