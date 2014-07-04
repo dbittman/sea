@@ -1,0 +1,3 @@
+#!/bin/sh
+for i in `seq 100`; do explode; done
+
