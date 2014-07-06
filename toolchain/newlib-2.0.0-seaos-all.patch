@@ -1,6 +1,6 @@
-diff -uprN newlib-2.0.0/config.sub newlib-2.0.0-sea/config.sub
+diff -uprN newlib-2.0.0/config.sub newlib-2.0.0-seaos/config.sub
 --- newlib-2.0.0/config.sub	2012-12-07 16:02:34.000000000 -0800
-+++ newlib-2.0.0-sea/config.sub	2014-03-03 22:44:44.341561730 -0800
++++ newlib-2.0.0-seaos/config.sub	2014-07-05 17:10:42.416164123 -0700
 @@ -1359,7 +1359,7 @@ case $os in
  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
  	      | -sym* | -kopensolaris* \
@@ -10,9 +10,9 @@ diff -uprN newlib-2.0.0/config.sub newlib-2.0.0-sea/config.sub
  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
  	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
-diff -uprN newlib-2.0.0/newlib/configure.host newlib-2.0.0-sea/newlib/configure.host
+diff -uprN newlib-2.0.0/newlib/configure.host newlib-2.0.0-seaos/newlib/configure.host
 --- newlib-2.0.0/newlib/configure.host	2012-12-04 13:43:20.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/configure.host	2014-03-03 22:44:44.342561717 -0800
++++ newlib-2.0.0-seaos/newlib/configure.host	2014-07-05 17:10:42.416164123 -0700
 @@ -450,10 +450,14 @@ case "${host}" in
  	##newlib_cflags="${newlib_cflags} -I`newlib-flags --kernel-dir`/include"
  	##newlib_cflags="${newlib_cflags} -idirafter ${gcc_dir}include"
@@ -30,9 +30,9 @@ diff -uprN newlib-2.0.0/newlib/configure.host newlib-2.0.0-sea/newlib/configure.
    m68k-sun-sunos*)
  	unix_dir=unix
  	;;
-diff -uprN newlib-2.0.0/newlib/libc/stdio/local.h newlib-2.0.0-sea/newlib/libc/stdio/local.h
+diff -uprN newlib-2.0.0/newlib/libc/stdio/local.h newlib-2.0.0-seaos/newlib/libc/stdio/local.h
 --- newlib-2.0.0/newlib/libc/stdio/local.h	2012-05-31 00:33:59.000000000 -0700
-+++ newlib-2.0.0-sea/newlib/libc/stdio/local.h	2014-03-03 22:44:44.342561717 -0800
++++ newlib-2.0.0-seaos/newlib/libc/stdio/local.h	2014-07-05 17:10:42.416164123 -0700
 @@ -109,7 +109,7 @@
  	}
  
@@ -42,9 +42,9 @@ diff -uprN newlib-2.0.0/newlib/libc/stdio/local.h newlib-2.0.0-sea/newlib/libc/s
  extern u_char *_EXFUN(__sccl, (char *, u_char *fmt));
  extern int    _EXFUN(__svfscanf_r,(struct _reent *,FILE *, _CONST char *,va_list));
  extern int    _EXFUN(__ssvfscanf_r,(struct _reent *,FILE *, _CONST char *,va_list));
-diff -uprN newlib-2.0.0/newlib/libc/stdio/vfprintf.c newlib-2.0.0-sea/newlib/libc/stdio/vfprintf.c
+diff -uprN newlib-2.0.0/newlib/libc/stdio/vfprintf.c newlib-2.0.0-seaos/newlib/libc/stdio/vfprintf.c
 --- newlib-2.0.0/newlib/libc/stdio/vfprintf.c	2012-10-16 12:03:01.000000000 -0700
-+++ newlib-2.0.0-sea/newlib/libc/stdio/vfprintf.c	2014-03-03 22:44:44.342561717 -0800
++++ newlib-2.0.0-seaos/newlib/libc/stdio/vfprintf.c	2014-07-05 17:10:42.416164123 -0700
 @@ -336,7 +336,8 @@ int __sprint_r (struct _reent *, FILE *,
   *
   * Make sure to avoid inlining.
@@ -55,9 +55,9 @@ diff -uprN newlib-2.0.0/newlib/libc/stdio/vfprintf.c newlib-2.0.0-sea/newlib/lib
  _DEFUN(__sbprintf, (rptr, fp, fmt, ap),
         struct _reent *rptr _AND
         register FILE *fp   _AND
-diff -uprN newlib-2.0.0/newlib/libc/stdlib/mbstowcs.c newlib-2.0.0-sea/newlib/libc/stdlib/mbstowcs.c
+diff -uprN newlib-2.0.0/newlib/libc/stdlib/mbstowcs.c newlib-2.0.0-seaos/newlib/libc/stdlib/mbstowcs.c
 --- newlib-2.0.0/newlib/libc/stdlib/mbstowcs.c	2004-04-23 14:44:22.000000000 -0700
-+++ newlib-2.0.0-sea/newlib/libc/stdlib/mbstowcs.c	2014-03-03 22:44:44.342561717 -0800
++++ newlib-2.0.0-seaos/newlib/libc/stdlib/mbstowcs.c	2014-07-05 17:10:42.416164123 -0700
 @@ -59,6 +59,7 @@ _DEFUN (mbstowcs, (pwcs, s, n),
          const char *s _AND
          size_t n)
@@ -66,9 +66,9 @@ diff -uprN newlib-2.0.0/newlib/libc/stdlib/mbstowcs.c newlib-2.0.0-sea/newlib/li
  #ifdef _MB_CAPABLE
    mbstate_t state;
    state.__count = 0;
-diff -uprN newlib-2.0.0/newlib/libc/sys/configure newlib-2.0.0-sea/newlib/libc/sys/configure
+diff -uprN newlib-2.0.0/newlib/libc/sys/configure newlib-2.0.0-seaos/newlib/libc/sys/configure
 --- newlib-2.0.0/newlib/libc/sys/configure	2012-12-20 13:10:07.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/configure	2014-03-03 22:44:44.344561693 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/configure	2014-07-05 17:10:42.419497397 -0700
 @@ -1,11 +1,9 @@
  #! /bin/sh
  # Guess values for system-dependent variables and create Makefiles.
@@ -878,9 +878,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/configure newlib-2.0.0-sea/newlib/libc/s
    shift
    \$as_echo "running CONFIG_SHELL=$SHELL \$*" >&6
    CONFIG_SHELL='$SHELL'
-diff -uprN newlib-2.0.0/newlib/libc/sys/configure.in newlib-2.0.0-sea/newlib/libc/sys/configure.in
+diff -uprN newlib-2.0.0/newlib/libc/sys/configure.in newlib-2.0.0-seaos/newlib/libc/sys/configure.in
 --- newlib-2.0.0/newlib/libc/sys/configure.in	2012-02-21 14:34:31.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/configure.in	2014-03-03 22:44:44.344561693 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/configure.in	2014-07-05 17:10:42.419497397 -0700
 @@ -36,6 +36,7 @@ if test -n "${sys_dir}"; then
  	netware) AC_CONFIG_SUBDIRS(netware) ;;
  	rdos) AC_CONFIG_SUBDIRS(rdos) ;;
@@ -889,9 +889,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/configure.in newlib-2.0.0-sea/newlib/lib
  	sh) AC_CONFIG_SUBDIRS(sh) ;;
  	sparc64) AC_CONFIG_SUBDIRS(sparc64) ;;
  	sun4) AC_CONFIG_SUBDIRS(sun4) ;;
-diff -uprN newlib-2.0.0/newlib/libc/sys/newlib-2.0.0-configure-i586-pc-seaos.log newlib-2.0.0-sea/newlib/libc/sys/newlib-2.0.0-configure-i586-pc-seaos.log
+diff -uprN newlib-2.0.0/newlib/libc/sys/newlib-2.0.0-configure-i586-pc-seaos.log newlib-2.0.0-seaos/newlib/libc/sys/newlib-2.0.0-configure-i586-pc-seaos.log
 --- newlib-2.0.0/newlib/libc/sys/newlib-2.0.0-configure-i586-pc-seaos.log	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/newlib-2.0.0-configure-i586-pc-seaos.log	2014-03-03 22:44:44.344561693 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/newlib-2.0.0-configure-i586-pc-seaos.log	2014-07-05 17:10:42.419497397 -0700
 @@ -0,0 +1,25 @@
 +aclocal.m4:17: warning: this file was generated for autoconf 2.68.
 +You have another version of autoconf.  It may work, but is not guaranteed to.
@@ -918,9 +918,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/newlib-2.0.0-configure-i586-pc-seaos.log
 +../../../libtool.m4:67: LT_INIT is expanded from...
 +../../../libtool.m4:106: AM_PROG_LIBTOOL is expanded from...
 +configure.in:20: the top level
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/Makefile.am newlib-2.0.0-sea/newlib/libc/sys/seaos/Makefile.am
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/Makefile.am newlib-2.0.0-seaos/newlib/libc/sys/seaos/Makefile.am
 --- newlib-2.0.0/newlib/libc/sys/seaos/Makefile.am	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/Makefile.am	2014-03-03 23:17:44.776573633 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/Makefile.am	2014-07-05 17:10:42.419497397 -0700
 @@ -0,0 +1,71 @@
 +AUTOMAKE_OPTIONS = cygnus
 +INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS) -I ./include -I ./include
@@ -993,9 +993,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/Makefile.am newlib-2.0.0-sea/newli
 +	for i in $(srcdir)/include/arpa/*.h; do \
 +	  $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/arpa/`basename $$i`; \
 +	done;
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/Makefile.in newlib-2.0.0-sea/newlib/libc/sys/seaos/Makefile.in
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/Makefile.in newlib-2.0.0-seaos/newlib/libc/sys/seaos/Makefile.in
 --- newlib-2.0.0/newlib/libc/sys/seaos/Makefile.in	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/Makefile.in	2014-03-03 23:19:04.710569606 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/Makefile.in	2014-07-05 17:10:42.419497397 -0700
 @@ -0,0 +1,871 @@
 +# Makefile.in generated by automake 1.12.6 from Makefile.am.
 +# @configure_input@
@@ -1868,9 +1868,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/Makefile.in newlib-2.0.0-sea/newli
 +# Tell versions [3.59,3.63) of GNU make to not export all variables.
 +# Otherwise a system limit (for SysV at least) may be exceeded.
 +.NOEXPORT:
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/aclocal.m4 newlib-2.0.0-sea/newlib/libc/sys/seaos/aclocal.m4
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/aclocal.m4 newlib-2.0.0-seaos/newlib/libc/sys/seaos/aclocal.m4
 --- newlib-2.0.0/newlib/libc/sys/seaos/aclocal.m4	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/aclocal.m4	2014-03-03 22:44:44.345561680 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/aclocal.m4	2014-07-05 17:10:42.419497397 -0700
 @@ -0,0 +1,983 @@
 +# generated automatically by aclocal 1.12.6 -*- Autoconf -*-
 +
@@ -2855,9 +2855,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/aclocal.m4 newlib-2.0.0-sea/newlib
 +]) # _AM_PROG_TAR
 +
 +m4_include([../../../acinclude.m4])
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/at.c newlib-2.0.0-sea/newlib/libc/sys/seaos/at.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/at.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/at.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/at.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/at.c	2014-03-03 22:44:44.345561680 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/at.c	2014-07-05 17:10:42.419497397 -0700
 @@ -0,0 +1,48 @@
 +#include <sys/times.h>
 +#include <sys/time.h>
@@ -2907,9 +2907,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/at.c newlib-2.0.0-sea/newlib/libc/
 +	free(newpath);
 +	return 0;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/bits/wordsize.h newlib-2.0.0-sea/newlib/libc/sys/seaos/bits/wordsize.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/bits/wordsize.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/bits/wordsize.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/bits/wordsize.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/bits/wordsize.h	2014-03-03 22:44:44.345561680 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/bits/wordsize.h	2014-07-05 17:10:42.419497397 -0700
 @@ -0,0 +1,13 @@
 +/* Determine the wordsize from the preprocessor defines.  */
 +
@@ -2924,9 +2924,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/bits/wordsize.h newlib-2.0.0-sea/n
 +/* Both x86-64 and x32 use the 64-bit system call interface.  */
 +# define __SYSCALL_WORDSIZE             64
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/cfspeed.c newlib-2.0.0-sea/newlib/libc/sys/seaos/cfspeed.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/cfspeed.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/cfspeed.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/cfspeed.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/cfspeed.c	2014-03-03 22:44:44.345561680 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/cfspeed.c	2014-07-05 17:10:42.419497397 -0700
 @@ -0,0 +1,99 @@
 +/* `struct termios' speed frobnication functions.  Linux version.
 +   Copyright (C) 1991, 92, 93, 95, 96, 97, 98, 2000 Free Software Foundation, Inc.
@@ -3027,9 +3027,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/cfspeed.c newlib-2.0.0-sea/newlib/
 +
 +  return 0;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ch.c newlib-2.0.0-sea/newlib/libc/sys/seaos/ch.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ch.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/ch.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/ch.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/ch.c	2014-03-03 22:44:44.345561680 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/ch.c	2014-07-05 17:10:42.419497397 -0700
 @@ -0,0 +1,85 @@
 +#include "ksyscall.h"
 +#include <sys/types.h>
@@ -3116,9 +3116,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ch.c newlib-2.0.0-sea/newlib/libc/
 +	}
 +	return ret;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/config.log newlib-2.0.0-sea/newlib/libc/sys/seaos/config.log
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/config.log newlib-2.0.0-seaos/newlib/libc/sys/seaos/config.log
 --- newlib-2.0.0/newlib/libc/sys/seaos/config.log	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/config.log	2014-03-03 22:44:44.345561680 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/config.log	2014-07-05 17:10:42.419497397 -0700
 @@ -0,0 +1,310 @@
 +This file contains any messages produced by compilers while
 +running configure, to aid debugging if configure makes a mistake.
@@ -3430,9 +3430,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/config.log newlib-2.0.0-sea/newlib
 +#define PACKAGE_URL ""
 +
 +configure: exit 1
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/configure newlib-2.0.0-sea/newlib/libc/sys/seaos/configure
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/configure newlib-2.0.0-seaos/newlib/libc/sys/seaos/configure
 --- newlib-2.0.0/newlib/libc/sys/seaos/configure	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/configure	2014-03-03 22:44:44.347561655 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/configure	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,4939 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -8373,9 +8373,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/configure newlib-2.0.0-sea/newlib/
 +$as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 +fi
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/configure.in newlib-2.0.0-sea/newlib/libc/sys/seaos/configure.in
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/configure.in newlib-2.0.0-seaos/newlib/libc/sys/seaos/configure.in
 --- newlib-2.0.0/newlib/libc/sys/seaos/configure.in	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/configure.in	2014-03-03 22:44:44.347561655 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/configure.in	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,20 @@
 +AC_PREREQ(2.59)
 +AC_INIT([newlib], [NEWLIB_VERSION])
@@ -8397,9 +8397,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/configure.in newlib-2.0.0-sea/newl
 +
 +AC_CONFIG_FILES([Makefile])
 +AC_OUTPUT
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/crt0.c newlib-2.0.0-sea/newlib/libc/sys/seaos/crt0.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/crt0.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/crt0.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/crt0.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/crt0.c	2014-03-03 22:44:44.347561655 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/crt0.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,12 @@
 +extern char **environ;
 +extern void tzset();
@@ -8413,9 +8413,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/crt0.c newlib-2.0.0-sea/newlib/lib
 +	exit(ret);
 +	return ret;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ctl.c newlib-2.0.0-sea/newlib/libc/sys/seaos/ctl.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ctl.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/ctl.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/ctl.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/ctl.c	2014-03-03 22:44:44.347561655 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/ctl.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,41 @@
 +#include <sys/times.h>
 +#include <sys/time.h>
@@ -8458,9 +8458,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ctl.c newlib-2.0.0-sea/newlib/libc
 +	}
 +	return ret;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ctype.c newlib-2.0.0-sea/newlib/libc/sys/seaos/ctype.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ctype.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/ctype.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/ctype.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/ctype.c	2014-03-03 22:44:44.347561655 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/ctype.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,71 @@
 +/* ....... */
 +int rpmatch(char *i)
@@ -8533,9 +8533,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ctype.c newlib-2.0.0-sea/newlib/li
 +
 +char *__ctype_ptr = (char *)(_ctype_b+127);
 +//char *__ctype_ptr__ = (char *)(_ctype_b+127);
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/daemon.c newlib-2.0.0-sea/newlib/libc/sys/seaos/daemon.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/daemon.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/daemon.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/daemon.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/daemon.c	2014-03-03 22:44:44.347561655 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/daemon.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,52 @@
 +#include <sys/times.h>
 +#include <sys/time.h>
@@ -8589,9 +8589,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/daemon.c newlib-2.0.0-sea/newlib/l
 +	errno=0;
 +	return 0;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/dir.c newlib-2.0.0-sea/newlib/libc/sys/seaos/dir.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/dir.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/dir.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/dir.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/dir.c	2014-03-03 22:44:44.347561655 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/dir.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,186 @@
 +#include "ksyscall.h"
 +#include <sys/types.h>
@@ -8779,9 +8779,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/dir.c newlib-2.0.0-sea/newlib/libc
 +	}
 +	return d->pos;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execl.c newlib-2.0.0-sea/newlib/libc/sys/seaos/execl.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execl.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/execl.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/execl.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/execl.c	2014-03-03 22:44:44.347561655 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/execl.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,50 @@
 +/* execl.c */
 +
@@ -8833,9 +8833,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execl.c newlib-2.0.0-sea/newlib/li
 +
 +  return _execve (path, (char * _CONST  *) argv, *p_environ);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execle.c newlib-2.0.0-sea/newlib/libc/sys/seaos/execle.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execle.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/execle.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/execle.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/execle.c	2014-03-03 22:44:44.347561655 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/execle.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,46 @@
 +/* execle.c */
 +
@@ -8883,9 +8883,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execle.c newlib-2.0.0-sea/newlib/l
 +  argv[i]=0;
 +  return _execve (path, (char * _CONST *) argv, (char * _CONST *) envp);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execlp.c newlib-2.0.0-sea/newlib/libc/sys/seaos/execlp.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execlp.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/execlp.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/execlp.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/execlp.c	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/execlp.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,45 @@
 +/* execlp.c */
 +
@@ -8932,9 +8932,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execlp.c newlib-2.0.0-sea/newlib/l
 +
 +  return execvp (path, (char * _CONST *) argv);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execv.c newlib-2.0.0-sea/newlib/libc/sys/seaos/execv.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execv.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/execv.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/execv.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/execv.c	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/execv.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,20 @@
 +/* execv.c */
 +
@@ -8956,9 +8956,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execv.c newlib-2.0.0-sea/newlib/li
 +{
 +  return _execve (path, (char * _CONST *) argv, *p_environ);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execve.c newlib-2.0.0-sea/newlib/libc/sys/seaos/execve.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execve.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/execve.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/execve.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/execve.c	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/execve.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,24 @@
 +/* execve.c */
 +
@@ -8984,9 +8984,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execve.c newlib-2.0.0-sea/newlib/l
 +	errno = -ret;
 +	return -1;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execvp.c newlib-2.0.0-sea/newlib/libc/sys/seaos/execvp.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execvp.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/execvp.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/execvp.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/execvp.c	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/execvp.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,70 @@
 +/* execvp.c */
 +
@@ -9058,9 +9058,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/execvp.c newlib-2.0.0-sea/newlib/l
 +
 +  return -1;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/exit.c newlib-2.0.0-sea/newlib/libc/sys/seaos/exit.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/exit.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/exit.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/exit.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/exit.c	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/exit.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,13 @@
 +#include "ksyscall.h"
 +#include <signal.h>
@@ -9075,9 +9075,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/exit.c newlib-2.0.0-sea/newlib/lib
 +{
 +	return _exit(z);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/fork.c newlib-2.0.0-sea/newlib/libc/sys/seaos/fork.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/fork.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/fork.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/fork.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/fork.c	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/fork.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,42 @@
 +#include "ksyscall.h"
 +#include <signal.h>
@@ -9121,9 +9121,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/fork.c newlib-2.0.0-sea/newlib/lib
 +	}
 +	return ret;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ftok.c newlib-2.0.0-sea/newlib/libc/sys/seaos/ftok.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ftok.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/ftok.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/ftok.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/ftok.c	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/ftok.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,40 @@
 +/* Copyright (C) 1995, 1996, 2000 Free Software Foundation, Inc.
 +   This file is part of the GNU C Library.
@@ -9165,9 +9165,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ftok.c newlib-2.0.0-sea/newlib/lib
 +
 +  return key;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/getopt.c newlib-2.0.0-sea/newlib/libc/sys/seaos/getopt.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/getopt.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/getopt.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/getopt.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/getopt.c	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/getopt.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,480 @@
 +/****************************************************************************
 +
@@ -9649,9 +9649,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/getopt.c newlib-2.0.0-sea/newlib/l
 +
 +
 +/* end of file GETOPT.C */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/group.c newlib-2.0.0-sea/newlib/libc/sys/seaos/group.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/group.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/group.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/group.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/group.c	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/group.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,38 @@
 +#include <sys/times.h>
 +#include <sys/time.h>
@@ -9691,9 +9691,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/group.c newlib-2.0.0-sea/newlib/li
 +{
 +	return 0;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/id.c newlib-2.0.0-sea/newlib/libc/sys/seaos/id.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/id.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/id.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/id.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/id.c	2014-03-03 22:52:49.000460076 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/id.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,181 @@
 +/* id.c - deal with various IDs for things. uid, gid, etc. Many of these
 + * functions don't return errors ever. */
@@ -9876,9 +9876,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/id.c newlib-2.0.0-sea/newlib/libc/
 +	/* TODO: */
 +	return getgid();
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/_ansi.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/_ansi.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/_ansi.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/_ansi.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/_ansi.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/_ansi.h	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/_ansi.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,133 @@
 +/* Provide support for both ANSI and non-ANSI environments.  */
 +
@@ -10013,9 +10013,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/_ansi.h newlib-2.0.0-sea/n
 +#endif
 +
 +#endif /* _ANSIDECL_H_ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/arpa/inet.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/arpa/inet.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/arpa/inet.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/arpa/inet.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/arpa/inet.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/arpa/inet.h	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/arpa/inet.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,156 @@
 +/*
 + * Copyright (c) 1983, 1993
@@ -10173,9 +10173,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/arpa/inet.h newlib-2.0.0-s
 +__END_DECLS
 +
 +#endif /* !_ARPA_INET_H_ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/arpa/nameser.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/arpa/nameser.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/arpa/nameser.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/arpa/nameser.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/arpa/nameser.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/arpa/nameser.h	2014-03-03 23:22:03.560327247 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/arpa/nameser.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,521 @@
 +/*
 + * Copyright (c) 1983, 1989, 1993
@@ -10698,14 +10698,14 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/arpa/nameser.h newlib-2.0.
 +__END_DECLS
 +
 +#endif /* !_ARPA_NAMESER_H_ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/dirent.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/dirent.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/dirent.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/dirent.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/dirent.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/dirent.h	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/dirent.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1 @@
 +#include <sys/dirent.h>
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/endian.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/endian.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/endian.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/endian.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/endian.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/endian.h	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/endian.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,127 @@
 +/*
 + * Copyright (c) 1987, 1991 Regents of the University of California.
@@ -10834,9 +10834,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/endian.h newlib-2.0.0-sea/
 +#define HTONS(x)        ((x) = htons((u_short)(x)))
 +
 +#endif /* !_MACHINE_ENDIAN_H_ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/limits.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/limits.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/limits.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/limits.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/limits.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/limits.h	2014-03-03 22:44:44.348561643 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/limits.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,148 @@
 +#ifndef _LIBC_LIMITS_H_
 +# define _LIBC_LIMITS_H_	1
@@ -10986,17 +10986,17 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/limits.h newlib-2.0.0-sea/
 +
 +#define NAME_MAX 255
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/memory.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/memory.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/memory.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/memory.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/memory.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/memory.h	2014-03-03 22:44:44.349561630 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/memory.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,4 @@
 +#ifndef __MEMORY_H
 +#define __MEMORY_H
 +#include <string.h>
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/mntent.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/mntent.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/mntent.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/mntent.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/mntent.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/mntent.h	2014-03-03 22:44:44.349561630 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/mntent.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,77 @@
 + #ifndef __MNTENT_H
 + #define __MNTENT_H
@@ -11075,14 +11075,14 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/mntent.h newlib-2.0.0-sea/
 +#endif
 +#endif
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/mnttab_old.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/mnttab_old.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/mnttab_old.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/mnttab_old.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/mnttab_old.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/mnttab_old.h	2014-03-03 22:44:44.349561630 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/mnttab_old.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1 @@
 +#include <sys/mnttab.h>
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/netdb.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/netdb.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/netdb.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/netdb.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/netdb.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/netdb.h	2014-03-03 22:44:44.349561630 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/netdb.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,290 @@
 +/*-
 + * Copyright (c) 1980, 1983, 1988, 1993
@@ -11374,9 +11374,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/netdb.h newlib-2.0.0-sea/n
 +__END_DECLS
 +
 +#endif /* !_NETDB_H_ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/netinet/in.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/netinet/in.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/netinet/in.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/netinet/in.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/netinet/in.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/netinet/in.h	2014-03-03 22:44:44.349561630 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/netinet/in.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,567 @@
 +/*
 + * Copyright (c) 1982, 1986, 1990, 1993
@@ -11945,9 +11945,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/netinet/in.h newlib-2.0.0-
 +#endif /* _KERNEL */
 +
 +#endif /* !_NETINET_IN_H_*/
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/paths.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/paths.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/paths.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/paths.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/paths.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/paths.h	2014-03-03 22:44:44.349561630 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/paths.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,74 @@
 +/*
 + * Copyright (c) 1989, 1993
@@ -12023,9 +12023,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/paths.h newlib-2.0.0-sea/n
 +#define	_PATH_VARTMP	"/var/tmp/"
 +
 +#endif /* !_PATHS_H_ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/setjmp.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/setjmp.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/setjmp.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/setjmp.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/setjmp.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/setjmp.h	2014-03-03 22:44:44.349561630 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/setjmp.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,15 @@
 +#ifndef __SETJMP_H
 +#define __SETJMP_H
@@ -12042,14 +12042,14 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/setjmp.h newlib-2.0.0-sea/
 +#endif
 +#endif
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/socket.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/socket.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/socket.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/socket.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/socket.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/socket.h	2014-03-03 22:44:44.349561630 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/socket.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1 @@
 +#include <sys/socket.h>
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/stdint.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/stdint.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/stdint.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/stdint.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/stdint.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/stdint.h	2014-03-03 22:44:44.349561630 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/stdint.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,468 @@
 +/*
 + * Copyright (c) 2004, 2005 by
@@ -12519,9 +12519,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/stdint.h newlib-2.0.0-sea/
 +#endif
 +
 +#endif /* _STDINT_H */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/syslog.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/syslog.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/syslog.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/syslog.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/syslog.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/syslog.h	2014-03-03 22:44:44.349561630 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/syslog.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,158 @@
 +#ifndef _SYS_SYSLOG_H
 +#define _SYS_SYSLOG_H 1
@@ -12681,16 +12681,16 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/syslog.h newlib-2.0.0-sea/
 +}
 +#endif
 +#endif /* sys/syslog.h */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/unistd.h newlib-2.0.0-sea/newlib/libc/sys/seaos/include/unistd.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/include/unistd.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/unistd.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/include/unistd.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/include/unistd.h	2014-03-03 22:44:44.350561618 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/include/unistd.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,3 @@
 +
 +# include <sys/unistd.h>
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/inet_ntop.c newlib-2.0.0-sea/newlib/libc/sys/seaos/inet_ntop.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/inet_ntop.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/inet_ntop.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/inet_ntop.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/inet_ntop.c	2014-03-03 23:28:10.299746118 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/inet_ntop.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,97 @@
 +/* Copyright (c) 1996 by Internet Software Consortium.
 + *
@@ -12789,9 +12789,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/inet_ntop.c newlib-2.0.0-sea/newli
 + */
 +#undef inet_ntop
 +__weak_reference(__inet_ntop, inet_ntop);
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ksyscall.h newlib-2.0.0-sea/newlib/libc/sys/seaos/ksyscall.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ksyscall.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/ksyscall.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/ksyscall.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/ksyscall.h	2014-03-03 22:54:19.954306819 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/ksyscall.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,134 @@
 +#ifndef SYSCALL_H
 +#define SYSCALL_H
@@ -12927,9 +12927,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/ksyscall.h newlib-2.0.0-sea/newlib
 +#define SYS_WAITAGAIN   127
 +
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/link.c newlib-2.0.0-sea/newlib/libc/sys/seaos/link.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/link.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/link.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/link.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/link.c	2014-03-03 22:44:44.350561618 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/link.c	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,72 @@
 +#include "ksyscall.h"
 +#include <sys/types.h>
@@ -13003,9 +13003,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/link.c newlib-2.0.0-sea/newlib/lib
 +	}
 +	return ret;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/linux_fsinfo.h newlib-2.0.0-sea/newlib/libc/sys/seaos/linux_fsinfo.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/linux_fsinfo.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/linux_fsinfo.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/linux_fsinfo.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/linux_fsinfo.h	2014-03-03 22:44:44.350561618 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/linux_fsinfo.h	2014-07-05 17:10:42.422830672 -0700
 @@ -0,0 +1,114 @@
 +/* Constants from kernel header for various FSes.
 +   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
@@ -13121,9 +13121,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/linux_fsinfo.h newlib-2.0.0-sea/ne
 +#define XENIX_LINK_MAX		126     /* ?? */
 +
 +#endif	/* linux_fsinfo.h */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/log.c newlib-2.0.0-sea/newlib/libc/sys/seaos/log.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/log.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/log.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/log.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/log.c	2014-03-03 22:44:44.350561618 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/log.c	2014-07-05 17:10:42.426163946 -0700
 @@ -0,0 +1,51 @@
 +#include <limits.h>
 +#include <stdarg.h>
@@ -13176,9 +13176,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/log.c newlib-2.0.0-sea/newlib/libc
 +{
 +	syscall(SYS_SYSLOG, mask, 0, 0, 3, 0);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/Makefile.am newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/Makefile.am
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/Makefile.am newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/Makefile.am
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/Makefile.am	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/Makefile.am	2014-03-03 22:44:44.350561618 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/Makefile.am	2014-07-05 17:10:42.426163946 -0700
 @@ -0,0 +1,9 @@
 +## Process this file with automake to generate Makefile.in
 +
@@ -13189,9 +13189,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/Makefile.am newlib-2.0.0-s
 +ACLOCAL_AMFLAGS = -I ../../../.. -I ../../../../..
 +CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/Makefile.in newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/Makefile.in
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/Makefile.in newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/Makefile.in
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/Makefile.in	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/Makefile.in	2014-03-03 22:44:44.350561618 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/Makefile.in	2014-07-05 17:10:42.426163946 -0700
 @@ -0,0 +1,535 @@
 +# Makefile.in generated by automake 1.12.6 from Makefile.am.
 +# @configure_input@
@@ -13728,9 +13728,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/Makefile.in newlib-2.0.0-s
 +# Tell versions [3.59,3.63) of GNU make to not export all variables.
 +# Otherwise a system limit (for SysV at least) may be exceeded.
 +.NOEXPORT:
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/aclocal.m4 newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/aclocal.m4
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/aclocal.m4 newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/aclocal.m4
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/aclocal.m4	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/aclocal.m4	2014-03-03 22:44:44.350561618 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/aclocal.m4	2014-07-05 17:10:42.426163946 -0700
 @@ -0,0 +1,988 @@
 +# generated automatically by aclocal 1.12.6 -*- Autoconf -*-
 +
@@ -14720,9 +14720,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/aclocal.m4 newlib-2.0.0-se
 +m4_include([../../../../../ltversion.m4])
 +m4_include([../../../../../lt~obsolete.m4])
 +m4_include([../../../../acinclude.m4])
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/configure newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/configure
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/configure newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/configure
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/configure	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/configure	2014-03-03 22:44:44.355561556 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/configure	2014-07-05 17:10:42.429497219 -0700
 @@ -0,0 +1,14230 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -28954,9 +28954,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/configure newlib-2.0.0-sea
 +$as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 +fi
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/configure.in newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/configure.in
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/configure.in newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/configure.in
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/configure.in	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/configure.in	2014-03-03 22:44:44.355561556 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/configure.in	2014-07-05 17:10:42.429497219 -0700
 @@ -0,0 +1,35 @@
 +dnl This is the newlib/libc/sys configure.in file.
 +dnl Process this file with autoconf to produce a configure script.
@@ -28993,9 +28993,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/configure.in newlib-2.0.0-
 +
 +AC_CONFIG_FILES([Makefile])
 +AC_OUTPUT
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/hp-timing.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/hp-timing.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/hp-timing.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/hp-timing.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/hp-timing.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/hp-timing.h	2014-03-03 22:44:44.355561556 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/hp-timing.h	2014-07-05 17:10:42.429497219 -0700
 @@ -0,0 +1,83 @@
 +/* High precision, low overhead timing functions.  Generic version.
 +   Copyright (C) 1998, 2000 Free Software Foundation, Inc.
@@ -29080,9 +29080,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/hp-timing.h newlib-2.0.0-s
 +#define HP_TIMING_NONAVAIL	1
 +
 +#endif	/* hp-timing.h */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/Makefile.am newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/Makefile.am
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/Makefile.am newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/Makefile.am
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/Makefile.am	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/Makefile.am	2014-03-03 22:44:44.355561556 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/Makefile.am	2014-07-05 17:10:42.429497219 -0700
 @@ -0,0 +1,31 @@
 +## Process this file with automake to generate Makefile.in
 +
@@ -29115,9 +29115,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/Makefile.am newlib-2.
 +	cp lib.a ..
 +ACLOCAL_AMFLAGS = -I ../../../../.. -I ../../../../../..
 +CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/Makefile.in newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/Makefile.in
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/Makefile.in newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/Makefile.in
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/Makefile.in	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/Makefile.in	2014-03-03 22:44:44.355561556 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/Makefile.in	2014-07-05 17:10:42.429497219 -0700
 @@ -0,0 +1,578 @@
 +# Makefile.in generated by automake 1.12.6 from Makefile.am.
 +# @configure_input@
@@ -29697,9 +29697,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/Makefile.in newlib-2.
 +# Tell versions [3.59,3.63) of GNU make to not export all variables.
 +# Otherwise a system limit (for SysV at least) may be exceeded.
 +.NOEXPORT:
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/aclocal.m4 newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/aclocal.m4
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/aclocal.m4 newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/aclocal.m4
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/aclocal.m4	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/aclocal.m4	2014-03-03 22:44:44.356561543 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/aclocal.m4	2014-07-05 17:10:42.429497219 -0700
 @@ -0,0 +1,988 @@
 +# generated automatically by aclocal 1.12.6 -*- Autoconf -*-
 +
@@ -30689,9 +30689,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/aclocal.m4 newlib-2.0
 +m4_include([../../../../../../ltversion.m4])
 +m4_include([../../../../../../lt~obsolete.m4])
 +m4_include([../../../../../acinclude.m4])
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/atomic.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/atomic.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/atomic.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/atomic.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/atomic.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/atomic.h	2014-03-03 22:44:44.356561543 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/atomic.h	2014-07-05 17:10:42.429497219 -0700
 @@ -0,0 +1,366 @@
 +/* Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
 +   This file is part of the GNU C Library.
@@ -31059,9 +31059,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/atomic.h newlib-2.0.0
 +
 +
 +#define atomic_delay() asm ("rep; nop")
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/configure newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/configure
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/configure newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/configure
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/configure	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/configure	2014-03-03 22:44:44.360561494 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/configure	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,14093 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -45156,9 +45156,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/configure newlib-2.0.
 +$as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 +fi
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/configure.in newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/configure.in
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/configure.in newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/configure.in
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/configure.in	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/configure.in	2014-03-03 22:44:44.360561494 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/configure.in	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,24 @@
 +dnl This is the newlib/libc/sys/linux/machine/i386 configure.in file.
 +dnl Process this file with autoconf to produce a configure script.
@@ -45184,9 +45184,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/configure.in newlib-2
 +
 +AC_CONFIG_FILES([Makefile])
 +AC_OUTPUT
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/dl-machine.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/dl-machine.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/dl-machine.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/dl-machine.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/dl-machine.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/dl-machine.h	2014-03-03 22:44:44.360561494 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/dl-machine.h	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,420 @@
 +/* Machine-dependent ELF dynamic relocation inline functions.  i386 version.
 +   Copyright (C) 1995,96,97,98,99,2000,2001 Free Software Foundation, Inc.
@@ -45608,9 +45608,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/dl-machine.h newlib-2
 +}
 +
 +#endif /* RESOLVE */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/dl-procinfo.c newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/dl-procinfo.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/dl-procinfo.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/dl-procinfo.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/dl-procinfo.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/dl-procinfo.c	2014-03-03 22:44:44.360561494 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/dl-procinfo.c	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,38 @@
 +/* Data for Linux/i386 version of processor capability information.
 +   Copyright (C) 2001 Free Software Foundation, Inc.
@@ -45650,9 +45650,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/dl-procinfo.c newlib-
 +  {
 +    "i386", "i486", "i586", "i686"
 +  };
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/dl-procinfo.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/dl-procinfo.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/dl-procinfo.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/dl-procinfo.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/dl-procinfo.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/dl-procinfo.h	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/dl-procinfo.h	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,132 @@
 +/* Linux/i386 version of processor capability information handling macros.
 +   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
@@ -45786,9 +45786,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/dl-procinfo.h newlib-
 +};
 +
 +#endif /* dl-procinfo.h */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/hp-timing.c newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/hp-timing.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/hp-timing.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/hp-timing.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/hp-timing.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/hp-timing.c	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/hp-timing.c	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,24 @@
 +/* Support for high precision, low overhead timing functions.  i686 version.
 +   Copyright (C) 1998 Free Software Foundation, Inc.
@@ -45814,9 +45814,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/hp-timing.c newlib-2.
 +
 +/* We have to define the variable for the overhead.  */
 +hp_timing_t __libc_hp_timing_overhead;
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/hp-timing.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/hp-timing.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/hp-timing.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/hp-timing.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/hp-timing.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/hp-timing.h	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/hp-timing.h	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,187 @@
 +/* High precision, low overhead timing functions.  i686 version.
 +   Copyright (C) 1998 Free Software Foundation, Inc.
@@ -46005,9 +46005,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/hp-timing.h newlib-2.
 +#endif
 +
 +#endif	/* hp-timing.h */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/i386mach.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/i386mach.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/i386mach.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/i386mach.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/i386mach.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/i386mach.h	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/i386mach.h	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,79 @@
 +/*  This file was based on the modified setjmp.S performed by
 + *  Joel Sherill (joel@OARcorp.com) which specified the use
@@ -46088,9 +46088,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/i386mach.h newlib-2.0
 +#define        __CLI
 +#define        __STI
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/endian.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/include/endian.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/endian.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/include/endian.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/endian.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/include/endian.h	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/include/endian.h	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,127 @@
 +/*
 + * Copyright (c) 1987, 1991 Regents of the University of California.
@@ -46219,9 +46219,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/endian.h newl
 +#define HTONS(x)        ((x) = htons((u_short)(x)))
 +
 +#endif /* !_MACHINE_ENDIAN_H_ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/param.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/include/param.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/param.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/include/param.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/param.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/include/param.h	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/include/param.h	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,180 @@
 +/*-
 + * Copyright (c) 1990 The Regents of the University of California.
@@ -46403,9 +46403,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/param.h newli
 +#define	pgtok(x)		((x) * (PAGE_SIZE / 1024))
 +
 +#endif /* !_MACHINE_PARAM_H_ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/setjmp.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/include/setjmp.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/setjmp.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/include/setjmp.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/setjmp.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/include/setjmp.h	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/include/setjmp.h	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,6 @@
 +#define _JBLEN	9
 +typedef	long __jmp_buf[_JBLEN];
@@ -46413,14 +46413,14 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/setjmp.h newl
 +#define SP_INDEX 7
 +#define _JMPBUF_UNWINDS(buf, address) \
 +  ((void *)(address) < (void *)(buf)[SP_INDEX])
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/termios.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/include/termios.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/termios.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/include/termios.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/include/termios.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/include/termios.h	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/include/termios.h	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1 @@
 +#define __MAX_BAUD B4000000
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/setjmp.S newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/setjmp.S
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/setjmp.S newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/setjmp.S
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/setjmp.S	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/setjmp.S	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/setjmp.S	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,89 @@
 +/* This is file is a merger of SETJMP.S and LONGJMP.S */
 +/*
@@ -46511,9 +46511,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/setjmp.S newlib-2.0.0
 +	movl	20(edi),edi
 +
 +	ret
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/weakalias.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/weakalias.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/weakalias.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/weakalias.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/weakalias.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/i386/weakalias.h	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/i386/weakalias.h	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,10 @@
 +#define weak_alias(name, aliasname) \
 +  extern __typeof (name) aliasname __attribute__ ((weak, alias (#name)));
@@ -46525,9 +46525,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/i386/weakalias.h newlib-2.
 +
 +#define weak_function __attribute__ ((weak))
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/setjmp.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/setjmp.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/setjmp.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/setjmp.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/setjmp.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/setjmp.h	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/setjmp.h	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,297 @@
 +
 +_BEGIN_STD_C
@@ -46826,9 +46826,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/setjmp.h newlib-2.0.0-sea/
 +}
 +#endif
 +#endif /* __CYGWIN__ or __rtems__ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/types.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/types.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/types.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/types.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/types.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/types.h	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/types.h	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,22 @@
 +#ifndef	_MACHTYPES_H_
 +#define	_MACHTYPES_H_
@@ -46852,9 +46852,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/types.h newlib-2.0.0-sea/n
 +#endif	/* _MACHTYPES_H_ */
 +
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/Makefile.am newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/Makefile.am
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/Makefile.am newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/Makefile.am
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/Makefile.am	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/Makefile.am	2014-03-03 22:44:44.361561481 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/Makefile.am	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,31 @@
 +## Process this file with automake to generate Makefile.in
 +
@@ -46887,9 +46887,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/Makefile.am newlib-
 +	cp lib.a ..
 +ACLOCAL_AMFLAGS = -I ../../../../.. -I ../../../../../..
 +CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/Makefile.in newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/Makefile.in
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/Makefile.in newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/Makefile.in
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/Makefile.in	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/Makefile.in	2014-03-03 22:44:44.362561469 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/Makefile.in	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,577 @@
 +# Makefile.in generated by automake 1.12.6 from Makefile.am.
 +# @configure_input@
@@ -47468,9 +47468,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/Makefile.in newlib-
 +# Tell versions [3.59,3.63) of GNU make to not export all variables.
 +# Otherwise a system limit (for SysV at least) may be exceeded.
 +.NOEXPORT:
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/aclocal.m4 newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/aclocal.m4
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/aclocal.m4 newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/aclocal.m4
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/aclocal.m4	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/aclocal.m4	2014-03-03 22:44:44.362561469 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/aclocal.m4	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,988 @@
 +# generated automatically by aclocal 1.12.6 -*- Autoconf -*-
 +
@@ -48460,9 +48460,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/aclocal.m4 newlib-2
 +m4_include([../../../../../../ltversion.m4])
 +m4_include([../../../../../../lt~obsolete.m4])
 +m4_include([../../../../../acinclude.m4])
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/atomic.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/atomic.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/atomic.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/atomic.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/atomic.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/atomic.h	2014-03-03 22:44:44.362561469 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/atomic.h	2014-07-05 17:10:42.436163767 -0700
 @@ -0,0 +1,366 @@
 +/* Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
 +   This file is part of the GNU C Library.
@@ -48830,9 +48830,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/atomic.h newlib-2.0
 +
 +
 +#define atomic_delay() asm ("rep; nop")
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/configure newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/configure
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/configure newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/configure
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/configure	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/configure	2014-03-03 22:44:44.366561419 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/configure	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,14093 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -62927,9 +62927,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/configure newlib-2.
 +$as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 +fi
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/configure.in newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/configure.in
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/configure.in newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/configure.in
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/configure.in	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/configure.in	2014-03-03 22:44:44.366561419 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/configure.in	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,24 @@
 +dnl This is the newlib/libc/sys/linux/machine/i386 configure.in file.
 +dnl Process this file with autoconf to produce a configure script.
@@ -62955,9 +62955,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/configure.in newlib
 +
 +AC_CONFIG_FILES([Makefile])
 +AC_OUTPUT
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/dl-machine.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/dl-machine.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/dl-machine.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/dl-machine.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/dl-machine.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/dl-machine.h	2014-03-03 22:44:44.366561419 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/dl-machine.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,420 @@
 +/* Machine-dependent ELF dynamic relocation inline functions.  i386 version.
 +   Copyright (C) 1995,96,97,98,99,2000,2001 Free Software Foundation, Inc.
@@ -63379,9 +63379,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/dl-machine.h newlib
 +}
 +
 +#endif /* RESOLVE */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.c newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.c	2014-03-03 22:44:44.367561407 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,38 @@
 +/* Data for Linux/i386 version of processor capability information.
 +   Copyright (C) 2001 Free Software Foundation, Inc.
@@ -63421,9 +63421,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.c newli
 +  {
 +    "i386", "i486", "i586", "i686"
 +  };
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.h	2014-03-03 22:44:44.367561407 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,132 @@
 +/* Linux/i386 version of processor capability information handling macros.
 +   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
@@ -63557,9 +63557,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/dl-procinfo.h newli
 +};
 +
 +#endif /* dl-procinfo.h */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/hp-timing.c newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/hp-timing.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/hp-timing.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/hp-timing.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/hp-timing.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/hp-timing.c	2014-03-03 22:44:44.367561407 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/hp-timing.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,24 @@
 +/* Support for high precision, low overhead timing functions.  i686 version.
 +   Copyright (C) 1998 Free Software Foundation, Inc.
@@ -63585,9 +63585,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/hp-timing.c newlib-
 +
 +/* We have to define the variable for the overhead.  */
 +hp_timing_t __libc_hp_timing_overhead;
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/hp-timing.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/hp-timing.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/hp-timing.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/hp-timing.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/hp-timing.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/hp-timing.h	2014-03-03 22:44:44.367561407 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/hp-timing.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,187 @@
 +/* High precision, low overhead timing functions.  i686 version.
 +   Copyright (C) 1998 Free Software Foundation, Inc.
@@ -63776,9 +63776,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/hp-timing.h newlib-
 +#endif
 +
 +#endif	/* hp-timing.h */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/i386mach.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/i386mach.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/i386mach.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/i386mach.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/i386mach.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/i386mach.h	2014-03-03 22:44:44.367561407 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/i386mach.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,79 @@
 +/*  This file was based on the modified setjmp.S performed by
 + *  Joel Sherill (joel@OARcorp.com) which specified the use
@@ -63859,9 +63859,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/i386mach.h newlib-2
 +#define        __CLI
 +#define        __STI
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/endian.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/include/endian.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/endian.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/include/endian.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/endian.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/include/endian.h	2014-03-03 22:44:44.367561407 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/include/endian.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,127 @@
 +/*
 + * Copyright (c) 1987, 1991 Regents of the University of California.
@@ -63990,9 +63990,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/endian.h ne
 +#define HTONS(x)        ((x) = htons((u_short)(x)))
 +
 +#endif /* !_MACHINE_ENDIAN_H_ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/param.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/include/param.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/param.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/include/param.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/param.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/include/param.h	2014-03-03 22:44:44.367561407 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/include/param.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,180 @@
 +/*-
 + * Copyright (c) 1990 The Regents of the University of California.
@@ -64174,9 +64174,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/param.h new
 +#define	pgtok(x)		((x) * (PAGE_SIZE / 1024))
 +
 +#endif /* !_MACHINE_PARAM_H_ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/setjmp.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/include/setjmp.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/setjmp.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/include/setjmp.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/setjmp.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/include/setjmp.h	2014-03-03 22:44:44.367561407 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/include/setjmp.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,6 @@
 +#define _JBLEN	9
 +typedef	long __jmp_buf[_JBLEN];
@@ -64184,14 +64184,14 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/setjmp.h ne
 +#define SP_INDEX 7
 +#define _JMPBUF_UNWINDS(buf, address) \
 +  ((void *)(address) < (void *)(buf)[SP_INDEX])
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/termios.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/include/termios.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/termios.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/include/termios.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/include/termios.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/include/termios.h	2014-03-03 22:44:44.367561407 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/include/termios.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1 @@
 +#define __MAX_BAUD B4000000
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/setjmp.S newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/setjmp.S
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/setjmp.S newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/setjmp.S
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/setjmp.S	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/setjmp.S	2014-03-03 22:44:44.367561407 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/setjmp.S	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,91 @@
 +/* This is file is a merger of SETJMP.S and LONGJMP.S */
 +/*
@@ -64284,9 +64284,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/setjmp.S newlib-2.0
 +	movl	20(edi),edi
 +*/
 +	ret
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/weakalias.h newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/weakalias.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/weakalias.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/weakalias.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/weakalias.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/machine/x86_64/weakalias.h	2014-03-03 22:44:44.367561407 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/machine/x86_64/weakalias.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,10 @@
 +#define weak_alias(name, aliasname) \
 +  extern __typeof (name) aliasname __attribute__ ((weak, alias (#name)));
@@ -64298,9 +64298,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/machine/x86_64/weakalias.h newlib-
 +
 +#define weak_function __attribute__ ((weak))
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/mmap.c newlib-2.0.0-sea/newlib/libc/sys/seaos/mmap.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/mmap.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/mmap.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/mmap.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/mmap.c	2014-03-03 22:44:44.367561407 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/mmap.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,64 @@
 +#include <sys/times.h>
 +#include <sys/time.h>
@@ -64366,9 +64366,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/mmap.c newlib-2.0.0-sea/newlib/lib
 +{
 +	return sysconf(_SC_PAGESIZE);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/mntent.c newlib-2.0.0-sea/newlib/libc/sys/seaos/mntent.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/mntent.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/mntent.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/mntent.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/mntent.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/mntent.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,289 @@
 +/* Utilities for reading/writing fstab, mtab, etc.
 +   Copyright (C) 1995-2000, 2001 Free Software Foundation, Inc.
@@ -64659,9 +64659,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/mntent.c newlib-2.0.0-sea/newlib/l
 +  return __getmntent_r (stream, &m, getmntent_buffer, BUFFER_SIZE);
 +}
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/module.c newlib-2.0.0-sea/newlib/libc/sys/seaos/module.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/module.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/module.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/module.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/module.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/module.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,26 @@
 +#include <stdlib.h>
 +#include <string.h>
@@ -64689,9 +64689,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/module.c newlib-2.0.0-sea/newlib/l
 +	}
 +	return ret;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/mount.c newlib-2.0.0-sea/newlib/libc/sys/seaos/mount.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/mount.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/mount.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/mount.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/mount.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/mount.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,26 @@
 +#include <stdlib.h>
 +#include <string.h>
@@ -64719,9 +64719,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/mount.c newlib-2.0.0-sea/newlib/li
 +	}
 +	return ret;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/nice.c newlib-2.0.0-sea/newlib/libc/sys/seaos/nice.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/nice.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/nice.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/nice.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/nice.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/nice.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,38 @@
 +#include "ksyscall.h"
 +#include <signal.h>
@@ -64761,9 +64761,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/nice.c newlib-2.0.0-sea/newlib/lib
 +	}
 +	return ret;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/openclose.c newlib-2.0.0-sea/newlib/libc/sys/seaos/openclose.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/openclose.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/openclose.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/openclose.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/openclose.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/openclose.c	2014-07-05 21:26:33.642705087 -0700
 @@ -0,0 +1,104 @@
 +#include "ksyscall.h"
 +#include <sys/types.h>
@@ -64851,7 +64851,7 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/openclose.c newlib-2.0.0-sea/newli
 +	}
 +
 +	if (fd1 == fd2)
-+		return (0);
++		return (fd2);
 +
 +	saved_errno = errno;
 +
@@ -64869,9 +64869,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/openclose.c newlib-2.0.0-sea/newli
 +{
 +	return do_dup(i, 0);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/pathconf.c newlib-2.0.0-sea/newlib/libc/sys/seaos/pathconf.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/pathconf.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/pathconf.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/pathconf.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/pathconf.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/pathconf.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,198 @@
 +#include <sys/times.h>
 +#include <sys/time.h>
@@ -65071,9 +65071,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/pathconf.c newlib-2.0.0-sea/newlib
 +      return -1;
 +    }
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/proc.c newlib-2.0.0-sea/newlib/libc/sys/seaos/proc.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/proc.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/proc.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/proc.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/proc.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/proc.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,70 @@
 +#include "ksyscall.h"
 +#include <signal.h>
@@ -65145,9 +65145,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/proc.c newlib-2.0.0-sea/newlib/lib
 +	}
 +	return ret;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rand.c newlib-2.0.0-sea/newlib/libc/sys/seaos/rand.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rand.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/rand.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/rand.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/rand.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/rand.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,9 @@
 +int random()
 +{
@@ -65158,14 +65158,14 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rand.c newlib-2.0.0-sea/newlib/lib
 +{
 +	return srand(x);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rand48.c newlib-2.0.0-sea/newlib/libc/sys/seaos/rand48.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rand48.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/rand48.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/rand48.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/rand48.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/rand48.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1 @@
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rand48.h newlib-2.0.0-sea/newlib/libc/sys/seaos/rand48.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rand48.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/rand48.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/rand48.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/rand48.h	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/rand48.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,36 @@
 +/*
 + * Copyright (c) 1993 Martin Birgmeier
@@ -65203,14 +65203,14 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rand48.h newlib-2.0.0-sea/newlib/l
 +#endif
 +
 +#endif /* _RAND48_H_ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rand_r.c newlib-2.0.0-sea/newlib/libc/sys/seaos/rand_r.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rand_r.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/rand_r.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/rand_r.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/rand_r.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/rand_r.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1 @@
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rw.c newlib-2.0.0-sea/newlib/libc/sys/seaos/rw.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rw.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/rw.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/rw.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/rw.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/rw.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,55 @@
 +#include "ksyscall.h"
 +#include <sys/types.h>
@@ -65267,9 +65267,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/rw.c newlib-2.0.0-sea/newlib/libc/
 +	return read(fd, b, n);
 +}
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/seaos.c newlib-2.0.0-sea/newlib/libc/sys/seaos/seaos.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/seaos.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/seaos.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/seaos.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/seaos.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/seaos.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,36 @@
 +#include <stdlib.h>
 +#include <string.h>
@@ -65307,9 +65307,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/seaos.c newlib-2.0.0-sea/newlib/li
 +	}
 +	return ret;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/signal.c newlib-2.0.0-sea/newlib/libc/sys/seaos/signal.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/signal.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/signal.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/signal.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/signal.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/signal.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,111 @@
 +/* BSD-like signal function.
 +   Copyright (C) 1991, 1992, 1996, 1997, 2000 Free Software Foundation, Inc.
@@ -65422,9 +65422,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/signal.c newlib-2.0.0-sea/newlib/l
 +{
 +	return longjmp(a);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/special.c newlib-2.0.0-sea/newlib/libc/sys/seaos/special.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/special.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/special.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/special.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/special.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/special.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,45 @@
 +#include "ksyscall.h"
 +#include <sys/types.h>
@@ -65471,9 +65471,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/special.c newlib-2.0.0-sea/newlib/
 +{
 +	return sys_pipe(f);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/srv.c newlib-2.0.0-sea/newlib/libc/sys/seaos/srv.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/srv.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/srv.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/srv.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/srv.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/srv.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,97 @@
 +#include <sys/times.h>
 +#include <sys/time.h>
@@ -65572,9 +65572,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/srv.c newlib-2.0.0-sea/newlib/libc
 +unsigned short  htons (unsigned short a){return a;}
 +unsigned long   ntohl (unsigned long a){return a;}
 +unsigned short  ntohs (unsigned short a){return a;}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/stat.c newlib-2.0.0-sea/newlib/libc/sys/seaos/stat.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/stat.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/stat.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/stat.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/stat.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/stat.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,184 @@
 +#include "ksyscall.h"
 +#include <sys/types.h>
@@ -65760,9 +65760,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/stat.c newlib-2.0.0-sea/newlib/lib
 +	return fstat(f, b);
 +}
 +
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sync.c newlib-2.0.0-sea/newlib/libc/sys/seaos/sync.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sync.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/sync.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/sync.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sync.c	2014-03-03 22:44:44.368561394 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sync.c	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,33 @@
 +#include "ksyscall.h"
 +#include <sys/types.h>
@@ -65797,9 +65797,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sync.c newlib-2.0.0-sea/newlib/lib
 +{
 +	return fflush(f);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/config.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/config.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/config.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/config.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/config.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/config.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/config.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,264 @@
 +#ifndef __SYS_CONFIG_H__
 +#define __SYS_CONFIG_H__
@@ -66065,9 +66065,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/config.h newlib-2.0.0-sea/newl
 +
 +
 +#endif /* __SYS_CONFIG_H__ */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/dirent.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/dirent.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/dirent.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/dirent.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/dirent.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/dirent.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/dirent.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,119 @@
 +/* libc/sys/linux/sys/dirent.h - Directory entry as returned by readdir */
 +
@@ -66188,9 +66188,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/dirent.h newlib-2.0.0-sea/newl
 +#endif
 +  
 +  #endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/fcntl.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/fcntl.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/fcntl.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/fcntl.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/fcntl.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/fcntl.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/fcntl.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,6 @@
 +#ifndef SEAOS_FCNTL
 +#define SEAOS_FCNTL
@@ -66198,9 +66198,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/fcntl.h newlib-2.0.0-sea/newli
 +#define AT_FCWD -100
 +#include <sys/fcntl_def.h>
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/fcntl_def.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/fcntl_def.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/fcntl_def.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/fcntl_def.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/fcntl_def.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/fcntl_def.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/fcntl_def.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,6 @@
 +#ifndef _SYS_FCNTL_H_
 +#define _SYS_FCNTL_H_
@@ -66208,9 +66208,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/fcntl_def.h newlib-2.0.0-sea/n
 +#endif
 +#define _FDIRECT	0x10000
 +#define O_DIRECT	_FDIRECT
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/ioctl.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/ioctl.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/ioctl.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/ioctl.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/ioctl.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/ioctl.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/ioctl.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,96 @@
 +#ifndef _ASM_GENERIC_IOCTL_H
 +#define _ASM_GENERIC_IOCTL_H
@@ -66308,9 +66308,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/ioctl.h newlib-2.0.0-sea/newli
 +#define IOCSIZE_SHIFT	(_IOC_SIZESHIFT)
 +
 +#endif /* _ASM_GENERIC_IOCTL_H */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/ioctls.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/ioctls.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/ioctls.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/ioctls.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/ioctls.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/ioctls.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/ioctls.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,111 @@
 +#ifndef __ASM_GENERIC_IOCTLS_H
 +#define __ASM_GENERIC_IOCTLS_H
@@ -66423,9 +66423,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/ioctls.h newlib-2.0.0-sea/newl
 +#define TIOCSER_TEMT	0x01	/* Transmitter physically empty */
 +
 +#endif /* __ASM_GENERIC_IOCTLS_H */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/mman.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/mman.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/mman.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/mman.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/mman.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/mman.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/mman.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,41 @@
 +#ifndef __MMF_H
 +#define __MMF_H
@@ -66468,9 +66468,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/mman.h newlib-2.0.0-sea/newlib
 +#define MS_INVALIDATE   2
 +
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/reboot.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/reboot.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/reboot.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/reboot.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/reboot.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/reboot.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/reboot.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,25 @@
 +#ifndef __REBOOT_H
 +#define __REBOOT_H
@@ -66497,9 +66497,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/reboot.h newlib-2.0.0-sea/newl
 +}
 +#endif
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/resource.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/resource.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/resource.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/resource.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/resource.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/resource.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/resource.h	2014-07-05 17:10:42.442830316 -0700
 @@ -0,0 +1,17 @@
 +#ifndef __SYS_RESOURCE_H_
 +#define __SYS_RESOURCE_H_
@@ -66518,9 +66518,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/resource.h newlib-2.0.0-sea/ne
 +
 +
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/seaos.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/seaos.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/seaos.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/seaos.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/seaos.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/seaos.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/seaos.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,16 @@
 +#ifndef __SYS_SEAOS_H
 +#define __SYS_SEAOS_H
@@ -66538,9 +66538,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/seaos.h newlib-2.0.0-sea/newli
 +}
 +#endif
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/select.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/select.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/select.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/select.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/select.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/select.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/select.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,20 @@
 +#ifndef _SYS_SELECT_H
 +#define _SYS_SELECT_H	1
@@ -66562,9 +66562,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/select.h newlib-2.0.0-sea/newl
 +}
 +#endif
 +#endif /* sys/select.h */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/signal.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/signal.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/signal.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/signal.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/signal.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/signal.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/signal.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,133 @@
 +/* sys/signal.h */
 +#ifndef _SYS_SEA_SIGNAL_H
@@ -66699,9 +66699,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/signal.h newlib-2.0.0-sea/newl
 +#include <signal.h>
 +#endif
 +#endif /* _SYS_SIGNAL_H */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/socket.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/socket.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/socket.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/socket.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/socket.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/socket.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/socket.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,350 @@
 +#ifndef _SYS_SOCKET_H
 +#define _SYS_SOCKET_H
@@ -67053,9 +67053,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/socket.h newlib-2.0.0-sea/newl
 +}
 +#endif
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/stat.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/stat.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/stat.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/stat.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/stat.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/stat.h	2014-03-03 22:44:44.369561382 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/stat.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,169 @@
 +#ifndef	_SYS_STAT_H
 +#define	_SYS_STAT_H
@@ -67226,9 +67226,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/stat.h newlib-2.0.0-sea/newlib
 +}
 +#endif
 +#endif /* _SYS_STAT_H */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/statfs.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/statfs.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/statfs.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/statfs.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/statfs.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/statfs.h	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/statfs.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,76 @@
 +#ifndef _SYS_STATFS_H
 +#define _SYS_STATFS_H
@@ -67306,9 +67306,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/statfs.h newlib-2.0.0-sea/newl
 +}
 +#endif
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/statvfs.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/statvfs.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/statvfs.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/statvfs.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/statvfs.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/statvfs.h	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/statvfs.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,76 @@
 +#ifndef _SYS_STATFS_H
 +#define _SYS_STATFS_H
@@ -67386,9 +67386,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/statvfs.h newlib-2.0.0-sea/new
 +}
 +#endif
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/termbits.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/termbits.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/termbits.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/termbits.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/termbits.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/termbits.h	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/termbits.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,198 @@
 +#ifndef __ASM_GENERIC_TERMBITS_H
 +#define __ASM_GENERIC_TERMBITS_H
@@ -67588,9 +67588,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/termbits.h newlib-2.0.0-sea/ne
 +#define	TCSAFLUSH	2
 +
 +#endif /* __ASM_GENERIC_TERMBITS_H */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/termios.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/termios.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/termios.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/termios.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/termios.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/termios.h	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/termios.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,57 @@
 +#ifndef _ASM_GENERIC_TERMIOS_H
 +#define _ASM_GENERIC_TERMIOS_H
@@ -67649,9 +67649,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/termios.h newlib-2.0.0-sea/new
 +}
 +#endif
 +#endif /* _ASM_GENERIC_TERMIOS_H */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/types.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/types.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/types.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/types.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/types.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/types.h	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/types.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,459 @@
 +/* unified sys/types.h: 
 +   start with sef's sysvi386 version.
@@ -68112,9 +68112,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/types.h newlib-2.0.0-sea/newli
 +//typedef unsigned int uint32_t ;
 +#endif	/* _SYS_TYPES_H */
 +#define off_t long
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/unistd.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/unistd.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/unistd.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/unistd.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/unistd.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/unistd.h	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/unistd.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,440 @@
 +#ifndef _SYS_SUNISTD_H
 +#define _SYS_SUNISTD_H
@@ -68556,9 +68556,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/unistd.h newlib-2.0.0-sea/newl
 +}
 +#endif
 +#endif /* _SYS_UNISTD_H */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/utime.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/utime.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/utime.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/utime.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/utime.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/utime.h	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/utime.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,18 @@
 +#ifndef	_SYS_UTIME_H
 +#define	_SYS_UTIME_H	1
@@ -68578,9 +68578,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/utime.h newlib-2.0.0-sea/newli
 +}
 +#endif
 +#endif /* _SYS_UTIME_H */
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/utmp.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/utmp.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/utmp.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/utmp.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/utmp.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/utmp.h	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/utmp.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,59 @@
 +/* libc/sys/linux/sys/utmp.h - utmp structure */
 +
@@ -68641,9 +68641,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/utmp.h newlib-2.0.0-sea/newlib
 +}
 +#endif
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/utsname.h newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/utsname.h
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/utsname.h newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/utsname.h
 --- newlib-2.0.0/newlib/libc/sys/seaos/sys/utsname.h	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sys/utsname.h	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sys/utsname.h	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,21 @@
 +#ifndef _SYS_UTSNAME_H
 +#define _SYS_UTSNAME_H
@@ -68666,9 +68666,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sys/utsname.h newlib-2.0.0-sea/new
 +}
 +#endif
 +#endif
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sysc.c newlib-2.0.0-sea/newlib/libc/sys/seaos/sysc.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sysc.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/sysc.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/sysc.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/sysc.c	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/sysc.c	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,11 @@
 +#include "ksyscall.h"
 +#include <sys/stat.h>
@@ -68681,9 +68681,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/sysc.c newlib-2.0.0-sea/newlib/lib
 +			 "c" ((scarg_t)b), "d" ((scarg_t)c), "S" ((scarg_t)d), "D" ((scarg_t)e));
 +	return x;
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/termios.c newlib-2.0.0-sea/newlib/libc/sys/seaos/termios.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/termios.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/termios.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/termios.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/termios.c	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/termios.c	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,56 @@
 +/* libc/sys/linux/termios.c - Terminal control */
 +/* Written 2000 by Werner Almesberger */
@@ -68741,9 +68741,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/termios.c newlib-2.0.0-sea/newlib/
 +{
 +	return ioctl (fd, TCFLSH, queue_selector);
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/time.c newlib-2.0.0-sea/newlib/libc/sys/seaos/time.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/time.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/time.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/time.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/time.c	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/time.c	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,80 @@
 +#include <utime.h>
 +#include <sys/times.h>
@@ -68825,9 +68825,9 @@ diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/time.c newlib-2.0.0-sea/newlib/lib
 +{
 +	delay(s * get_timer_ticks_hz());
 +}
-diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/truncate.c newlib-2.0.0-sea/newlib/libc/sys/seaos/truncate.c
+diff -uprN newlib-2.0.0/newlib/libc/sys/seaos/truncate.c newlib-2.0.0-seaos/newlib/libc/sys/seaos/truncate.c
 --- newlib-2.0.0/newlib/libc/sys/seaos/truncate.c	1969-12-31 16:00:00.000000000 -0800
-+++ newlib-2.0.0-sea/newlib/libc/sys/seaos/truncate.c	2014-03-03 22:44:44.370561370 -0800
++++ newlib-2.0.0-seaos/newlib/libc/sys/seaos/truncate.c	2014-07-05 17:10:42.446163589 -0700
 @@ -0,0 +1,29 @@
 +#include "ksyscall.h"
 +#include <sys/types.h>
