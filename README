@@ -1,5 +1,18 @@
-build instructions
+SeaOS
+v 0.2
+-----
+A simple operating system built on a simple UNIX-like kernel.
+
+SeaOS Userland and Builder
+--------------------------
+This software builds the toolchain needed to compile seakernel
+(available on github at dbittman/seakernel). It also contains scripts
+to build or install ported applications for SeaOS. 
+
+Build Instructions
 ------------------
+You must have seakernel checked out in a child directory of this
+repo, named 'seakernel'.
 
 Requirements:
 loop devices in /dev that are accessible by a normal user.
@@ -9,10 +22,11 @@ in ./configure)
 Commands:
 ./configure
 make toolchain
-make apps_port
+make apps
 make man
 make config
 make newhd
 make all
 
 then to test in Qemu: make all test
+

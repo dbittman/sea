@@ -10,6 +10,10 @@ QEMU_PCI_PASSTHROUGH=-device pci-assign,host=$(PCI_DEVICE)
 
 all: build
 
+.PHONY: apps
+apps:
+	@cd apps && ./ship.rb --yes update sync +ALL
+
 apps_port:
 	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb all-all
 
