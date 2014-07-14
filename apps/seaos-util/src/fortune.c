@@ -25,8 +25,6 @@
 #include <regex.h>
 #include <getopt.h>
 #include <dirent.h>
-#define mmap __sea_mmap
-#define munmap __sea_munmap
 #define VERSION "0.1"
 #define FORTUNEDIR "/usr/share/fortunes"
 
