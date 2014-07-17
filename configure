@@ -56,4 +56,4 @@ if [ $? != 0 ]; then
 fi
 fi
 
-echo "QEMU_LOCAL=-smp 10 -enable-kvm" > local_make.inc
+echo "QEMU_LOCAL=-smp 3 -enable-kvm" > local_make.inc
