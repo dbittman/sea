@@ -27,6 +27,7 @@ def package(pack)
 	$manifest_data << File.open(pack + "/" + pack + ".manifest", "r").read
 	count = File.open(pack + "/buildnr", "r").read.to_i
 	`tar -cJf packaged/pkg/#{$arch}/#{pack}-#{count}-#{$arch}.tar.xz #{pack}`
+	`md5sum packaged/pkg/#{$arch}/#{pack}-#{count}-#{$arch}.tar.xz | awk '{print $1}' | tr -d '\n' > packaged/pkg/#{$arch}/#{pack}-#{count}-#{$arch}.tar.xz.md5`
 end
 
 select_target()
