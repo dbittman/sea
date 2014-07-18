@@ -180,9 +180,12 @@ def configure(package)
 	puretarget=""
 	cross = package[DT_CROSS].split(" ")
 	conf = []
+	build_alias=`../../../tools/config.guess`.chomp
 	cross.each {|e|
 	           case e
-	           when "host"
+			   when "build"
+				   conf.insert(-1, "--build=#{build_alias}")
+			   when "host"
 		           conf.insert(-1, "--host=#{$target}")
 	           when "puretarget"
 		           puretarget = "#{$target}"
@@ -210,11 +213,14 @@ def configure(package)
 		           conf.insert(-1, "STRIP_FOR_TARGET=#{$target}-strip")
 	           when "cxx_for_target"
 		           conf.insert(-1, "CXX_FOR_TARGET=#{$target}-g++")
+				when "cc_for_build"
+					conf.insert(-1, "CC_FOR_BUILD=gcc")
+				when "cxx_for_build"
+					conf.insert(-1, "CXX_FOR_BUILD=g++")
 	           end
 	           }
 	#puts `pwd`
 	#puts "../#{package[DT_NAME]}-#{package[DT_VERSION]}/configure #{conf.join(" ")} #{package[DT_CONFIG]} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-configure-#{$target}.log"
-	
 	`../#{package[DT_NAME]}-#{package[DT_VERSION]}/configure #{conf.join(" ")} #{package[DT_CONFIG]} #{puretarget} &> #{package[DT_NAME]}-#{package[DT_VERSION]}-configure-#{$target}.log`
 	Dir.chdir("..")
 	return true
