@@ -22,6 +22,9 @@ def error(s)
 end
 
 def package(pack)
+	if pack == "grub-0.97" and $arch == "x86_64"
+		return
+	end
 	# package it up!
 	puts "packaging #{pack}..."
 	$manifest_data << File.open(pack + "/" + pack + ".manifest", "r").read

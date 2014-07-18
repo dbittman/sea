@@ -195,10 +195,13 @@ def configure(package)
 	puretarget=""
 	cross = package[DT_CROSS].split(" ")
 	conf = []
+	build_alias=`../../../../tools/config.guess`.chomp
 	cross.each {|e|
 	           case e
 	           when "host"
 		           conf.insert(-1, "--host=#{$target}")
+				when "build"
+					conf.insert(-1, "--build=#{build_alias}")
 	           when "puretarget"
 		           puretarget = "#{$target}"
 	           when "openssldir"
@@ -217,6 +220,10 @@ def configure(package)
 		           conf.insert(-1, "STRIP_FOR_TARGET=#{$target}-strip")
 	           when "cxx_for_target"
 		           conf.insert(-1, "CXX_FOR_TARGET=#{$target}-g++")
+				when "cc_for_build"
+					conf.insert(-1, "CC_FOR_BUILD=gcc")
+				when "cxx_for_build"
+					conf.insert(-1, "CXX_FOR_BUILD=g++")
 	           end
 	           }
 	#puts `pwd`
@@ -328,11 +335,16 @@ def process_package(command, pack, isdep)
 	when "cleansrc"
 		ret = cleansrc(pack)
 	when "all"
-		if download(pack) then check_error(act) end
-		if extract(pack) then check_error(act) end
-		if patch(pack) then check_error(act) end
-		if configure(pack) then check_error(act) end
-		ret = build(pack)
+		if pack[DT_NAME] == "grub" and $arch == "x86_64"
+			puts "cannot build grub for x86_64"
+			ret = true
+		else
+			if download(pack) then check_error(act) end
+			if extract(pack) then check_error(act) end
+			if patch(pack) then check_error(act) end
+			if configure(pack) then check_error(act) end
+			ret = build(pack)
+		end
 	else
 		error("unknown action: #{act}")
 	end
