@@ -11,7 +11,7 @@ require_relative "util.rb"
 require_relative "sync.rb"
 require_relative "actions.rb"
 
-CONFIG = "ship.yaml"
+$config_file = "ship.yaml"
 
 $no_confirm = false
 
@@ -56,8 +56,20 @@ def execute(type, list)
 	return r
 end
 
+get_config=false
+ARGV.each{ |arg|
+	if get_config
+		$config_file = arg
+		get_config = false
+		next
+	end
+	if arg == "-c"
+		get_config = true
+	end
+}
+
 # load configuration
-yaml = YAML::load_file(CONFIG)
+yaml = YAML::load_file($config_file)
 ROOT = yaml["root"]
 LOCAL = yaml["database"]
 ARCH  = yaml["arch"]
@@ -138,6 +150,7 @@ if ARGV[0] == "help" or ARGV[0] == "--help"
 	puts "        Sync repos, install bash and findutils, remove diffutils, upgrade all installed programs."
 	
 end
+
 ARGV.each { |arg|
 	case arg
 		when "--yes"

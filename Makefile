@@ -14,6 +14,9 @@ all: build
 apps:
 	@cd apps && ./ship.rb --yes update sync +ALL
 
+apps64:
+	@cd apps && ./ship.rb -c ship64.yaml --yes update sync +ALL
+
 apps_port:
 	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb all-all
 
