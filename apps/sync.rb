@@ -72,7 +72,7 @@ def do_install(name)
 		puts "package '#{name}' not found"
 		return false
 	end
-	print "installing #{name}"
+	print "installing #{name}-#{package[:arch]}"
 	if ! $installed.read(name).nil?
 		inst = $installed.read(name)
 		if inst[:version] == package[:version] and inst[:release] == package[:release]

@@ -73,6 +73,9 @@ def parse
 		hash[:version] = vals[1]
 		hash[:release] = vals[2]
 		hash[:arch] = vals[3]
+		if hash[:arch] != ARCH
+			next
+		end
 		hash[:deps] = vals[4]
 		if vals[4].nil?
 			hash[:deps] = ""

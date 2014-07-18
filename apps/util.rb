@@ -47,7 +47,6 @@ def download_file(url, correcthash, local_dir, name)
 			return true
 		end
 	end
-
 	# it failed the hash test, or we can't verify. Re-download.
 	if File.exists?(local_dir + "/" + File.basename(url))
 		File.delete(local_dir + "/" + File.basename(url))
