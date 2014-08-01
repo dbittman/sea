@@ -1,6 +1,6 @@
 diff -uprN binutils-2.22/bfd/config.bfd binutils-2.22-seaos/bfd/config.bfd
 --- binutils-2.22/bfd/config.bfd	2011-07-28 15:35:13.000000000 -0700
-+++ binutils-2.22-seaos/bfd/config.bfd	2013-10-15 15:26:38.392889083 -0700
++++ binutils-2.22-seaos/bfd/config.bfd	2014-07-17 18:37:55.160388219 -0700
 @@ -566,6 +566,10 @@ case "${targ}" in
      targ_selvecs="i386linux_vec i386pei_vec"
      targ64_selvecs="bfd_elf64_x86_64_vec bfd_elf32_x86_64_vec bfd_elf64_l1om_vec bfd_elf64_k1om_vec"
@@ -25,7 +25,7 @@ diff -uprN binutils-2.22/bfd/config.bfd binutils-2.22-seaos/bfd/config.bfd
      targ_selvecs="bfd_elf32_i386_vec bfd_elf32_x86_64_vec i386linux_vec i386pei_vec x86_64pei_vec bfd_elf64_l1om_vec bfd_elf64_k1om_vec"
 diff -uprN binutils-2.22/config.sub binutils-2.22-seaos/config.sub
 --- binutils-2.22/config.sub	2011-06-06 03:36:06.000000000 -0700
-+++ binutils-2.22-seaos/config.sub	2013-10-15 15:26:38.473889089 -0700
++++ binutils-2.22-seaos/config.sub	2014-07-17 18:37:55.160388219 -0700
 @@ -1320,7 +1320,7 @@ case $os in
  	-gnu* | -bsd* | -mach* | -minix* | -genix* | -ultrix* | -irix* \
  	      | -*vms* | -sco* | -esix* | -isc* | -aix* | -cnk* | -sunos | -sunos[34]*\
@@ -37,7 +37,7 @@ diff -uprN binutils-2.22/config.sub binutils-2.22-seaos/config.sub
  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
 diff -uprN binutils-2.22/gas/configure.tgt binutils-2.22-seaos/gas/configure.tgt
 --- binutils-2.22/gas/configure.tgt	2011-06-20 06:23:21.000000000 -0700
-+++ binutils-2.22-seaos/gas/configure.tgt	2013-10-15 15:26:38.474889089 -0700
++++ binutils-2.22-seaos/gas/configure.tgt	2014-07-17 18:37:55.163721511 -0700
 @@ -194,6 +194,7 @@ case ${generic_target} in
    i386-*-linux*oldld)			fmt=aout em=linux ;;
    i386-*-linux*coff*)			fmt=coff em=linux ;;
@@ -48,7 +48,7 @@ diff -uprN binutils-2.22/gas/configure.tgt binutils-2.22-seaos/gas/configure.tgt
    i386-*-solaris*)			fmt=elf em=solaris ;;
 diff -uprN binutils-2.22/ld/Makefile.in binutils-2.22-seaos/ld/Makefile.in
 --- binutils-2.22/ld/Makefile.in	2011-07-22 13:22:37.000000000 -0700
-+++ binutils-2.22-seaos/ld/Makefile.in	2013-10-15 15:26:38.475889089 -0700
++++ binutils-2.22-seaos/ld/Makefile.in	2014-07-17 18:37:55.163721511 -0700
 @@ -2627,6 +2627,10 @@ eelf32xtensa.c: $(srcdir)/emulparams/elf
  eelf_i386.c: $(srcdir)/emulparams/elf_i386.sh \
    $(ELF_DEPS) $(srcdir)/scripttempl/elf.sc ${GEN_DEPENDS}
@@ -62,7 +62,7 @@ diff -uprN binutils-2.22/ld/Makefile.in binutils-2.22-seaos/ld/Makefile.in
  	${GENSCRIPTS} elf_i386_be "$(tdir_elf_i386_be)"
 diff -uprN binutils-2.22/ld/configure.tgt binutils-2.22-seaos/ld/configure.tgt
 --- binutils-2.22/ld/configure.tgt	2011-11-21 01:29:37.000000000 -0800
-+++ binutils-2.22-seaos/ld/configure.tgt	2013-10-15 15:26:38.475889089 -0700
++++ binutils-2.22-seaos/ld/configure.tgt	2014-07-17 18:37:55.163721511 -0700
 @@ -190,6 +190,10 @@ i[3-7]86-*-linux-*)	targ_emul=elf_i386
  			targ64_extra_libpath=elf_x86_64
  			targ_extra_libpath=elf32_x86_64
@@ -76,8 +76,8 @@ diff -uprN binutils-2.22/ld/configure.tgt binutils-2.22-seaos/ld/configure.tgt
  			targ_extra_libpath="elf_i386 elf32_x86_64 elf_l1om elf_k1om"
 diff -uprN binutils-2.22/ld/emulparams/seaos_i386.sh binutils-2.22-seaos/ld/emulparams/seaos_i386.sh
 --- binutils-2.22/ld/emulparams/seaos_i386.sh	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.22-seaos/ld/emulparams/seaos_i386.sh	2013-10-15 15:26:38.477889089 -0700
-@@ -0,0 +1,21 @@
++++ binutils-2.22-seaos/ld/emulparams/seaos_i386.sh	2014-07-28 20:44:11.969513438 -0700
+@@ -0,0 +1,23 @@
 +SCRIPT_NAME=elf
 +OUTPUT_FORMAT=elf32-i386
 +TEXT_START_ADDR=0x40000000
@@ -88,9 +88,11 @@ diff -uprN binutils-2.22/ld/emulparams/seaos_i386.sh binutils-2.22-seaos/ld/emul
 +NOP=0x90909090
 +TEMPLATE_NAME=elf32
 +GENERATE_SHLIB_SCRIPT=yes
++NO_RELA_RELOCS=yes
 +GENERATE_PIE_SCRIPT=yes
 +NO_SMALL_DATA=yes
 +SEPERATE_GOTPLT=12
++ELF_INTERPRETER_NAME=\"/lib/ld-sea-x86-32.so\"
 +OTHER_READONLY_SECTIONS='
 +PROVIDE (___rodata = DEFINED (.rodata) ? .rodata : 0);
 +. = ALIGN (8);
@@ -101,8 +103,8 @@ diff -uprN binutils-2.22/ld/emulparams/seaos_i386.sh binutils-2.22-seaos/ld/emul
 +
 diff -uprN binutils-2.22/ld/emulparams/seaos_x86_64.sh binutils-2.22-seaos/ld/emulparams/seaos_x86_64.sh
 --- binutils-2.22/ld/emulparams/seaos_x86_64.sh	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.22-seaos/ld/emulparams/seaos_x86_64.sh	2013-10-15 15:26:38.731889107 -0700
-@@ -0,0 +1,25 @@
++++ binutils-2.22-seaos/ld/emulparams/seaos_x86_64.sh	2014-07-28 20:43:25.780001786 -0700
+@@ -0,0 +1,26 @@
 +SCRIPT_NAME=elf
 +ELFSIZE=64
 +OUTPUT_FORMAT="elf64-x86-64"
@@ -120,6 +122,7 @@ diff -uprN binutils-2.22/ld/emulparams/seaos_x86_64.sh binutils-2.22-seaos/ld/em
 +LARGE_SECTIONS=yes
 +SEPARATE_GOTPLT=24
 +IREL_IN_PLT=
++ELF_INTERPRETER_NAME=\"/lib/ld-sea-x86-64.so\"
 +OTHER_READONLY_SECTIONS='
 +PROVIDE (___rodata = DEFINED (.rodata) ? .rodata : 0);
 +. = ALIGN (16);
