@@ -1,0 +1,12 @@
+diff -uprN bash-4.3/support/config.sub bash-4.3-seaos/support/config.sub
+--- bash-4.3/support/config.sub	2013-12-17 07:49:47.000000000 -0800
++++ bash-4.3-seaos/support/config.sub	2014-08-02 00:14:29.291323472 -0700
+@@ -1356,7 +1356,7 @@ case $os in
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+ 	      | -sym* | -kopensolaris* | -plan9* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+-	      | -aos* | -aros* \
++	      | -aos* | -aros* | -seaos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
