@@ -38,6 +38,9 @@ toolchain:
 seakernel/skernel:
 	@PATH=$$PATH:`cat .toolchain`/bin $(MAKE) -j2 -s -C seakernel all
 
+modules:
+	@PATH=$$PATH:`cat .toolchain`/bin $(MAKE) -j2 -s -C seakernel modules
+
 man:
 	sh tools/gen_man.sh
 
