@@ -19,6 +19,7 @@
 #include <string.h>
 #include <math.h>
 #include <sys/stat.h>
+#include <machine/sea-syscall.h>
 
 int main(int c, char **a)
 {

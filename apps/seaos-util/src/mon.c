@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <machine/sea-syscall.h>
 void clearline()
 {
 	printf("                                                                               \n");

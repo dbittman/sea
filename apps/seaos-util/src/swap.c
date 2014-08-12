@@ -18,6 +18,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <machine/sea-syscall.h>
 
 char *prog=0;
 int usage()
