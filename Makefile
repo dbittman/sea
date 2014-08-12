@@ -55,8 +55,8 @@ defconfig:
 build: seakernel/skernel
 	@echo updating hd image...
 	@sudo sh tools/open_hdimage.sh
-	@sudo mkdir -p ./mnt/sys/modules-${KERNEL_VERSION}/
-	@sudo cp -rf seakernel/drivers/built/* ./mnt/sys/modules-${KERNEL_VERSION}/ 2>/dev/null
+	@sudo mkdir -p ./mnt/sys/modules-${VERSION}/
+	@sudo cp -rf seakernel/drivers/built/* ./mnt/sys/modules-${VERSION}/ 2>/dev/null
 	@sudo cp -rf seakernel/initrd.img ./mnt/sys/initrd
 	@sudo cp -rf seakernel/skernel ./mnt/sys/kernel
 	@sudo mv seakernel/skernel skernel
