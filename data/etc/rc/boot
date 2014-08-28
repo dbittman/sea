@@ -2,18 +2,10 @@
 
 printf "Initializing network... "
 
-if ! modprobe ethernet &>/dev/null; then
+if ! modprobe rtl8139 &>/dev/null; then
   echo "failed";
 else
-  if ! modprobe ipv4 &>/dev/null; then
-    echo "failed";
-  else
-    if ! modprobe i350 &>/dev/null; then
-      echo "failed";
-    else
-      echo "ok";
-    fi
-  fi
+  echo "ok";
 fi
 
 if [ ! -e /etc/firstbootdate ]; then
