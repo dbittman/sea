@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <sys/ioctls.h>
 #include <string.h>
+#include <glob.h>
 
 #define DEV_DIR "/dev/"
 
@@ -31,7 +32,8 @@ const char *flag_names[32] = {
 	"link0",
 	"link1",
 	"link2",
-	"multicast"
+	"multicast",
+	[17] = "forward"
 };
 
 void convert_mask(int slash, char *string)
@@ -46,7 +48,7 @@ void convert_mask(int slash, char *string)
 int do_ioctl(const char *name, int cmd, void *arg)
 {
 	char tmp[IFNAMSIZ + 1 + strlen(DEV_DIR)];
-	sprintf(tmp, "/dev/%s", name);
+	sprintf(tmp, "%s%s", DEV_DIR, name);
 	int fd = open(tmp, O_RDWR);
 	if(fd < 0) {
 		perror("couldn't open interface");
@@ -261,6 +263,7 @@ void print_interface(const char *name)
 	printf(" mask: %s\n", tmp);
 	print_flags(name);
 	print_stats(name);
+	printf("\n");
 }
 
 void read_stats(const char *name)
@@ -269,6 +272,19 @@ void read_stats(const char *name)
 		print_interface(name);
 		return;
 	}
+	/* scan for interface names */
+	glob_t g;
+	char tmp[32];
+	sprintf(tmp, "%snd*", DEV_DIR);
+	g.gl_offs = 256;
+	g.gl_offs = 256;
+	if(glob(tmp, 0, 0, &g)) {
+		perror("glob for interface failed");
+		return;
+	}
+	int i;
+	for(i=0;i<g.gl_pathc;i++)
+		print_interface((char *)basename(g.gl_pathv[i]));
 }
 
 int main(int argc, char **argv)

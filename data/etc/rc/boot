@@ -5,8 +5,7 @@ printf "Initializing network... "
 if ! modprobe rtl8139 &>/dev/null; then
   echo "failed";
 else
-  ifc nd1 10.0.0.2
-  ifc nd1 mask 255.0.0.0
+  ifc -i nd1 -n 10.0.0.2/8
   route nd1 10.0.0.0 0.0.0.0 255.0.0.0
   echo "ok";
 fi
