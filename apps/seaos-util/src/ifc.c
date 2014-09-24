@@ -137,6 +137,14 @@ int do_set_mask(const char *name, struct sockaddr_in *addr)
 	return do_ioctl(name, SIOCSIFNETMASK, &ifr);
 }
 
+int do_set_broad_addr(const char *name, struct sockaddr_in *addr)
+{
+	struct ifreq ifr;
+	strncpy(ifr.ifr_name, name, IFNAMSIZ);
+	memcpy(&ifr.ifr_addr, addr, sizeof(ifr.ifr_addr));
+	return do_ioctl(name, SIOCSIFBRDADDR, &ifr);
+}
+
 int do_set_addr(const char *name, struct sockaddr_in *addr)
 {
 	struct ifreq ifr;
@@ -165,6 +173,24 @@ int do_get_addr(const char *name, struct sockaddr_in *addr)
 		return ret;
 	memcpy(addr, &ifr.ifr_addr, sizeof(ifr.ifr_addr));
 	return 0;
+}
+
+int do_get_broad_addr(const char *name, struct sockaddr_in *addr)
+{
+	struct ifreq ifr;
+	strncpy(ifr.ifr_name, name, IFNAMSIZ);
+	int ret = do_ioctl(name, SIOCGIFBRDADDR, &ifr);
+	if(ret < 0)
+		return ret;
+	memcpy(addr, &ifr.ifr_addr, sizeof(ifr.ifr_addr));
+	return 0;
+}
+
+int set_broad_addr(const char *name, const char *str)
+{
+	struct sockaddr_in addr;
+	inet_aton(str, &addr.sin_addr);
+	return do_set_broad_addr(name, &addr);
 }
 
 int set_mask(const char *name, const char *mask_string)
@@ -211,7 +237,7 @@ int set_mtu(const char *name, const char *str)
 void usage()
 {
 	fprintf(stderr, "ifc: SeaOS Network Interface Configuration\n");
-	fprintf(stderr, "usage: ifc [-i <interface>] [-s <flag>] [-u <flag>] [-n <address>] [-m <mask>] [-t <mtu>]\n");
+	fprintf(stderr, "usage: ifc [-i <interface>] [-s <flag>] [-u <flag>]\n           [-n <address>] [-m <mask>] [-t <mtu>] [-b <broadcast>]\n");
 	fprintf(stderr, "by default, with no options specified, ifc will print out interface statistics from"
 			"all interfaces on the system. If just -i is specified, stats from that interface will be"
 			"printed only.\n");
@@ -220,6 +246,7 @@ void usage()
 	fprintf(stderr, "  -s/u: set/unset a flag from an interface.\n");
 	fprintf(stderr, "  -m: set netmask.\n");
 	fprintf(stderr, "  -n: set network address.\n");
+	fprintf(stderr, "  -b: set broadcast address.\n");
 	fprintf(stderr, "  -t: set MTU.\n");
 	exit(0);
 }
@@ -250,17 +277,21 @@ void print_stats(const char *name)
 void print_interface(const char *name)
 {
 	printf("%s:\n", name);
-	struct sockaddr_in addr, mask;
+	struct sockaddr_in addr, mask, broad;
 	if(do_get_addr(name, &addr))
 		exit(1);
 	if(do_get_mask(name, &mask))
+		exit(1);
+	if(do_get_broad_addr(name, &broad))
 		exit(1);
 
 	char tmp[32];
 	inet_ntop(AF_INET, &addr.sin_addr, tmp, 32);
 	printf("\tinet: %s", tmp);
 	inet_ntop(AF_INET, &mask.sin_addr, tmp, 32);
-	printf(" mask: %s\n", tmp);
+	printf(" mask: %s", tmp);
+	inet_ntop(AF_INET, &broad.sin_addr, tmp, 32);
+	printf(" broadcast: %s\n", tmp);
 	print_flags(name);
 	print_stats(name);
 	printf("\n");
@@ -309,30 +340,59 @@ int main(int argc, char **argv)
 	/* reset getopt() and set the things */
 	optind = 0;
 	opterr = 1;
-	while((c = getopt(argc, argv, "u:s:n:m:i:h")) != -1) {
+	while((c = getopt(argc, argv, "u:s:n:m:i:hb:")) != -1) {
 		switch(c) {
 			case 'u':
 				read = 0;
+				if(!name) {
+					fprintf(stderr, "ifc: no interface specified\n");
+					exit(1);
+				}
 				if(set_flag(name, optarg, 1))
 					exit(1);
 				break;
 			case 's':
 				read = 0;
+				if(!name) {
+					fprintf(stderr, "ifc: no interface specified\n");
+					exit(1);
+				}
 				if(set_flag(name, optarg, 0))
 					exit(1);
 				break;
 			case 'n':
 				read = 0;
+				if(!name) {
+					fprintf(stderr, "ifc: no interface specified\n");
+					exit(1);
+				}
 				if(set_addr(name, optarg))
+					exit(1);
+				break;
+			case 'b':
+				read = 0;
+				if(!name) {
+					fprintf(stderr, "ifc: no interface specified\n");
+					exit(1);
+				}
+				if(set_broad_addr(name, optarg))
 					exit(1);
 				break;
 			case 'm':
 				read = 0;
+				if(!name) {
+					fprintf(stderr, "ifc: no interface specified\n");
+					exit(1);
+				}
 				if(set_mask(name, optarg))
 					exit(1);
 				break;
 			case 't':
 				read = 0;
+				if(!name) {
+					fprintf(stderr, "ifc: no interface specified\n");
+					exit(1);
+				}
 				if(set_mtu(name, optarg))
 					exit(1);
 				break;
