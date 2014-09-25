@@ -13,6 +13,7 @@
 #define DEV_DIR "/dev/"
 
 const char *if_types[255] = {
+	[0x18] = "loopback",
 	[6] = "ethernet",
 };
 
@@ -263,12 +264,18 @@ void print_stats(const char *name)
 	strncpy(ifr.ifr_name, name, IFNAMSIZ);
 	if(!do_ioctl(name, SIOCGIFHWADDR, &ifr)) {
 		memcpy(&addr, &ifr.ifr_addr, sizeof(ifr.ifr_addr));
-		printf("\thwaddr: %x:%x:%x:%x:%x:%x\n", addr.sa_data[0], addr.sa_data[1], addr.sa_data[2], addr.sa_data[3],
+		printf("\thwaddr: %x:%x:%x:%x:%x:%x\n", (unsigned char)addr.sa_data[0], (unsigned char)addr.sa_data[1], (unsigned char)addr.sa_data[2], (unsigned char)addr.sa_data[3],
 				addr.sa_data[4], addr.sa_data[5]);
 	} else
 		fprintf(stderr, "failed to read hwaddr\n");
 	
-	printf("\ttype: %s, MTU: %d, speed: %d\n", if_types[ifd.ifi_type] ? if_types[ifd.ifi_type] : "(unknown)", ifd.ifi_mtu, ifd.ifi_baudrate);
+	unsigned speed = ifd.ifi_baudrate / 1000;
+	char sc = 'K';
+	if(speed > 2000) {
+		sc = 'M';
+		speed /= 1000;
+	}
+	printf("\ttype: %s, MTU: %d, speed: %d %cbit/s\n", if_types[ifd.ifi_type] ? if_types[ifd.ifi_type] : "(unknown)", ifd.ifi_mtu, speed, sc);
 	printf("\trx: %d rec, %d err: %d KB\n", ifd.ifi_ipackets, ifd.ifi_ierrors, ifd.ifi_ibytes / 1024);
 	printf("\ttx: %d snt, %d err: %d KB\n", ifd.ifi_opackets, ifd.ifi_oerrors, ifd.ifi_obytes / 1024);
 	printf("\tcollisions: %d, dropped: %d\n", ifd.ifi_collisions, ifd.ifi_iqdrops);
