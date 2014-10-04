@@ -11,6 +11,8 @@ else
   ifc -i nd2 -n 127.0.0.1/8 -s up -b 127.255.255.255
   route -a -i nd2 -n 127.0.0.0/8
   modprobe udp
+  modprobe ipv4
+  modprobe ethernet
   echo "ok";
 fi
 

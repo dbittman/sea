@@ -158,6 +158,7 @@ int do_get_mask(const char *name, struct sockaddr_in *addr)
 {
 	struct ifreq ifr;
 	strncpy(ifr.ifr_name, name, IFNAMSIZ);
+	ifr.ifr_netmask.sa_family = AF_INET;
 	int ret = do_ioctl(name, SIOCGIFNETMASK, &ifr);
 	if(ret < 0)
 		return ret;
@@ -169,6 +170,7 @@ int do_get_addr(const char *name, struct sockaddr_in *addr)
 {
 	struct ifreq ifr;
 	strncpy(ifr.ifr_name, name, IFNAMSIZ);
+	ifr.ifr_addr.sa_family = AF_INET;
 	int ret = do_ioctl(name, SIOCGIFADDR, &ifr);
 	if(ret < 0)
 		return ret;
@@ -180,6 +182,7 @@ int do_get_broad_addr(const char *name, struct sockaddr_in *addr)
 {
 	struct ifreq ifr;
 	strncpy(ifr.ifr_name, name, IFNAMSIZ);
+	ifr.ifr_addr.sa_family = AF_INET;
 	int ret = do_ioctl(name, SIOCGIFBRDADDR, &ifr);
 	if(ret < 0)
 		return ret;
@@ -190,6 +193,7 @@ int do_get_broad_addr(const char *name, struct sockaddr_in *addr)
 int set_broad_addr(const char *name, const char *str)
 {
 	struct sockaddr_in addr;
+	addr.sin_family = AF_INET;
 	inet_aton(str, &addr.sin_addr);
 	return do_set_broad_addr(name, &addr);
 }
@@ -197,6 +201,7 @@ int set_broad_addr(const char *name, const char *str)
 int set_mask(const char *name, const char *mask_string)
 {
 	struct sockaddr_in addr;
+	addr.sin_family = AF_INET;
 	inet_aton(mask_string, &addr.sin_addr);
 	return do_set_mask(name, &addr);
 }
@@ -204,6 +209,7 @@ int set_mask(const char *name, const char *mask_string)
 int set_addr(const char *name, char *addr_string)
 {
 	struct sockaddr_in addr;
+	addr.sin_family = AF_INET;
 	char *slash = strchr(addr_string, '/');
 	if(slash) {
 		/* we're given the netmask here, so do things */
@@ -260,6 +266,7 @@ void print_stats(const char *name)
 		return;
 	}
 	struct sockaddr addr;
+	addr.sa_family = AF_INET;
 	struct ifreq ifr;
 	strncpy(ifr.ifr_name, name, IFNAMSIZ);
 	if(!do_ioctl(name, SIOCGIFHWADDR, &ifr)) {
@@ -285,6 +292,9 @@ void print_interface(const char *name)
 {
 	printf("%s:\n", name);
 	struct sockaddr_in addr, mask, broad;
+	addr.sin_family = AF_INET;
+	mask.sin_family = AF_INET;
+	broad.sin_family = AF_INET;
 	if(do_get_addr(name, &addr))
 		exit(1);
 	if(do_get_mask(name, &mask))

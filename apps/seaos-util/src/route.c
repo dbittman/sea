@@ -136,6 +136,9 @@ int main(int argc, char **argv)
 	if(add) {
 		/* okay, construct the route struct... */
 		struct route r;
+		r.dest.sin_family = AF_INET;
+		r.gate.sin_family = AF_INET;
+		r.mask.sin_family = AF_INET;
 		inet_aton(dest, &r.dest.sin_addr);
 		inet_aton(gateway, &r.gate.sin_addr);
 		inet_aton(mask, &r.mask.sin_addr);
@@ -148,6 +151,7 @@ int main(int argc, char **argv)
 			return 2;
 	} else {
 		struct route r;
+		r.dest.sin_family = AF_INET;
 		inet_aton(dest, &r.dest.sin_addr);
 		if(ioctl(fd, SIOCDELRT, &r))
 			return 2;
