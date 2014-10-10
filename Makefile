@@ -77,7 +77,6 @@ qemu_net:
 qemu_net_socket:
 	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_NET_SOCKET) $(QEMU_LOCAL)
 
-# enables nested virtualization
 qemu_kvm:
 	@qemu-system-x86_64 -cpu qemu64,+vmx -m 2000 -localtime -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_LOCAL)
 
