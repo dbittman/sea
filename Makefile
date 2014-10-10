@@ -57,10 +57,10 @@ defconfig:
 build: seakernel/skernel
 	@echo updating hd image...
 	@sudo sh tools/open_hdimage.sh
-	@sudo mkdir -p ./mnt/sys/modules-${VERSION}/
-	@sudo cp -rf seakernel/drivers/built/* ./mnt/sys/modules-${VERSION}/ 2>/dev/null
-	@sudo cp -rf seakernel/initrd.img ./mnt/sys/initrd
-	@sudo cp -rf seakernel/skernel ./mnt/sys/kernel
+	@sudo mkdir -p /mnt/sys/modules-${VERSION}/
+	@sudo cp -rf seakernel/drivers/built/* /mnt/sys/modules-${VERSION}/ 2>/dev/null
+	@sudo cp -rf seakernel/initrd.img /mnt/sys/initrd
+	@sudo cp -rf seakernel/skernel /mnt/sys/kernel
 	@sudo mv seakernel/skernel skernel
 	@sudo sh tools/close_hdimage.sh
 	@sudo chmod a+rw hd.img 
@@ -77,6 +77,9 @@ qemu_net:
 qemu_net_socket:
 	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_NET_SOCKET) $(QEMU_LOCAL)
 
+# enables nested virtualization
+qemu_kvm:
+	@qemu-system-x86_64 -cpu qemu64,+vmx -m 2000 -localtime -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_LOCAL)
 
 qemu_gdb:
 	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -serial pty -S -s -drive file=hd.img,if=ide,cache=writeback $(QEMU_NET) $(QEMU_LOCAL)
