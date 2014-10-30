@@ -1,4 +1,4 @@
 #!/bin/sh
 
-umount `cat .loop` 2> /dev/null
-losetup -d `cat .loop`
+umount /dev/loop2 2> /dev/null
+losetup -d /dev/loop2
