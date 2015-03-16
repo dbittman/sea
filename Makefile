@@ -13,6 +13,23 @@ QEMU_PCI_PASSTHROUGH=-device pci-assign,host=$(PCI_DEVICE)
 all: build
 
 .PHONY: apps
+easy:
+	./configure
+	make toolchain
+	make config
+	make apps
+	make newhd
+	make
+	make qemu
+
+easy64:
+	./configure
+	make toolchain
+	make config
+	make apps64
+	make newhd64
+	make
+	make qemu
 apps:
 	@cd apps && ./ship.rb --yes update sync +ALL
 
