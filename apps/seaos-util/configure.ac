@@ -1,12 +1,14 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
+PACKAGE=seaos-util
+VERSION=0.1
+
 AC_PREREQ([2.68])
-AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
+AC_INIT(PACKAGE, VERSION)
 AC_CONFIG_SRCDIR([src/swap.c])
 AC_CONFIG_HEADERS([config.h])
-AM_INIT_AUTOMAKE([foreign])
-AC_CONFIG_FILES([Makefile src/Makefile])
+AM_INIT_AUTOMAKE
 # Checks for programs.
 AC_PROG_CC
 
@@ -25,4 +27,5 @@ AC_FUNC_FORK
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([memset strchr strerror strrchr])
 
-AC_OUTPUT
+AC_OUTPUT(Makefile src/Makefile)
+
