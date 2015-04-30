@@ -8,7 +8,7 @@ echo -e "\n" | ruby ./build.rb --sep all-all
 echo -e "x86_64\n" | ruby ./build.rb --sep all-all
 
 cd extra
-sh build-all.sh /opt/sea-toolchain x86
-sh build-all.sh /opt/sea-toolchain x86_64
+sh build-all.sh /home/dbittman/local/sea-toolchain x86 > /dev/null
+sh build-all.sh /home/dbittman/local/sea-toolchain x86_64 > /dev/null
 sh install-sep.sh
 
