@@ -7,7 +7,7 @@ dd if=/dev/zero of=hd.img bs=1024 count=1 2> /dev/null
 dd if=/dev/zero of=hd.img bs=1024 count=1 seek=1999999 2> /dev/null
 echo -n "partition..."
 
-sfdisk -q -L -u -S63 -H16 hd.img &>/dev/null << EOF
+sfdisk -q hd.img << EOF
 2048,,,*
 EOF
 echo -n "formatting..."

@@ -297,7 +297,7 @@ def build(package)
 			file = File.open("#{install_base}/buildnr", "wt")
 		end
 		count += 1
-		file.seek(0, :SET)
+		file.seek(0, IO::SEEK_SET)
 		file.print(count.to_s)
 		file.close
 		

@@ -387,7 +387,7 @@ $downloads_table = [
      "http://ftp.gnu.org/gnu/gcc/gcc-4.9.0/gcc-4.9.0.tar.bz2",
      "9709b49ae0e904cbb0a6a1b62853b556",
      [],
-     "build host cc_for_target ar_for_target as_for_target ranlib_for_target strip_for_target cxx_for_target",
+     "build host target cc_for_target ar_for_target as_for_target ranlib_for_target strip_for_target cxx_for_target",
      "--prefix=/usr --enable-lto --disable-nls --enable-languages=c,c++",
      "DESTDIR CC CXX AR cc_for_target ar_for_target as_for_target ranlib_for_target strip_for_target cxx_for_target",
      "all install",

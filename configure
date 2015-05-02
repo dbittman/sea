@@ -9,7 +9,7 @@ else
 	exit 1
 fi
 
-mkdir -p data/{dev,proc,mnt,tmp}
+mkdir -p data/{dev,mnt,tmp}
 mkdir -p mnt
 
 echo -ne "please enter a path to store the generated toolchain:\n</path/to/toolchain>: "

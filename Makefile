@@ -5,6 +5,7 @@ include local_make.inc
 QEMU_NET=-netdev tap,helper=/usr/lib/qemu/qemu-bridge-helper,id=br0 -device rtl8139,netdev=br0,id=nic1
 
 QEMU_NET_SOCKET=-device rtl8139,netdev=net0 -netdev socket,id=net0,connect=127.0.0.1:8010
+QEMU_NET_SOCKET_SERVER=-device rtl8139,netdev=net0 -netdev socket,id=net0,listen=:8010
 
 QEMU_EXTRA=-device ahci,id=ahci0 -drive if=none,file=hd.img,format=raw,id=drive-sata0-0-0 -device ide-drive,bus=ahci0.0,drive=drive-sata0-0-0,id=sata0-0-0 
 
@@ -69,13 +70,16 @@ clean:
 	@rm hd.img hd2.img
 
 qemu:
-	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_LOCAL)
+	@qemu-system-x86_64 -rtc base=utc,clock=host -m 2000 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_LOCAL)
 
 qemu_net:
 	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_NET) $(QEMU_LOCAL)
 
 qemu_net_socket:
 	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_NET_SOCKET) $(QEMU_LOCAL)
+
+qemu_net_socket_server:
+	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_NET_SOCKET_SERVER) $(QEMU_LOCAL)
 
 qemu_kvm:
 	@qemu-system-x86_64 -cpu qemu64,+vmx -m 2000 -localtime -serial stdio -drive file=hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_LOCAL)

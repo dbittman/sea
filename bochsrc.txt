@@ -5,6 +5,8 @@ display_library: x, options="gui_debug"
 memory: host=1024, guest=1024
 romimage: file="/usr/share/bochs/BIOS-bochs-latest"
 vgaromimage: file="/usr/share/bochs/VGABIOS-lgpl-latest"
+magic_break: enabled=1
+clock: sync=realtime, time0=local
 boot: disk
 floppy_bootsig_check: disabled=0
 # no floppya
@@ -19,11 +21,8 @@ ata2: enabled=0
 ata3: enabled=0
 pci: enabled=1, chipset=i440fx
 vga: extension=vbe, update_freq=5
-cpu: count=1, ips=5000000, model=bx_generic, reset_on_triple_fault=1, cpuid_limit_winnt=0, ignore_bad_msrs=1, mwait_is_nop=0
-cpuid: level=6, stepping=3, model=3, family=6, vendor_string="AuthenticAMD", brand_string="AMD Athlon(tm) processor"
-cpuid: mmx=1, apic=xapic, sep=1, movbe=0, adx=0, x86_64=1
-cpuid: aes=0, xsave=0, xsaveopt=0, smep=0, smap=0, mwait=1, vmx=2
-magic_break: enabled=1
+cpu: count=1, ips=40000000, model=bx_generic, reset_on_triple_fault=1, cpuid_limit_winnt=0, ignore_bad_msrs=1, mwait_is_nop=0
+cpuid: vmx=2
 print_timestamps: enabled=0
 port_e9_hack: enabled=0
 private_colormap: enabled=0
