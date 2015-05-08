@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sh ./tools/open_hdimage.sh
+sh ./tools/open_hdimage.sh $2
 
 echo copying ported programs to hd.img...
 cp -f -r apps/data-$1/* /mnt
