@@ -29,7 +29,7 @@ $(BUILDDIR)/initrd.tar: $(shell find data-initrd/noarch data-initrd/$(ARCH) $(KD
 	tar rf $(BUILDDIR)/initrd.tar -C data-initrd/$(ARCH) .
 	tar rf $(BUILDDIR)/initrd.tar -C $(KDIR)/$(BUILDDIR)/drivers/built .
 
-$(BUILDDIR)/hd.img:
+newhd $(BUILDDIR)/hd.img:
 	@sudo sh tools/chd.sh $(ARCH)-pc-seaos $(BUILDDIR)/hd.img
 
 $(KDIR)/$(BUILDDIR)/skernel: FORCE
@@ -41,6 +41,7 @@ reset:
 	@-sudo umount /mnt
 	@-sudo losetup -d /dev/loop2
 
+.PHONY: updatehd
 updatehd: $(KDIR)/$(BUILDDIR)/skernel $(BUILDDIR)/initrd.tar $(BUILDDIR)/hd.img
 	@echo updating hd image...
 	@sudo sh tools/open_hdimage.sh $(BUILDDIR)/hd.img
@@ -63,12 +64,6 @@ apps_port:
 
 apps_seaos:
 	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb clean-seaosutil cleansrc-seaosutil all-seaosutil
-
-newhd:
-	@sudo zsh tools/chd.sh i586-pc-seaos
-
-newhd64:
-	@sudo zsh tools/chd.sh x86_64-pc-seaos
 
 writehd:
 	@zsh tools/copy_to_hd.sh
