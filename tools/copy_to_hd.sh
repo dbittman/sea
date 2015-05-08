@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 sh ./tools/open_hdimage.sh $2
 
@@ -13,10 +13,13 @@ cp -rf tools/man_gen_tmp/text/* /mnt/usr/man/
 echo copying source code to hd.img...
 mkdir -p /mnt/usr/src
 cp -rf seakernel /mnt/usr/src/sea
+rm -rf /mnt/usr/src/sea/build/
+mkdir -p /mnt/usr/src/sea/build/default
+cp -rf seakernel/build/$3/sea_defines.h /mnt/usr/src/sea/build/default/
+cp -rf seakernel/build/$3/sea_defines.inc /mnt/usr/src/sea/build/default/
+cp -rf seakernel/build/$3/.config.cfg /mnt/usr/src/sea/build/default/
 cp -rf apps/seaos-util /mnt/usr/src/seaos-util
 echo cleaning up hd.img...
-make -s -C /mnt/usr/src/sea clean
-rm /mnt/usr/src/sea/tools/confed /mnt/usr/src/sea/tools/mkird
 rm -rf `find /mnt -name .git 2>/dev/null`
 rm -f `find /mnt -name .directory 2>/dev/null`
 
@@ -30,3 +33,4 @@ chmod o-r /mnt/etc/shadow
 chmod g-r /mnt/etc/shadow
 
 sh ./tools/close_hdimage.sh
+

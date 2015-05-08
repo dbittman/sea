@@ -30,7 +30,7 @@ $(BUILDDIR)/initrd.tar: $(shell find data-initrd/noarch data-initrd/$(ARCH) $(KD
 	tar rf $(BUILDDIR)/initrd.tar -C $(KDIR)/$(BUILDDIR)/drivers/built .
 
 newhd $(BUILDDIR)/hd.img:
-	@sudo sh tools/chd.sh $(ARCH)-pc-seaos $(BUILDDIR)/hd.img
+	@sudo bash tools/chd.sh $(ARCH)-pc-seaos $(BUILDDIR)/hd.img $(BUILDCFG)
 
 $(KDIR)/$(BUILDDIR)/skernel: FORCE
 	make -s -C $(KDIR)
@@ -65,8 +65,6 @@ apps_port:
 apps_seaos:
 	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb clean-seaosutil cleansrc-seaosutil all-seaosutil
 
-writehd:
-	@zsh tools/copy_to_hd.sh
 .PHONY : toolchain
 toolchain:
 	@cd toolchain && ruby build.rb all-all

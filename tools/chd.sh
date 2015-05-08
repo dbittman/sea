@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 loop=`cat .loop`
 
 rm -f $2 2>/dev/null
@@ -22,4 +22,5 @@ cp -r data/boot/grub/* /mnt/boot/grub/
 sh ./tools/close_hdimage.sh
 (echo -e "device (hd0) $2\nroot (hd0,0)\nembed /boot/grub/e2fs_stage1_5 (hd0)\ninstall (hd0,0)/boot/grub/stage1 (hd0) (hd0)1+17 p (hd0,0)/boot/grub/stage2\nquit" | tools/bin/grub --device-map data/boot/grub/device.map --batch)
 
-sh ./tools/copy_to_hd.sh $1 $2
+. ./tools/copy_to_hd.sh $1 $2 $3
+
