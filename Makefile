@@ -5,6 +5,7 @@ export BUILDCFG
 KDIR=seakernel
 BUILDCONTAINER=build
 BUILDDIR=$(BUILDCONTAINER)/$(BUILDCFG)
+include $(BUILDCONTAINER)/$(BUILDCFG)/make.inc
 ARCH ?= i586
 
 include $(KDIR)/make.inc
@@ -23,11 +24,11 @@ all: $(BUILDDIR) updatehd
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
 
-$(BUILDDIR)/initrd.tar: $(shell find data-initrd/noarch data-initrd/$(ARCH) $(KDIR)/$(BUILDDIR)/drivers/built)
+$(BUILDDIR)/initrd.tar: $(shell find data-initrd $(KDIR)/$(BUILDDIR)/drivers/built) $(addprefix apps/install-base-$(ARCH)-pc-seaos/, $(INITRD_ARCH_FILES))
 	@echo "Building initrd..."
-	tar cf $(BUILDDIR)/initrd.tar -C data-initrd/noarch .
-	tar rf $(BUILDDIR)/initrd.tar -C data-initrd/$(ARCH) .
-	tar rf $(BUILDDIR)/initrd.tar -C $(KDIR)/$(BUILDDIR)/drivers/built .
+	@tar cf $(BUILDDIR)/initrd.tar -C data-initrd .
+	@tar rf $(BUILDDIR)/initrd.tar -C apps/install-base-$(ARCH)-pc-seaos $(INITRD_ARCH_OPTIONS) $(INITRD_ARCH_FILES)
+	@tar rf $(BUILDDIR)/initrd.tar -C $(KDIR)/$(BUILDDIR)/drivers/built .
 
 newhd $(BUILDDIR)/hd.img:
 	@sudo bash tools/chd.sh $(ARCH)-pc-seaos $(BUILDDIR)/hd.img $(BUILDCFG)
@@ -73,7 +74,7 @@ man:
 	sh tools/gen_man.sh
 
 config:
-	@make -s -C seakernel config
+	@BUILDCFG=$(BUILDCFG) make -s -C seakernel config
 
 clean:
 	@make -s -C seakernel clean

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+BUILDDIR=build
+
+if [ "$1" == "" -o "$2" == "" ]; then
+	echo "usage: cfg-new name <arch>"
+	echo "Create new build configuration named 'name'"
+	echo "Allowed values of arch are 'i586' or 'x86_64'"
+	exit 1
+fi
+
+if [ -e $BUILDDIR/$1 ]; then
+	echo cannot create new build configuration "(file exists)"
+	exit 1
+fi
+
+mkdir -p $BUILDDIR/$1
+
+echo "ARCH=" $2 > $BUILDDIR/$1/make.inc
+
+cd seakernel
+tools/cfg-new $1
+BUILDCFG=$1 make config
+

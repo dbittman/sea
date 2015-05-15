@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 	/* Main loop */
 	while(1)
 	{
-		printf("\nKernel \"%s\" version %s (tty%d)\nor: How I learned to stop worrying about system crashes and love my computer.\n\n", name.version, name.release, ioctl(0, 8, 0));
+		printf("\nSeaOS kernel version %s (tty%d)\nor: How I learned to stop worrying and love my computer.\n\n", name.release, ioctl(0, 8, 0));
 		char username[128];
 		memset(username, 0, 128);
 		printf("Login: ");
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
 			chdir(pwd->pw_dir);
 			time_t now;
 			time(&now);
-			printf("Logged in as '%s' on %s\n", username, ctime(&now));
+			printf("Logged in as '%s'\n", username);
 			execl(shell, shell, "--login", 0);
 			if(shell != def_shell) 
 			{
