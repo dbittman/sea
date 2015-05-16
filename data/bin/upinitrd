@@ -1,0 +1,15 @@
+#!/bin/sh
+NEW=/sys/initrd.new
+CUR=/sys/initrd
+OLD=/sys/initrd.old
+tar cf $NEW --no-recursion /bin /etc /usr /usr/sbin
+. /etc/initrd.conf
+tar vrf $NEW -C / $INITRD_FILES
+# this is a bit of a hack...
+tar vrf $NEW -C /sys $INITRD_SYSFILES
+tar vrf $NEW -C /sys/modules-$(uname -r)/ $INITRD_MODULES
+echo Rotating new initrd into place...
+rm $OLD 2>/dev/null
+mv $CUR $OLD
+mv $NEW $CUR
+

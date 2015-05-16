@@ -19,6 +19,7 @@ cp -rf seakernel/build/$3/sea_defines.h /mnt/usr/src/sea/build/default/
 cp -rf seakernel/build/$3/sea_defines.inc /mnt/usr/src/sea/build/default/
 cp -rf seakernel/build/$3/.config.cfg /mnt/usr/src/sea/build/default/
 cp -rf apps/seaos-util /mnt/usr/src/seaos-util
+cp data-initrd/preinit.sh /mnt/sys/preinit.sh
 echo cleaning up hd.img...
 rm -rf `find /mnt -name .git 2>/dev/null`
 rm -f `find /mnt -name .directory 2>/dev/null`
