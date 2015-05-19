@@ -34,7 +34,7 @@ newhd $(BUILDDIR)/hd.img:
 	@sudo bash tools/chd.sh $(ARCH)-pc-seaos $(BUILDDIR)/hd.img $(BUILDCFG)
 
 $(KDIR)/$(BUILDDIR)/skernel: FORCE
-	make -s -C $(KDIR)
+	PATH=$$PATH:`cat .toolchain`/bin make -s -C $(KDIR)
 
 FORCE:
 
