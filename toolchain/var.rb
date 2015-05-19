@@ -178,7 +178,7 @@ $downloads_table = [
       "build host tarprefix", 
       "", 
       "CC AR LD", 
-      "all install", 
+      "CFLAGS=\"\" all install", 
       "cp ../config.sub mpc-1.0.1/config.sub"                           
   ],
   ["openssl", 
