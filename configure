@@ -62,6 +62,7 @@ cat > local_make.inc <<EOF
 QEMU_LOCAL=-smp 3 -enable-kvm
 INITRD_ARCH_OPTIONS=--no-recursion
 INITRD_ARCH_FILES=bin/bash bin/modprobe bin/mount bin/umount bin/ls bin/chroot bin/cat usr/sbin/fsck usr/sbin/fsck.ext2
+MAKE_FLAGS=-j1
 
 EOF
 
