@@ -25,17 +25,16 @@ if [[ "$1" = "/" ]]; then
 	sh
 else
 	fsck -p -T -C $1
-	printf "Mounting filesystems: $1 -> / "
+	printf "Mounting filesystems: $1 -> /,"
 	if ! mount $1 /mnt; then
 		echo
 		echo "Failed to mount root filesystem, falling back to initrd shell..."
 		sh
 	else
-		/mnt/bin/umount /dev
 		chroot /mnt /bin/sh -c <<EOF "
-			printf "dev"
+			printf dev,
 			mount -t devfs /dev/null /dev
-			printf "tmp"
+			echo tmp
 			mount -t tmpfs /dev/null /tmp
 			. /etc/rc/boot; exit 0"
 EOF

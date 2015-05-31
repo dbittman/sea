@@ -39,3 +39,4 @@ int main(int argc, char **argv)
 		fprintf(stderr, "%s: %s: %s\n", (char *)basename(argv[0]), argv[force ? 2 : 1], strerror(errno));
 	return ret ? 1 : 0;
 }
+
