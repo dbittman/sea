@@ -89,7 +89,11 @@ int main(int argc, char **argv)
 		pid = fork();
 		if(pid) {
 			int status;
-			while(waitpid(-1,&status,0) == -EINTR);
+			int ret;
+			while((ret = waitpid(-1,&status,0)) <= 0) {
+				if(ret == -ECHILD)
+					fprintf(stderr, "login: no child process\n");
+			}
 			ioctl(1, 0, 0);
 		} else {
 			set_uid(pwd->pw_uid);
