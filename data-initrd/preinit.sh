@@ -34,8 +34,6 @@ else
 		chroot /mnt /bin/sh -c <<EOF "
 			printf dev,
 			mount -t devfs /dev/null /dev
-			echo tmp
-			mount -t tmpfs /dev/null /tmp
 			. /etc/rc/boot; exit 0"
 EOF
 		if [ $? != 0 ] ; then
