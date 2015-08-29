@@ -1,0 +1,12 @@
+diff -uprN nano-2.4.2/config.sub nano-2.4.2-seaos/config.sub
+--- nano-2.4.2/config.sub	2013-08-11 04:49:21.000000000 -0700
++++ nano-2.4.2-seaos/config.sub	2015-08-29 13:58:38.801371096 -0700
+@@ -1354,7 +1354,7 @@ case $os in
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+ 	      | -sym* | -kopensolaris* | -plan9* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+-	      | -aos* | -aros* \
++	      | -aos* | -aros* | -seaos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \

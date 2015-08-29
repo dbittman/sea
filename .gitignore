@@ -10,9 +10,6 @@ skernel
 apps/porting/ported
 toolchain/build*
 *.tar.*
-toolchain/binutils-*
-toolchain/gcc-*
-toolchain/newlib-*
 data-i586-pc-seaos
 data-x86_64-pc-seaos
 *.kdev4

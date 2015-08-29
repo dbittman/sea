@@ -39,7 +39,7 @@ DT_COMMAND = 10
 
 
 $downloads_table = [
-  ["binutils", 
+  ["binutils-old", 
       "2.22", 
       true, 
       "http://ftp.gnu.org/gnu/binutils/binutils-2.22.tar.gz", 
@@ -51,8 +51,34 @@ $downloads_table = [
       "MAKEINFO=makeinfo all install", 
       nil
   ],
-	
+  
+  ["binutils", 
+      "2.25.1", 
+      true, 
+      "http://ftp.gnu.org/gnu/binutils/binutils-2.25.1.tar.bz2", 
+      "ac493a78de4fee895961d025b7905be4", 
+      [],
+      "build target prefix", 
+      "--disable-nls --disable-werror", 
+      "", 
+      "MAKEINFO=makeinfo all install", 
+      nil
+  ],
+
   ["gcc", 
+      "5.2.0", 
+      true, 
+      "http://ftp.gnu.org/gnu/gcc/gcc-5.2.0/gcc-5.2.0.tar.bz2", 
+      "a51bcfeb3da7dd4c623e27207ed43467", 
+      ["binutils *"], 
+      "build target prefix", 
+      "--enable-languages=c,c++ --enable-lto --disable-nls", 
+      "", 
+      "all-gcc install-gcc", 
+      nil                              
+  ],
+
+  ["gcc-old", 
       "4.9.0", 
       true, 
       "http://ftp.gnu.org/gnu/gcc/gcc-4.9.0/gcc-4.9.0.tar.bz2", 
@@ -81,7 +107,7 @@ $downloads_table = [
   ["libgcc", 
       nil, 
       true, 
-      "gcc-4.9.0", 
+      "gcc-5.2.0", 
       nil, 
       ["binutils *", "gcc *", "newlib *"], 
       "build target prefix", 
@@ -94,7 +120,7 @@ $downloads_table = [
   ["libstdc++", 
       nil, 
       true, 
-      "gcc-4.9.0", 
+      "gcc-5.2.0", 
       nil, 
       ["binutils *", "gcc *", "newlib *", "libgcc *"], 
       "build target prefix",
@@ -117,7 +143,7 @@ $downloads_table = [
       nil                                                            
   ],
 	
-  ["ncurses", 
+  ["ncurses-old", 
       "5.9", 
       false, 
       "ftp://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz", 
@@ -129,7 +155,20 @@ $downloads_table = [
       "all install", 
       "cp ../config.sub ncurses-5.9/config.sub"                         
   ],  
-	
+		
+  ["ncurses", 
+      "6.0", 
+      false, 
+      "ftp://ftp.gnu.org/gnu/ncurses/ncurses-6.0.tar.gz", 
+      "ee13d052e1ead260d7c28071f46eefb1", 
+      ["binutils *", "gcc *", "newlib *", "termcap *", "libgcc *"], 
+      "build host tarprefix include oldinclude", 
+      "--enable-termcap --disable-database --enable-overwrite", 
+      "", 
+      "all install -i", 
+      "cp ../config.sub ncurses-6.0/config.sub"                         
+  ],  
+
   ["readline", 
       "6.2", 
       false, 
@@ -168,8 +207,8 @@ $downloads_table = [
       "all install", 
       "cp ../config.sub mpfr-3.1.2/config.sub"                          
   ],
-	
-  ["mpc", 
+		
+  ["mpc-old", 
       "1.0.1", 
       false, 
       "ftp://ftp.gnu.org/gnu/mpc/mpc-1.0.1.tar.gz", 
@@ -181,6 +220,20 @@ $downloads_table = [
       "CFLAGS=\"\" all install", 
       "cp ../config.sub mpc-1.0.1/config.sub"                           
   ],
+
+  ["mpc", 
+      "1.0.3", 
+      false, 
+      "ftp://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz", 
+      "d6a1d5f8ddea3abd2cc3e98f58352d26", 
+      ["binutils *", "gcc *", "newlib *", "libgcc *"], 
+      "build host tarprefix", 
+      "", 
+      "CC AR LD", 
+      "CFLAGS=\"\" all install", 
+      "chmod 0777 mpc-1.0.3/config.sub && cp ../config.sub mpc-1.0.3/config.sub"                           
+  ],
+
   ["openssl", 
       "1.0.1f", 
       true, 

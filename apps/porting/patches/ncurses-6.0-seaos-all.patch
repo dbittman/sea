@@ -1,0 +1,12 @@
+diff -uprN ncurses-6.0/config.sub ncurses-6.0-seaos/config.sub
+--- ncurses-6.0/config.sub	2015-05-02 04:52:04.000000000 -0700
++++ ncurses-6.0-seaos/config.sub	2015-08-29 12:16:47.508315765 -0700
+@@ -1376,7 +1376,7 @@ case $os in
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+ 	      | -sym* | -kopensolaris* | -plan9* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+-	      | -aos* | -aros* | -cloudabi* \
++	      | -aos* | -aros* | -cloudabi* | -seaos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
