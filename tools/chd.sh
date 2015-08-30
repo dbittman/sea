@@ -10,17 +10,19 @@ echo -n "partition..."
 sfdisk -q $2 << EOF
 2048,,,*
 EOF
+sfdisk --activate $2 1
 echo -n "formatting..."
+sudo losetup /dev/loop1 $2
 sudo losetup -o1048576 /dev/loop2 $2
 mke2fs -q -I128 -b1024 /dev/loop2 
 sync
-losetup -d /dev/loop2
+mount /dev/loop2 /mnt
+
 echo "installing grub..."
-sh ./tools/open_hdimage.sh $2
-mkdir -p /mnt/boot/grub
-cp -r data/boot/grub/* /mnt/boot/grub/
-sh ./tools/close_hdimage.sh
-(echo -e "device (hd0) $2\nroot (hd0,0)\nembed /boot/grub/e2fs_stage1_5 (hd0)\ninstall (hd0,0)/boot/grub/stage1 (hd0) (hd0)1+17 p (hd0,0)/boot/grub/stage2\nquit" | tools/bin/grub --device-map data/boot/grub/device.map --batch)
+sudo grub-install --root-directory=/mnt --no-floppy --modules="normal part_msdos ext2 multiboot" /dev/loop1
+umount /mnt
+losetup -d /dev/loop2
+losetup -d /dev/loop1
 
 . ./tools/copy_to_hd.sh $1 $2 $3
 

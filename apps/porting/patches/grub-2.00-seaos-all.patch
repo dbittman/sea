@@ -1,0 +1,48 @@
+diff -uprN grub-2.00/build-aux/config.sub grub-2.00-seaos/build-aux/config.sub
+--- grub-2.00/build-aux/config.sub	2012-06-18 14:08:46.000000000 -0700
++++ grub-2.00-seaos/build-aux/config.sub	2015-08-29 15:10:34.407615256 -0700
+@@ -1348,7 +1348,7 @@ case $os in
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+ 	      | -sym* | -kopensolaris* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+-	      | -aos* | -aros* \
++	      | -aos* | -aros* | -seaos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+diff -uprN grub-2.00/grub-core/gnulib/regex_internal.c grub-2.00-seaos/grub-core/gnulib/regex_internal.c
+--- grub-2.00/grub-core/gnulib/regex_internal.c	2010-12-01 06:45:43.000000000 -0800
++++ grub-2.00-seaos/grub-core/gnulib/regex_internal.c	2015-08-29 15:29:48.469046843 -0700
+@@ -18,6 +18,8 @@
+    with this program; if not, write to the Free Software Foundation,
+    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. */
+ 
++#include <stdint.h>
++
+ static void re_string_construct_common (const char *str, Idx len,
+ 					re_string_t *pstr,
+ 					RE_TRANSLATE_TYPE trans, bool icase,
+diff -uprN grub-2.00/grub-core/gnulib/regex_internal.h grub-2.00-seaos/grub-core/gnulib/regex_internal.h
+--- grub-2.00/grub-core/gnulib/regex_internal.h	2012-02-09 06:13:25.000000000 -0800
++++ grub-2.00-seaos/grub-core/gnulib/regex_internal.h	2015-08-29 15:30:20.115387546 -0700
+@@ -27,7 +27,6 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+-
+ #include <langinfo.h>
+ #ifndef _LIBC
+ # include "localcharset.h"
+diff -uprN grub-2.00/grub-core/lib/posix_wrap/sys/types.h grub-2.00-seaos/grub-core/lib/posix_wrap/sys/types.h
+--- grub-2.00/grub-core/lib/posix_wrap/sys/types.h	2012-05-28 08:52:37.000000000 -0700
++++ grub-2.00-seaos/grub-core/lib/posix_wrap/sys/types.h	2015-08-29 15:34:01.789771465 -0700
+@@ -22,7 +22,9 @@
+ #include <grub/misc.h>
+ 
+ #ifndef __APPLE__
++#ifndef __size_t__
+ typedef grub_size_t size_t;
++#endif
+ #else
+ #include <stddef.h>
+ #endif

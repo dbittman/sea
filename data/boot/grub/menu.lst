@@ -1,5 +1,0 @@
-timeout 1
-color light-blue/black light-gray/blue
-title SeaOS 0.3 (kernel eclipse)
-	kernel /sys/kernel root="/dev/ida1"
-	module /sys/initrd

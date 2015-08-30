@@ -199,7 +199,7 @@ $downloads_table = [
      nil
   ],
 	
-  ["grub",
+  ["grub-legacy",
      "0.97",
      true,
      "ftp://alpha.gnu.org/gnu/grub/grub-0.97.tar.gz",
@@ -207,6 +207,19 @@ $downloads_table = [
      [],
      "build host",
      "--prefix=/usr --without-curses",
+     "DESTDIR",
+     "all install",
+     nil
+  ],
+	
+  ["grub",
+     "2.00",
+     true,
+     "ftp://ftp.gnu.org/gnu/grub/grub-2.00.tar.xz",
+     "a1043102fbc7bcedbf53e7ee3d17ab91",
+     [],
+     "build host",
+     "--prefix=/usr --disable-werror --disable-grub-mkfont",
      "DESTDIR",
      "all install",
      nil
