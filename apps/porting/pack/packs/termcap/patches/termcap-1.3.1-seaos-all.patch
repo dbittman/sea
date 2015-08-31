@@ -1,0 +1,27 @@
+diff -uprN termcap-1.3.1/Makefile.in termcap-1.3.1-seaos/Makefile.in
+--- termcap-1.3.1/Makefile.in	1995-08-16 17:54:29.000000000 -0700
++++ termcap-1.3.1-seaos/Makefile.in	2014-02-09 16:31:01.249762534 -0800
+@@ -37,19 +37,19 @@ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+ 
+ # Directory in which to install libtermcap.a.
+-libdir = $(exec_prefix)/lib
++libdir = $(DESTDIR)/$(exec_prefix)/lib
+ 
+ # Directory in which to install termcap.h.
+-includedir = $(prefix)/include
++includedir = $(DESTDIR)/$(prefix)/include
+ 
+ # Directory in which to optionally also install termcap.h,
+ # so compilers besides gcc can find it by default.
+ # If it is empty or not defined, termcap.h will only be installed in
+ # includedir. 
+-oldincludedir = /usr/include
++oldincludedir = $(DESTDIR)/usr/include
+ 
+ # Directory in which to install the documentation info files.
+-infodir = $(prefix)/info
++infodir = $(DESTDIR)/$(prefix)/info
+ 
+ # File to which `install-data' should install the data file
+ # if --enable-install-termcap was given.

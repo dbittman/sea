@@ -1,0 +1,12 @@
+diff -uprN automake-1.14/lib/config.sub automake-1.14-sea/lib/config.sub
+--- automake-1.14/lib/config.sub	2013-05-13 13:12:48.000000000 -0700
++++ automake-1.14-sea/lib/config.sub	2014-07-01 14:12:30.293601896 -0700
+@@ -1354,7 +1354,7 @@ case $os in
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+ 	      | -sym* | -kopensolaris* | -plan9* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+-	      | -aos* | -aros* \
++	      | -aos* | -aros* | -seaos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
