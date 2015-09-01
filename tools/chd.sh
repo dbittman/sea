@@ -17,7 +17,7 @@ sync
 mount /dev/loop2 /mnt
 
 echo "installing grub..."
-sudo grub-install --root-directory=/mnt --locales= --no-floppy --modules="normal part_msdos ext2 multiboot" /dev/loop1
+sudo grub-install --root-directory=/mnt --locales= --no-floppy --modules="normal part_msdos ext2 multiboot gzio" /dev/loop1
 umount /mnt
 losetup -d /dev/loop2
 losetup -d /dev/loop1

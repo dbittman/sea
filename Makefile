@@ -50,6 +50,7 @@ updatehd: $(KDIR)/$(BUILDDIR)/skernel $(BUILDDIR)/initrd.tar $(BUILDDIR)/hd.img
 	@sudo cp -rf $(KDIR)/$(BUILDDIR)/drivers/built/* /mnt/sys/modules-${VERSION}/ 2>/dev/null
 	@sudo cp -rf $(BUILDDIR)/initrd.tar /mnt/sys/initrd
 	@sudo cp -rf $(KDIR)/$(BUILDDIR)/skernel /mnt/sys/kernel
+	@sudo gzip -f /mnt/sys/initrd
 	@sudo sh tools/close_hdimage.sh
 	@sudo chmod a+rw $(BUILDDIR)/hd.img 
 
