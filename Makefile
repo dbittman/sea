@@ -55,16 +55,19 @@ updatehd: $(KDIR)/$(BUILDDIR)/skernel $(BUILDDIR)/initrd.tar $(BUILDDIR)/hd.img
 
 .PHONY: apps apps64 apps_port apps_seaos
 apps:
-	@cd apps && ./ship.rb --yes update sync +ALL
+	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:`cat .toolchain`/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/build-all.sh; apps/porting/pack/aggregate.sh apps/install-base-i586-pc-seaos i586-pc-seaos
 
 apps64:
-	@cd apps && ./ship.rb -c ship64.yaml --yes update sync +ALL
-
-apps_port:
-	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb all-all
+	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:`cat .toolchain`/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/build-all.sh x86_64-pc-seaos; apps/porting/pack/aggregate.sh apps/install-base-x86_64-pc-seaos x86_64-pc-seaos
 
 apps_seaos:
 	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb clean-seaosutil cleansrc-seaosutil all-seaosutil
+
+apps_clean:
+	rm -rf apps/install-base-*; cd apps/porting/pack && PACKSDIR=packs ./clean-all.sh
+
+apps_distclean:
+	rm -rf apps/install-base-*; cd apps/porting/pack && PACKSDIR=packs ./clean-all.sh -s
 
 .PHONY : toolchain
 toolchain:

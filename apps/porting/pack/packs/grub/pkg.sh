@@ -16,11 +16,11 @@ function prepare() {
 
 function build() {
 	if ! ../src/grub-2.00/configure --disable-werror --disable-grub-mkfont --prefix=/usr --host=$HOST_TRIPLET; then
-		exit 1
+		return 1
 	fi
 
-	if ! DESTDIR=../$INSTALL_ROOT make all install; then
-		exit 1
+	if ! make DESTDIR=$INSTALL_ROOT all install; then
+		return 1
 	fi
 }
 

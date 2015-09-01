@@ -1,7 +1,13 @@
 #!/bin/bash
 # pack.sh - Build a package.
-PACKS=packs
+PACKS=$PACKSDIR
+if [ "$PACKS" == "" ]; then PACKS=/usr/src/packs; fi
 export INDIV_PARALLEL=4
+function handle_interrupt() {
+    echo "Interrupted"
+	exit 1
+}
+trap handle_interrupt SIGINT
 
 if [ -z "$2" ]; then
 	export HOST_TRIPLET=i586-pc-seaos
@@ -37,11 +43,11 @@ fi
 index=0
 for i in "${SOURCES[@]}"; do
 	if ! (echo "${SOURCES_HASHES[$index]} src/$(basename $i)" | md5sum -c &>/dev/null); then
-		echo " * Downloading $i"
+		echo "$NAME: Downloading $i"
 		curl -L $i > src/$(basename $i)
 		# verify integrity
 		if ! (echo "${SOURCES_HASHES[$index]} src/$(basename $i)" | md5sum -c &>/dev/null); then
-			echo File $(basename $i) from $i failed integrity check.
+			echo "**" File $(basename $i) from $i failed integrity check.
 			exit 1
 		fi
 	fi
@@ -50,24 +56,24 @@ done
 
 cd src
 
-echo "* Preparing sources"
+echo "$NAME: Preparing sources"
 prepare
+touch ../build-$HOST_TRIPLET.log
 truncate -s 0 ../build-$HOST_TRIPLET.log
 for i in "${PATCHES[@]}"; do
-	# try to extract all extractable files
 	patch -p0 -N -s -r /dev/null -i ../$i &>> ../build-$HOST_TRIPLET.log
 done
 
-echo "* Building"
-export INSTALL_ROOT=$(realpath ../install-$HOST_TRIPLET/root)
+echo "$NAME: Building"
 rm -rf install-$HOST_TRIPLET/*
 mkdir -p install-$HOST_TRIPLET/root
+export INSTALL_ROOT=$(realpath ../install-$HOST_TRIPLET/root)
 cd ../build-$HOST_TRIPLET
 build &>> ../build-$HOST_TRIPLET.log
 
 if [ "$?" == "0" ]; then
 	cd ../install-$HOST_TRIPLET/root
-	find | sed "s/^\.//g" | grep "/.*" > ../manifest
+	find | sed "s/^\.//g" | grep "/.*" > ../$NAME-$VERSION.manifest
 	echo "--Package $NAME version $VERSION built successfully--"
 else
 	echo "**Package $NAME version $VERSION FAILED to build--"

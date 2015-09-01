@@ -19,7 +19,7 @@ function build() {
 		return 1
 	fi
 
-	if ! make DESTDIR=$INSTALL_ROOT  all install; then
+	if ! make DESTDIR=$INSTALL_ROOT all install; then
 		return 1
 	fi
 }
