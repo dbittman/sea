@@ -14,13 +14,14 @@ if [ -d tools/man_gen_tmp/text ]; then
 fi
 echo copying source code to hd.img...
 mkdir -p /mnt/usr/src
-rsync --exclude .git --exclude .directory -rlp seakernel /mnt/usr/src/sea
-rm -rf /mnt/usr/src/sea/build/
-mkdir -p /mnt/usr/src/sea/build/default
-cp -f seakernel/build/$3/sea_defines.h /mnt/usr/src/sea/build/default/
-cp -f seakernel/build/$3/sea_defines.inc /mnt/usr/src/sea/build/default/
-cp -f seakernel/build/$3/.config.cfg /mnt/usr/src/sea/build/default/
-rsync --exclude .git --exclude .directory -rlp apps/seaos-util /mnt/usr/src/seaos-util
+rsync --exclude .git --exclude .directory -rlp seakernel /mnt/usr/src
+rm -rf /mnt/usr/src/seakernel/build/
+mkdir -p /mnt/usr/src/seakernel/build/default
+cp -f seakernel/build/$3/sea_defines.h /mnt/usr/src/seakernel/build/default/
+cp -f seakernel/build/$3/sea_defines.inc /mnt/usr/src/seakernel/build/default/
+cp -f seakernel/build/$3/.config.cfg /mnt/usr/src/seakernel/build/default/
+mkdir -p /mnt/usr/src
+rsync --exclude .git --exclude .directory -rlp apps/seaos-util /mnt/usr/src/
 cp -f data-initrd/preinit.sh /mnt/sys/preinit.sh
 
 echo fixing permissions...
