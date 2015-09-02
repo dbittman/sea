@@ -1,3 +1,4 @@
+echo "INIT started: root=$1"
 echo -n "Loading modules..."
 export PATH=$PATH:/:.:/usr/sbin
 MODS="shiv keyboard pci partitions psm ata ahci ext2"
