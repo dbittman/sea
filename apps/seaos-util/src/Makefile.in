@@ -90,7 +90,7 @@ bin_PROGRAMS = fortune$(EXEEXT) ifc$(EXEEXT) ioctl$(EXEEXT) \
 	login$(EXEEXT) losetup$(EXEEXT) lscpu$(EXEEXT) lspci$(EXEEXT) \
 	modprobe$(EXEEXT) mon$(EXEEXT) mount$(EXEEXT) passwd$(EXEEXT) \
 	ping$(EXEEXT) route$(EXEEXT) sps$(EXEEXT) shiv$(EXEEXT) \
-	shutdown$(EXEEXT) swap$(EXEEXT) t$(EXEEXT) umount$(EXEEXT) \
+	kshutdown$(EXEEXT) swap$(EXEEXT) t$(EXEEXT) umount$(EXEEXT) \
 	useradd$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -113,6 +113,9 @@ ifc_LDADD = $(LDADD)
 am_ioctl_OBJECTS = ioctl.$(OBJEXT)
 ioctl_OBJECTS = $(am_ioctl_OBJECTS)
 ioctl_LDADD = $(LDADD)
+am_kshutdown_OBJECTS = shutdown.$(OBJEXT)
+kshutdown_OBJECTS = $(am_kshutdown_OBJECTS)
+kshutdown_LDADD = $(LDADD)
 am_login_OBJECTS = login.$(OBJEXT) check_password.$(OBJEXT)
 login_OBJECTS = $(am_login_OBJECTS)
 login_DEPENDENCIES =
@@ -146,9 +149,6 @@ route_LDADD = $(LDADD)
 am_shiv_OBJECTS = shiv.$(OBJEXT)
 shiv_OBJECTS = $(am_shiv_OBJECTS)
 shiv_LDADD = $(LDADD)
-am_shutdown_OBJECTS = shutdown.$(OBJEXT)
-shutdown_OBJECTS = $(am_shutdown_OBJECTS)
-shutdown_LDADD = $(LDADD)
 am_sps_OBJECTS = ps.$(OBJEXT)
 sps_OBJECTS = $(am_sps_OBJECTS)
 sps_LDADD = $(LDADD)
@@ -193,17 +193,17 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(fortune_SOURCES) $(ifc_SOURCES) $(ioctl_SOURCES) \
-	$(login_SOURCES) $(losetup_SOURCES) $(lscpu_SOURCES) \
-	$(lspci_SOURCES) $(modprobe_SOURCES) $(mon_SOURCES) \
-	$(mount_SOURCES) $(passwd_SOURCES) $(ping_SOURCES) \
-	$(route_SOURCES) $(shiv_SOURCES) $(shutdown_SOURCES) \
+	$(kshutdown_SOURCES) $(login_SOURCES) $(losetup_SOURCES) \
+	$(lscpu_SOURCES) $(lspci_SOURCES) $(modprobe_SOURCES) \
+	$(mon_SOURCES) $(mount_SOURCES) $(passwd_SOURCES) \
+	$(ping_SOURCES) $(route_SOURCES) $(shiv_SOURCES) \
 	$(sps_SOURCES) $(swap_SOURCES) $(t_SOURCES) $(umount_SOURCES) \
 	$(useradd_SOURCES)
 DIST_SOURCES = $(fortune_SOURCES) $(ifc_SOURCES) $(ioctl_SOURCES) \
-	$(login_SOURCES) $(losetup_SOURCES) $(lscpu_SOURCES) \
-	$(lspci_SOURCES) $(modprobe_SOURCES) $(mon_SOURCES) \
-	$(mount_SOURCES) $(passwd_SOURCES) $(ping_SOURCES) \
-	$(route_SOURCES) $(shiv_SOURCES) $(shutdown_SOURCES) \
+	$(kshutdown_SOURCES) $(login_SOURCES) $(losetup_SOURCES) \
+	$(lscpu_SOURCES) $(lspci_SOURCES) $(modprobe_SOURCES) \
+	$(mon_SOURCES) $(mount_SOURCES) $(passwd_SOURCES) \
+	$(ping_SOURCES) $(route_SOURCES) $(shiv_SOURCES) \
 	$(sps_SOURCES) $(swap_SOURCES) $(t_SOURCES) $(umount_SOURCES) \
 	$(useradd_SOURCES)
 am__can_run_installinfo = \
@@ -336,7 +336,7 @@ passwd_LDADD = -lcrypto
 ping_SOURCES = ping.c
 route_SOURCES = route.c
 sps_SOURCES = ps.c
-shutdown_SOURCES = shutdown.c
+kshutdown_SOURCES = shutdown.c
 swap_SOURCES = swap.c
 t_SOURCES = t.c
 umount_SOURCES = umount.c
@@ -430,6 +430,10 @@ ioctl$(EXEEXT): $(ioctl_OBJECTS) $(ioctl_DEPENDENCIES) $(EXTRA_ioctl_DEPENDENCIE
 	@rm -f ioctl$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(ioctl_OBJECTS) $(ioctl_LDADD) $(LIBS)
 
+kshutdown$(EXEEXT): $(kshutdown_OBJECTS) $(kshutdown_DEPENDENCIES) $(EXTRA_kshutdown_DEPENDENCIES) 
+	@rm -f kshutdown$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(kshutdown_OBJECTS) $(kshutdown_LDADD) $(LIBS)
+
 login$(EXEEXT): $(login_OBJECTS) $(login_DEPENDENCIES) $(EXTRA_login_DEPENDENCIES) 
 	@rm -f login$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(login_OBJECTS) $(login_LDADD) $(LIBS)
@@ -473,10 +477,6 @@ route$(EXEEXT): $(route_OBJECTS) $(route_DEPENDENCIES) $(EXTRA_route_DEPENDENCIE
 shiv$(EXEEXT): $(shiv_OBJECTS) $(shiv_DEPENDENCIES) $(EXTRA_shiv_DEPENDENCIES) 
 	@rm -f shiv$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(shiv_OBJECTS) $(shiv_LDADD) $(LIBS)
-
-shutdown$(EXEEXT): $(shutdown_OBJECTS) $(shutdown_DEPENDENCIES) $(EXTRA_shutdown_DEPENDENCIES) 
-	@rm -f shutdown$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(shutdown_OBJECTS) $(shutdown_LDADD) $(LIBS)
 
 sps$(EXEEXT): $(sps_OBJECTS) $(sps_DEPENDENCIES) $(EXTRA_sps_DEPENDENCIES) 
 	@rm -f sps$(EXEEXT)
