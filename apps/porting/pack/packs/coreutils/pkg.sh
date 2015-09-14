@@ -15,7 +15,7 @@ function prepare() {
 }
 
 function build() {
-	if ! ../src/$NAME-$VERSION/configure --enable-no-install-program=hostname,su --disable-nls --datarootdir=/usr/share --prefix=/ --host=$HOST_TRIPLET; then
+	if ! ../src/$NAME-$VERSION/configure --enable-no-install-program=hostname,su --disable-nls --datarootdir=/usr/share --prefix=/ --host=$HOST_TRIPLET --disable-shared; then
 		return 1
 	fi
 

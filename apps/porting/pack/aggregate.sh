@@ -28,3 +28,6 @@ for i in $(ls $SUBDIR); do
 	fi
 done
 
+echo Stripping executables...
+find $DEST -executable -type f -exec strip -s {} \; 2>/dev/null
+

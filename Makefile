@@ -100,7 +100,7 @@ qemu_kvm:
 	@qemu-system-x86_64 -cpu qemu64,+vmx -m 2000 -localtime -serial stdio -drive file=$(BUILDDIR)/hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_LOCAL)
 
 qemu_gdb:
-	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -serial pty -S -s -drive file=$(BUILDDIR)/hd.img,if=ide,cache=writeback $(QEMU_NET) $(QEMU_LOCAL)
+	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -serial pty -S -s -drive file=$(BUILDDIR)/hd.img,if=ide,cache=writeback $(QEMU_LOCAL)
 
 qemu_pci:
 	@sudo -E qemu-system-x86_64 -boot order=c -localtime -m 2000 -serial stdio -drive file=$(BUILDDIR)/hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_PCI_PASSTHROUGH) $(QEMU_LOCAL)

@@ -10,7 +10,7 @@ function handle_interrupt() {
 trap handle_interrupt SIGINT
 
 if [ -z "$2" ]; then
-	export HOST_TRIPLET=i586-pc-seaos
+	export HOST_TRIPLET=x86_64-pc-seaos
 else
 	export HOST_TRIPLET=$2
 fi
@@ -33,7 +33,7 @@ fi
 
 source pkg.sh
 
-echo --Building $NAME version $VERSION--
+echo --Building $NAME version $VERSION : $HOST_TRIPLET --
 
 if ! mkdir -p src build-$HOST_TRIPLET install-$HOST_TRIPLET; then
 	echo "Could not create build and src directories"
