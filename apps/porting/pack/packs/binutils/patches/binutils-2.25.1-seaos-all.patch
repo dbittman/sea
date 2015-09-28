@@ -1,11 +1,11 @@
 diff -uprN binutils-2.25.1/autom4te.cache/output.0t binutils-2.25.1-seaos/autom4te.cache/output.0t
 --- binutils-2.25.1/autom4te.cache/output.0t	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/autom4te.cache/output.0t	2015-08-28 20:17:10.974293616 -0700
++++ binutils-2.25.1-seaos/autom4te.cache/output.0t	2015-09-08 19:37:31.632897701 -0700
 @@ -0,0 +1 @@
 +@%:@! /bin/sh
 diff -uprN binutils-2.25.1/autom4te.cache/traces.0t binutils-2.25.1-seaos/autom4te.cache/traces.0t
 --- binutils-2.25.1/autom4te.cache/traces.0t	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/autom4te.cache/traces.0t	2015-08-28 20:17:10.974293616 -0700
++++ binutils-2.25.1-seaos/autom4te.cache/traces.0t	2015-09-08 19:37:31.632897701 -0700
 @@ -0,0 +1,159 @@
 +m4trace:configure.ac:22: -1- m4_include([config/acx.m4])
 +m4trace:configure.ac:23: -1- m4_include([config/override.m4])
@@ -168,7 +168,7 @@ diff -uprN binutils-2.25.1/autom4te.cache/traces.0t binutils-2.25.1-seaos/autom4
 +m4trace:configure.ac:34: -1- m4_pattern_allow([^target_alias$])
 diff -uprN binutils-2.25.1/bfd/config.bfd binutils-2.25.1-seaos/bfd/config.bfd
 --- binutils-2.25.1/bfd/config.bfd	2014-10-14 00:32:02.000000000 -0700
-+++ binutils-2.25.1-seaos/bfd/config.bfd	2015-08-28 20:07:20.590208988 -0700
++++ binutils-2.25.1-seaos/bfd/config.bfd	2015-09-08 19:37:31.632897701 -0700
 @@ -628,6 +628,10 @@ case "${targ}" in
      targ_selvecs=i386_elf32_vec
      targ_underscore=yes
@@ -194,7 +194,7 @@ diff -uprN binutils-2.25.1/bfd/config.bfd binutils-2.25.1-seaos/bfd/config.bfd
      targ_selvecs="i386_elf32_vec x86_64_elf32_vec i386_aout_linux_vec i386_pei_vec x86_64_pei_vec l1om_elf64_vec k1om_elf64_vec"
 diff -uprN binutils-2.25.1/config.sub binutils-2.25.1-seaos/config.sub
 --- binutils-2.25.1/config.sub	2014-10-14 00:32:02.000000000 -0700
-+++ binutils-2.25.1-seaos/config.sub	2015-08-28 19:45:50.353221286 -0700
++++ binutils-2.25.1-seaos/config.sub	2015-09-08 19:37:31.632897701 -0700
 @@ -1364,7 +1364,7 @@ case $os in
  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
  	      | -sym* | -kopensolaris* | -plan9* \
@@ -206,7 +206,7 @@ diff -uprN binutils-2.25.1/config.sub binutils-2.25.1-seaos/config.sub
  	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
 diff -uprN binutils-2.25.1/gas/configure.tgt binutils-2.25.1-seaos/gas/configure.tgt
 --- binutils-2.25.1/gas/configure.tgt	2015-07-21 01:20:58.000000000 -0700
-+++ binutils-2.25.1-seaos/gas/configure.tgt	2015-08-28 19:46:51.439268854 -0700
++++ binutils-2.25.1-seaos/gas/configure.tgt	2015-09-08 19:37:31.632897701 -0700
 @@ -231,6 +231,7 @@ case ${generic_target} in
    i386-*-openbsd[0-2].* | \
    i386-*-openbsd3.[0-2])		fmt=aout em=nbsd ;;
@@ -217,7 +217,7 @@ diff -uprN binutils-2.25.1/gas/configure.tgt binutils-2.25.1-seaos/gas/configure
    i386-*-linux*coff*)			fmt=coff em=linux ;;
 diff -uprN binutils-2.25.1/ld/aclocal.m4 binutils-2.25.1-seaos/ld/aclocal.m4
 --- binutils-2.25.1/ld/aclocal.m4	2013-11-04 07:33:39.000000000 -0800
-+++ binutils-2.25.1-seaos/ld/aclocal.m4	2015-08-28 20:05:21.268073885 -0700
++++ binutils-2.25.1-seaos/ld/aclocal.m4	2015-09-08 19:37:31.636230999 -0700
 @@ -1,25 +1,9634 @@
 -# generated automatically by aclocal 1.11.1 -*- Autoconf -*-
 +# generated automatically by aclocal 1.15 -*- Autoconf -*-
@@ -11092,7 +11092,7 @@ diff -uprN binutils-2.25.1/ld/aclocal.m4 binutils-2.25.1-seaos/ld/aclocal.m4
 -m4_include([../lt~obsolete.m4])
 diff -uprN binutils-2.25.1/ld/autom4te.cache/output.0 binutils-2.25.1-seaos/ld/autom4te.cache/output.0
 --- binutils-2.25.1/ld/autom4te.cache/output.0	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/ld/autom4te.cache/output.0	2015-08-28 20:05:04.061580084 -0700
++++ binutils-2.25.1-seaos/ld/autom4te.cache/output.0	2015-09-08 19:37:31.642897598 -0700
 @@ -0,0 +1,19821 @@
 +@%:@! /bin/sh
 +@%:@ Guess values for system-dependent variables and create Makefiles.
@@ -30917,12 +30917,12 @@ diff -uprN binutils-2.25.1/ld/autom4te.cache/output.0 binutils-2.25.1-seaos/ld/a
 +
 diff -uprN binutils-2.25.1/ld/autom4te.cache/output.0t binutils-2.25.1-seaos/ld/autom4te.cache/output.0t
 --- binutils-2.25.1/ld/autom4te.cache/output.0t	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/ld/autom4te.cache/output.0t	2015-08-28 20:05:22.494728229 -0700
++++ binutils-2.25.1-seaos/ld/autom4te.cache/output.0t	2015-09-08 19:37:31.642897598 -0700
 @@ -0,0 +1 @@
 +@%:@! /bin/sh
 diff -uprN binutils-2.25.1/ld/autom4te.cache/output.1 binutils-2.25.1-seaos/ld/autom4te.cache/output.1
 --- binutils-2.25.1/ld/autom4te.cache/output.1	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/ld/autom4te.cache/output.1	2015-08-28 20:05:21.211407787 -0700
++++ binutils-2.25.1-seaos/ld/autom4te.cache/output.1	2015-09-08 19:37:31.649564197 -0700
 @@ -0,0 +1,20892 @@
 +@%:@! /bin/sh
 +@%:@ Guess values for system-dependent variables and create Makefiles.
@@ -51818,7 +51818,7 @@ diff -uprN binutils-2.25.1/ld/autom4te.cache/output.1 binutils-2.25.1-seaos/ld/a
 +
 diff -uprN binutils-2.25.1/ld/autom4te.cache/output.2 binutils-2.25.1-seaos/ld/autom4te.cache/output.2
 --- binutils-2.25.1/ld/autom4te.cache/output.2	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/ld/autom4te.cache/output.2	2015-08-28 20:05:31.291306529 -0700
++++ binutils-2.25.1-seaos/ld/autom4te.cache/output.2	2015-09-08 19:37:31.656230795 -0700
 @@ -0,0 +1,20888 @@
 +@%:@! /bin/sh
 +@%:@ Guess values for system-dependent variables and create Makefiles.
@@ -72710,7 +72710,7 @@ diff -uprN binutils-2.25.1/ld/autom4te.cache/output.2 binutils-2.25.1-seaos/ld/a
 +
 diff -uprN binutils-2.25.1/ld/autom4te.cache/requests binutils-2.25.1-seaos/ld/autom4te.cache/requests
 --- binutils-2.25.1/ld/autom4te.cache/requests	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/ld/autom4te.cache/requests	2015-08-28 20:17:17.024233105 -0700
++++ binutils-2.25.1-seaos/ld/autom4te.cache/requests	2015-09-08 19:37:31.656230795 -0700
 @@ -0,0 +1,376 @@
 +# This file was generated.
 +# It contains the lists of macros which have been traced.
@@ -73090,7 +73090,7 @@ diff -uprN binutils-2.25.1/ld/autom4te.cache/requests binutils-2.25.1-seaos/ld/a
 +
 diff -uprN binutils-2.25.1/ld/autom4te.cache/traces.0 binutils-2.25.1-seaos/ld/autom4te.cache/traces.0
 --- binutils-2.25.1/ld/autom4te.cache/traces.0	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/ld/autom4te.cache/traces.0	2015-08-28 20:05:04.061580084 -0700
++++ binutils-2.25.1-seaos/ld/autom4te.cache/traces.0	2015-09-08 19:37:31.656230795 -0700
 @@ -0,0 +1,1007 @@
 +m4trace:aclocal.m4:992: -1- m4_include([../bfd/acinclude.m4])
 +m4trace:../bfd/acinclude.m4:19: -1- sinclude([../config/zlib.m4])
@@ -74101,7 +74101,7 @@ diff -uprN binutils-2.25.1/ld/autom4te.cache/traces.0 binutils-2.25.1-seaos/ld/a
 +m4trace:configure.ac:403: -1- AC_REQUIRE_AUX_FILE([ltmain.sh])
 diff -uprN binutils-2.25.1/ld/autom4te.cache/traces.0t binutils-2.25.1-seaos/ld/autom4te.cache/traces.0t
 --- binutils-2.25.1/ld/autom4te.cache/traces.0t	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/ld/autom4te.cache/traces.0t	2015-08-28 20:05:22.494728229 -0700
++++ binutils-2.25.1-seaos/ld/autom4te.cache/traces.0t	2015-09-08 19:37:31.656230795 -0700
 @@ -0,0 +1,232 @@
 +m4trace:configure.ac:21: -1- m4_include([../bfd/version.m4])
 +m4trace:configure.ac:22: -1- AC_INIT([ld], [2.25.1])
@@ -74337,7 +74337,7 @@ diff -uprN binutils-2.25.1/ld/autom4te.cache/traces.0t binutils-2.25.1-seaos/ld/
 +m4trace:configure.ac:29: -1- AM_INIT_AUTOMAKE
 diff -uprN binutils-2.25.1/ld/autom4te.cache/traces.1 binutils-2.25.1-seaos/ld/autom4te.cache/traces.1
 --- binutils-2.25.1/ld/autom4te.cache/traces.1	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/ld/autom4te.cache/traces.1	2015-08-28 20:05:21.211407787 -0700
++++ binutils-2.25.1-seaos/ld/autom4te.cache/traces.1	2015-09-08 19:37:31.659564095 -0700
 @@ -0,0 +1,3367 @@
 +m4trace:/usr/share/aclocal/libtool.m4:61: -1- AC_DEFUN([LT_INIT], [AC_PREREQ([2.62])dnl We use AC_PATH_PROGS_FEATURE_CHECK
 +AC_REQUIRE([AC_CONFIG_AUX_DIR_DEFAULT])dnl
@@ -77708,7 +77708,7 @@ diff -uprN binutils-2.25.1/ld/autom4te.cache/traces.1 binutils-2.25.1-seaos/ld/a
 +m4trace:configure.ac:403: -1- _LT_PROG_LTMAIN
 diff -uprN binutils-2.25.1/ld/autom4te.cache/traces.2 binutils-2.25.1-seaos/ld/autom4te.cache/traces.2
 --- binutils-2.25.1/ld/autom4te.cache/traces.2	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/ld/autom4te.cache/traces.2	2015-08-28 20:05:31.291306529 -0700
++++ binutils-2.25.1-seaos/ld/autom4te.cache/traces.2	2015-09-08 19:37:31.659564095 -0700
 @@ -0,0 +1,942 @@
 +m4trace:configure.ac:21: -1- m4_include([../bfd/version.m4])
 +m4trace:configure.ac:22: -1- AC_INIT([ld], [2.25.1])
@@ -78654,7 +78654,7 @@ diff -uprN binutils-2.25.1/ld/autom4te.cache/traces.2 binutils-2.25.1-seaos/ld/a
 +m4trace:configure.ac:403: -1- AC_REQUIRE_AUX_FILE([ltmain.sh])
 diff -uprN binutils-2.25.1/ld/configure.tgt binutils-2.25.1-seaos/ld/configure.tgt
 --- binutils-2.25.1/ld/configure.tgt	2014-10-14 00:32:04.000000000 -0700
-+++ binutils-2.25.1-seaos/ld/configure.tgt	2015-08-28 20:18:10.850361510 -0700
++++ binutils-2.25.1-seaos/ld/configure.tgt	2015-09-08 19:37:31.659564095 -0700
 @@ -229,6 +229,15 @@ i[3-7]86-*-bsd)		targ_emul=i386bsd ;;
  i[3-7]86-*-bsd386)	targ_emul=i386bsd ;;
  i[3-7]86-*-bsdi*)	targ_emul=i386bsd ;;
@@ -78666,14 +78666,14 @@ diff -uprN binutils-2.25.1/ld/configure.tgt binutils-2.25.1-seaos/ld/configure.t
 +			;;
 +x86_64-*-seaos*)
 +			targ_emul=elf_x86_64_seaos
-+			targ_extra_emuls=elf_i386_seaos elf_x86_64 elf_i386
++			targ_extra_emuls="elf_i386_seaos elf_x86_64 elf_i386"
 +			;;
  i[3-7]86-*-linux*aout*)	targ_emul=i386linux
  			targ_extra_emuls=elf_i386
  			tdir_elf_i386=`echo ${targ_alias} | sed -e 's/aout//'` ;;
 diff -uprN binutils-2.25.1/ld/emulparams/elf_i386_seaos.sh binutils-2.25.1-seaos/ld/emulparams/elf_i386_seaos.sh
 --- binutils-2.25.1/ld/emulparams/elf_i386_seaos.sh	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/ld/emulparams/elf_i386_seaos.sh	2015-08-28 20:11:13.704537401 -0700
++++ binutils-2.25.1-seaos/ld/emulparams/elf_i386_seaos.sh	2015-09-08 19:37:31.659564095 -0700
 @@ -0,0 +1,17 @@
 +. ${srcdir}/emulparams/elf_i386.sh
 +SCRIPT_NAME=elf
@@ -78694,15 +78694,13 @@ diff -uprN binutils-2.25.1/ld/emulparams/elf_i386_seaos.sh binutils-2.25.1-seaos
 +
 diff -uprN binutils-2.25.1/ld/emulparams/elf_x86_64_seaos.sh binutils-2.25.1-seaos/ld/emulparams/elf_x86_64_seaos.sh
 --- binutils-2.25.1/ld/emulparams/elf_x86_64_seaos.sh	1969-12-31 16:00:00.000000000 -0800
-+++ binutils-2.25.1-seaos/ld/emulparams/elf_x86_64_seaos.sh	2015-08-28 20:11:55.224121297 -0700
-@@ -0,0 +1,16 @@
++++ binutils-2.25.1-seaos/ld/emulparams/elf_x86_64_seaos.sh	2015-09-10 18:25:54.363599372 -0700
+@@ -0,0 +1,14 @@
 +. ${srcdir}/emulparams/elf_x86_64.sh
-+SCRIPT_NAME=elf
-+ELFSIZE=64
-+OUTPUT_FORMAT="elf64-x86-64"
 +NO_REL_RELOCS=yes
-+TEXT_START_ADDR=0x50000000
-+TEMPLATE_NAME=elf32
++TEXT_START_ADDR=0x400000
++GENERATE_SHLIB_SCRIPT=yes
++GENERATE_PIE_SCRIPT=yes
 +ELF_INTERPRETER_NAME=\"/lib/ld-sea-x86-64.so\"
 +OTHER_READONLY_SECTIONS='
 +PROVIDE (___rodata = DEFINED (.rodata) ? .rodata : 0);
@@ -78714,7 +78712,7 @@ diff -uprN binutils-2.25.1/ld/emulparams/elf_x86_64_seaos.sh binutils-2.25.1-sea
 +
 diff -uprN binutils-2.25.1/ld/Makefile.am binutils-2.25.1-seaos/ld/Makefile.am
 --- binutils-2.25.1/ld/Makefile.am	2014-10-14 00:32:04.000000000 -0700
-+++ binutils-2.25.1-seaos/ld/Makefile.am	2015-08-28 20:17:07.700993021 -0700
++++ binutils-2.25.1-seaos/ld/Makefile.am	2015-09-08 19:37:31.659564095 -0700
 @@ -217,6 +217,7 @@ ALL_EMULATION_SOURCES = \
  	eelf32_tic6x_linux_le.c \
  	eelf32_tic6x_elf_be.c \
@@ -78750,7 +78748,7 @@ diff -uprN binutils-2.25.1/ld/Makefile.am binutils-2.25.1-seaos/ld/Makefile.am
    $(ELF_DEPS) $(srcdir)/scripttempl/elf.sc ${GEN_DEPENDS}
 diff -uprN binutils-2.25.1/ld/Makefile.in binutils-2.25.1-seaos/ld/Makefile.in
 --- binutils-2.25.1/ld/Makefile.in	2014-10-14 00:32:04.000000000 -0700
-+++ binutils-2.25.1-seaos/ld/Makefile.in	2015-08-28 20:17:17.154231805 -0700
++++ binutils-2.25.1-seaos/ld/Makefile.in	2015-09-08 19:37:31.659564095 -0700
 @@ -1,9 +1,8 @@
 -# Makefile.in generated by automake 1.11.1 from Makefile.am.
 +# Makefile.in generated by automake 1.15 from Makefile.am.
