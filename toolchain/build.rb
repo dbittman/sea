@@ -417,6 +417,9 @@ ARGV.each do |a|
 			$reinstall = true
 		when "reinstall-deps"
 			$reinstall_deps = true
+		when "toolchain"
+			if arr[1].nil? then error("must specify toolchain path when using toolchain") end
+			$install = arr[1].clone
 		end
 	end
 end
@@ -426,7 +429,7 @@ if $target.nil?
 end
 $target = $target + "-pc-seaos"
 
-ENV["PATH"] = "../build/toolchain/bin:" + ENV["PATH"]
+ENV["PATH"] = "#{$install}:" + ENV["PATH"]
 
 $actions = ARGV
 
