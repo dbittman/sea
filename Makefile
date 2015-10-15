@@ -37,6 +37,8 @@ newhd $(BUILDDIR)/hd.img:
 $(KDIR)/$(BUILDDIR)/skernel: FORCE
 	PATH=$$PATH:$(TOOLCHAINDIR)/bin make $(MAKE_FLAGS) -s -C $(KDIR)
 
+kernel: $(KDIR)/$(BUILDDIR)/skernel
+
 FORCE:
 
 reset:
