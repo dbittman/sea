@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
 mkdir -p data/{dev,mnt,tmp}
-mkdir -p mnt
+mkdir -p mnt build build/toolchain
 
 if [ -d seakernel ]; then
 	echo "ok, you've got the kernel sources..."

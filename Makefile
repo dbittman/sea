@@ -1,5 +1,6 @@
 include local_make.inc
 
+SHELL=/bin/bash
 BUILDCFG ?= default
 export BUILDCFG
 KDIR=seakernel
