@@ -1,5 +1,3 @@
-.loop
-.toolchain
 data/test/
 local_make.inc
 mnt/

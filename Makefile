@@ -6,7 +6,7 @@ KDIR=seakernel
 BUILDCONTAINER=build
 BUILDDIR=$(BUILDCONTAINER)/$(BUILDCFG)
 include $(BUILDCONTAINER)/$(BUILDCFG)/make.inc
-ARCH ?= i586
+ARCH ?= x86_64
 
 include $(KDIR)/make.inc
 
@@ -110,4 +110,7 @@ bochs:
 
 gcc_print_optimizers:
 	@PATH=$$PATH:`cat .toolchain`/bin $(MAKE) -s -C seakernel gcc_print_optimizers
+
+install:
+	true
 
