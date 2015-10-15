@@ -39,19 +39,6 @@ DT_COMMAND = 10
 
 
 $downloads_table = [
-  ["binutils-old", 
-      "2.22", 
-      true, 
-      "http://ftp.gnu.org/gnu/binutils/binutils-2.22.tar.gz", 
-      "8b3ad7090e3989810943aa19103fdb83", 
-      [],
-      "build target prefix", 
-      "--disable-nls --disable-werror", 
-      "", 
-      "MAKEINFO=makeinfo all install", 
-      nil
-  ],
-  
   ["binutils", 
       "2.25.1", 
       true, 
@@ -78,19 +65,6 @@ $downloads_table = [
       nil                              
   ],
 
-  ["gcc-old", 
-      "4.9.0", 
-      true, 
-      "http://ftp.gnu.org/gnu/gcc/gcc-4.9.0/gcc-4.9.0.tar.bz2", 
-      "9709b49ae0e904cbb0a6a1b62853b556", 
-      ["binutils *"], 
-      "build target prefix", 
-      "--enable-languages=c,c++ --enable-lto --disable-nls", 
-      "", 
-      "all-gcc install-gcc", 
-      nil                                                            
-  ],
-	
   ["newlib", 
       "2.0.0", 
       true, 
@@ -143,19 +117,6 @@ $downloads_table = [
       nil                                                            
   ],
 	
-  ["ncurses-old", 
-      "5.9", 
-      false, 
-      "ftp://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz", 
-      "8cb9c412e5f2d96bc6f459aa8c6282a1", 
-      ["binutils *", "gcc *", "newlib *", "termcap *", "libgcc *"], 
-      "build host tarprefix include oldinclude", 
-      "--enable-termcap --disable-database", 
-      "", 
-      "all install", 
-      "cp ../config.sub ncurses-5.9/config.sub"                         
-  ],  
-		
   ["ncurses", 
       "6.0", 
       false, 
@@ -208,19 +169,6 @@ $downloads_table = [
       "cp ../config.sub mpfr-3.1.2/config.sub"                          
   ],
 		
-  ["mpc-old", 
-      "1.0.1", 
-      false, 
-      "ftp://ftp.gnu.org/gnu/mpc/mpc-1.0.1.tar.gz", 
-      "b32a2e1a3daa392372fbd586d1ed3679", 
-      ["binutils *", "gcc *", "newlib *", "libgcc *"], 
-      "build host tarprefix", 
-      "", 
-      "CC AR LD", 
-      "CFLAGS=\"\" all install", 
-      "cp ../config.sub mpc-1.0.1/config.sub"                           
-  ],
-
   ["mpc", 
       "1.0.3", 
       false, 
