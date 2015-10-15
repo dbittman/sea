@@ -426,18 +426,7 @@ if $target.nil?
 end
 $target = $target + "-pc-seaos"
 
-file = File.open("../.toolchain")
-
-if ! file.nil?
-	$install = file.gets.chomp
-end
-
-while $install.nil? or $install == ""
-	printf "enter path to install toolchain to: "
-	$install = $stdin.gets.chomp
-end
-
-ENV["PATH"] = "#{$install}/bin:" + ENV["PATH"]
+ENV["PATH"] = "../build/toolchain/bin:" + ENV["PATH"]
 
 $actions = ARGV
 

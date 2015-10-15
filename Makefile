@@ -5,7 +5,7 @@ export BUILDCFG
 KDIR=seakernel
 BUILDCONTAINER=build
 BUILDDIR=$(BUILDCONTAINER)/$(BUILDCFG)
-TOOLCHAINDIR=$(shell realpath $(BUILDDIR)/toolchain)
+TOOLCHAINDIR=$(shell realpath $(BUILDCONTAINER)/toolchain)
 include $(BUILDCONTAINER)/$(BUILDCFG)/make.inc
 ARCH ?= x86_64
 
@@ -75,7 +75,7 @@ apps_distclean:
 
 .PHONY : toolchain
 toolchain:
-	@cd toolchain && ruby build.rb all-all
+	@PATH=$$PATH:$(TOOLCHAINDIR) cd toolchain && echo -e "x86_64\n" | ruby build.rb all-all
 	
 man:
 	sh tools/gen_man.sh

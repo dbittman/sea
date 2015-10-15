@@ -12,4 +12,4 @@ branches:
   only:
     - ptrace
 
-script: ./configure && make toolchain apps kernel
+script: ./configure && make toolchain apps64 kernel
