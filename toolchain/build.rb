@@ -5,7 +5,7 @@ $install = ""
 $target = nil
 $reinstall = false
 $reinstall_deps = false
-
+$noconfirm = false
 $database = ""
 
 $all_packs = []
@@ -415,6 +415,8 @@ ARGV.each do |a|
 			$target = arr[1].clone
 		when "reinstall"
 			$reinstall = true
+		when "noconfirm"
+			$noconfirm = true
 		when "reinstall-deps"
 			$reinstall_deps = true
 		when "toolchain"
@@ -516,7 +518,9 @@ $all_packs.each do |a1|
 end
 puts "\n\npress enter to start"
 
-$stdin.gets
+if ! $no_confirm then
+	$stdin.gets
+end
 # and install
 $all_packs.each do |a1|
 	a1.each do |a2|

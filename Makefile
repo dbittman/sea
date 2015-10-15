@@ -76,7 +76,8 @@ apps_distclean:
 
 .PHONY : toolchain
 toolchain:
-	@PATH=$$PATH:$(TOOLCHAINDIR) cd toolchain && ruby build.rb all-all --toolchain $(TOOLCHAINDIR) --target x86_64
+	@echo install to $(TOOLCHAINDIR)
+	@PATH=$$PATH:$(TOOLCHAINDIR) cd toolchain && ruby build.rb --toolchain=$(TOOLCHAINDIR) --target=x86_64 --noconfirm all-all
 	
 man:
 	sh tools/gen_man.sh
