@@ -11,7 +11,7 @@ fi
 
 #sh tools/update_repos.sh
 cd seakernel
-git checkout $(git status | head -n 1 | awk '{print $3}'})
+git checkout $(git status | head -n 1 | awk '{print $3}')
 sh ./configure
 cd ..
 
