@@ -6,6 +6,11 @@ addons:
       - git
       - nasm
       - realpath
+      - makeinfo
+      - libmpc-dev
+      - libgmp-dev
+      - libmpfr-dev
+      - texinfo
 
 
 branches:
