@@ -11,6 +11,7 @@ fi
 
 #sh tools/update_repos.sh
 BRANCH=$(git status --porcelain -b | sed -rn 's/## ([^\.]+)\..*/\1/p')
+echo Checking out branch $BRANCH
 cd seakernel
 git checkout $BRANCH
 sh ./configure
