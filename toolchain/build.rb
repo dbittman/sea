@@ -516,11 +516,6 @@ $all_packs.each do |a1|
 	  print "  "
 	end
 end
-puts "\n\npress enter to start"
-
-if ! $no_confirm then
-	$stdin.gets
-end
 # and install
 $all_packs.each do |a1|
 	a1.each do |a2|
