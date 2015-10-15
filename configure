@@ -10,7 +10,7 @@ else
 fi
 
 #sh tools/update_repos.sh
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
+BRANCH=ptrace
 echo Checking out branch $BRANCH
 cd seakernel
 git checkout $BRANCH
