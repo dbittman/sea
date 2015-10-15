@@ -5,6 +5,7 @@ export BUILDCFG
 KDIR=seakernel
 BUILDCONTAINER=build
 BUILDDIR=$(BUILDCONTAINER)/$(BUILDCFG)
+TOOLCHAINDIR=$(shell realpath $(BUILDDIR)/toolchain)
 include $(BUILDCONTAINER)/$(BUILDCFG)/make.inc
 ARCH ?= x86_64
 
@@ -34,7 +35,7 @@ newhd $(BUILDDIR)/hd.img:
 	@sudo bash tools/chd.sh $(ARCH)-pc-seaos $(BUILDDIR)/hd.img $(BUILDCFG)
 
 $(KDIR)/$(BUILDDIR)/skernel: FORCE
-	PATH=$$PATH:`cat .toolchain`/bin make $(MAKE_FLAGS) -s -C $(KDIR)
+	PATH=$$PATH:$(TOOLCHAINDIR)/bin make $(MAKE_FLAGS) -s -C $(KDIR)
 
 FORCE:
 
@@ -56,13 +57,13 @@ updatehd: $(KDIR)/$(BUILDDIR)/skernel $(BUILDDIR)/initrd.tar $(BUILDDIR)/hd.img
 
 .PHONY: apps apps64 apps_port apps_seaos
 apps:
-	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:`cat .toolchain`/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/build-all.sh; apps/porting/pack/aggregate.sh apps/install-base-i586-pc-seaos i586-pc-seaos
+	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/build-all.sh; apps/porting/pack/aggregate.sh apps/install-base-i586-pc-seaos i586-pc-seaos
 
 apps64:
-	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:`cat .toolchain`/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/build-all.sh x86_64-pc-seaos; apps/porting/pack/aggregate.sh apps/install-base-x86_64-pc-seaos x86_64-pc-seaos
+	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/build-all.sh x86_64-pc-seaos; apps/porting/pack/aggregate.sh apps/install-base-x86_64-pc-seaos x86_64-pc-seaos
 
 apps_seaos:
-	@PATH=$$PATH:`cat .toolchain` cd apps/porting && ruby build.rb clean-seaosutil cleansrc-seaosutil all-seaosutil
+	@PATH=$$PATH:$(TOOLCHAINDIR) cd apps/porting && ruby build.rb clean-seaosutil cleansrc-seaosutil all-seaosutil
 
 apps_clean:
 	rm -rf apps/install-base-*; cd apps/porting/pack && PACKSDIR=packs ./clean-all.sh
@@ -109,7 +110,7 @@ bochs:
 	@bochs
 
 gcc_print_optimizers:
-	@PATH=$$PATH:`cat .toolchain`/bin $(MAKE) -s -C seakernel gcc_print_optimizers
+	@PATH=$$PATH:$(TOOLCHAINDIR)/bin $(MAKE) -s -C seakernel gcc_print_optimizers
 
 install:
 	true
