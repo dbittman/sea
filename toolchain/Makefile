@@ -1,5 +1,7 @@
 SHELL=/bin/bash
-
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),distclean)
+ifneq ($(MAKECMDGOALS),cleansrc)
 ifndef DESTDIR
 $(error DESTDIR is undefined)
 endif
@@ -7,7 +9,9 @@ endif
 ifndef TRIPLET
 $(error TRIPLET is undefined)
 endif
-
+endif
+endif
+endif
 DESTDIR := $(realpath $(DESTDIR))
 
 BUILD_TRIPLET=$(shell ./config.guess)
