@@ -58,15 +58,10 @@ updatehd: $(KDIR)/$(BUILDDIR)/skernel $(BUILDDIR)/initrd.tar $(BUILDDIR)/hd.img
 	@sudo sh tools/close_hdimage.sh
 	@sudo chmod a+rw $(BUILDDIR)/hd.img 
 
-.PHONY: apps apps64 apps_port apps_seaos
+.PHONY: apps64 apps_port apps_seaos
+
 apps:
-	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/build-all.sh; apps/porting/pack/aggregate.sh apps/install-base-i586-pc-seaos i586-pc-seaos
-
-apps64:
 	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/build-all.sh x86_64-pc-seaos; apps/porting/pack/aggregate.sh apps/install-base-x86_64-pc-seaos x86_64-pc-seaos
-
-apps_seaos:
-	@PATH=$$PATH:$(TOOLCHAINDIR) cd apps/porting && ruby build.rb clean-seaosutil cleansrc-seaosutil all-seaosutil
 
 apps_clean:
 	rm -rf apps/install-base-*; cd apps/porting/pack && PACKSDIR=packs ./clean-all.sh
@@ -76,8 +71,9 @@ apps_distclean:
 
 .PHONY : toolchain
 toolchain:
-	@echo install to $(TOOLCHAINDIR)
-	@PATH=$$PATH:$(TOOLCHAINDIR) cd toolchain && ruby build.rb --toolchain=$(TOOLCHAINDIR) --target=x86_64 --noconfirm all-all
+	echo $(TOOLCHAINDIR)
+	mkdir -p $(TOOLCHAINDIR)
+	@PATH=$$PATH:$(TOOLCHAINDIR)/bin cd toolchain && make DESTDIR=$(TOOLCHAINDIR) TRIPLET=$(ARCH)-pc-seaos
 	
 man:
 	sh tools/gen_man.sh
