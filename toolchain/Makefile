@@ -1,21 +1,15 @@
 SHELL=/bin/bash
-ifneq ($(MAKECMDGOALS),clean)
-ifneq ($(MAKECMDGOALS),distclean)
-ifneq ($(MAKECMDGOALS),cleansrc)
-ifndef DESTDIR
-$(error DESTDIR is undefined)
+ifndef TOOLCHAINDIR
+$(error TOOLCHAINDIR is undefined)
 endif
 
 ifndef TRIPLET
 $(error TRIPLET is undefined)
 endif
-endif
-endif
-endif
-DESTDIR := $(realpath $(DESTDIR))
+TOOLCHAINDIR := $(shell realpath $(TOOLCHAINDIR))
 
 BUILD_TRIPLET=$(shell ./config.guess)
-export PATH:=$(PATH):$(DESTDIR)/bin
+export PATH:=$(PATH):$(TOOLCHAINDIR)/bin
 
 DIRS := $(subst ./,,$(shell find . -maxdepth 1 -mindepth 1 -type d))
 TOOLS := $(DIRS)

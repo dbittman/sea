@@ -12,6 +12,6 @@ DEPS=binutils gcc newlib gmp
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	cd $(NAME)/$(BUILDDIR) && \
-	../$(PATCHEDDIR)/configure --build=$(BUILD_TRIPLET) --host=$(TRIPLET) --prefix=$(DESTDIR)/$(TRIPLET) CFLAGS='-fno-stack-protector' && \
+	../$(PATCHEDDIR)/configure --build=$(BUILD_TRIPLET) --host=$(TRIPLET) --prefix=$(TOOLCHAINDIR)/$(TRIPLET) CFLAGS='-fno-stack-protector' && \
 	$(MAKE) -j1 all install
 

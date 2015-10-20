@@ -12,6 +12,6 @@ DEPS=binutils gcc newlib
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	cd $(NAME)/$(BUILDDIR) && \
-	../$(PATCHEDDIR)/configure --build=$(BUILD_TRIPLET) --host=$(TRIPLET) --prefix=$(DESTDIR)/$(TRIPLET) CC_FOR_BUILD=gcc CXX_FOR_BUILD=g++ && \
+	../$(PATCHEDDIR)/configure --build=$(BUILD_TRIPLET) --host=$(TRIPLET) --prefix=$(TOOLCHAINDIR)/$(TRIPLET) CC_FOR_BUILD=gcc CXX_FOR_BUILD=g++ && \
 	$(MAKE) -j1 all install
 

@@ -12,6 +12,6 @@ DEPS=binutils gcc newlib termcap
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	cd $(NAME)/$(BUILDDIR) && \
-	../$(PATCHEDDIR)/configure --build=$(BUILD_TRIPLET) --host=$(TRIPLET) --prefix=$(DESTDIR)/$(TRIPLET) --includedir=$(DESTDIR)/$(TRIPLET)/include --oldincludedir=$(DESTDIR)/$(TRIPLET)/include --enable-termcap --disable-database --enable-overwrite && \
+	../$(PATCHEDDIR)/configure --build=$(BUILD_TRIPLET) --host=$(TRIPLET) --prefix=$(TOOLCHAINDIR)/$(TRIPLET) --includedir=$(TOOLCHAINDIR)/$(TRIPLET)/include --oldincludedir=$(TOOLCHAINDIR)/$(TRIPLET)/include --enable-termcap --disable-database --enable-overwrite && \
 	$(MAKE) all install -i
 

@@ -14,10 +14,10 @@ DEPS=binutils
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	cd $(NAME)/$(BUILDDIR) && \
-	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=$(DESTDIR) --disable-nls --enable-languages=c,c++ --enable-lto && \
+	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=$(TOOLCHAINDIR) --disable-nls --enable-languages=c,c++ --enable-lto && \
 	$(MAKE) -j1 all-gcc install-gcc all-target-libgcc install-target-libgcc
-	rm $(DESTDIR)/bin/$(TRIPLET)-cc
-	-ln -s $(TRIPLET)-gcc $(DESTDIR)/bin/$(TRIPLET)-cc 2>/dev/null
+	rm $(TOOLCHAINDIR)/bin/$(TRIPLET)-cc
+	-ln -s $(TRIPLET)-gcc $(TOOLCHAINDIR)/bin/$(TRIPLET)-cc 2>/dev/null
 
 build-libstdc++: NAME:=$(NAME)
 build-libstdc++: PATCHEDDIR:=$(PATCHEDDIR)

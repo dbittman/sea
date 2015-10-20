@@ -12,6 +12,6 @@ DEPS=binutils gcc
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	cd $(NAME)/$(BUILDDIR) && \
-	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=$(DESTDIR) && \
+	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=$(TOOLCHAINDIR) && \
 	$(MAKE) -j1 all install
 

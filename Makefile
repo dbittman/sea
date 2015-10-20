@@ -73,7 +73,7 @@ apps_distclean:
 toolchain:
 	echo $(TOOLCHAINDIR)
 	mkdir -p $(TOOLCHAINDIR)
-	@PATH=$$PATH:$(TOOLCHAINDIR)/bin cd toolchain && $(MAKE) DESTDIR=$(TOOLCHAINDIR) TRIPLET=$(ARCH)-pc-seaos
+	@PATH=$$PATH:$(TOOLCHAINDIR)/bin cd toolchain && $(MAKE) TOOLCHAINDIR=$(TOOLCHAINDIR) TRIPLET=$(ARCH)-pc-seaos
 	
 man:
 	sh tools/gen_man.sh

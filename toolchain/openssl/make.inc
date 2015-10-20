@@ -13,7 +13,7 @@ include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	cd $(NAME)/$(BUILDDIR) && \
 	cp -r ../$(PATCHEDDIR)/* . && \
-	../$(PATCHEDDIR)/Configure --prefix=$(DESTDIR)/$(TRIPLET) --openssldir=$(DESTDIR)/$(TRIPLET) no-shared $(TRIPLET) && \
+	../$(PATCHEDDIR)/Configure --prefix=$(TOOLCHAINDIR)/$(TRIPLET) --openssldir=$(TOOLCHAINDIR)/$(TRIPLET) no-shared $(TRIPLET) && \
 	$(MAKE) build_libs && \
 	$(MAKE) -i install_sw
 

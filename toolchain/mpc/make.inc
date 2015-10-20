@@ -12,6 +12,6 @@ DEPS=binutils gcc newlib gmp mpfr
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	cd $(NAME)/$(BUILDDIR) && \
-	../$(PATCHEDDIR)/configure --build=$(BUILD_TRIPLET) --host=$(TRIPLET) --prefix=$(DESTDIR)/$(TRIPLET) && \
+	../$(PATCHEDDIR)/configure --build=$(BUILD_TRIPLET) --host=$(TRIPLET) --prefix=$(TOOLCHAINDIR)/$(TRIPLET) && \
 	$(MAKE) CC=$(TRIPLET)-gcc AR=$(TRIPLET)-ar LD=$(TRIPLET)-ld CFLAGS="" all install
 

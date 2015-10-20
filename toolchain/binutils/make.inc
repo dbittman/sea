@@ -12,7 +12,7 @@ DEPS=
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	cd $(NAME)/$(BUILDDIR) && \
-	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=$(DESTDIR) --disable-nls --disable-werror && \
+	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=$(TOOLCHAINDIR) --disable-nls --disable-werror && \
 	MAKEINFO=makeinfo $(MAKE) -j1 all install
 
 
