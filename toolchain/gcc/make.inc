@@ -16,7 +16,7 @@ build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	cd $(NAME)/$(BUILDDIR) && \
 	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=$(TOOLCHAINDIR) --disable-nls --enable-languages=c,c++ --enable-lto && \
 	$(MAKE) -j1 all-gcc install-gcc all-target-libgcc install-target-libgcc
-	rm $(TOOLCHAINDIR)/bin/$(TRIPLET)-cc
+	-rm $(TOOLCHAINDIR)/bin/$(TRIPLET)-cc 2>/dev/null
 	-ln -s $(TRIPLET)-gcc $(TOOLCHAINDIR)/bin/$(TRIPLET)-cc 2>/dev/null
 
 build-libstdc++: NAME:=$(NAME)
