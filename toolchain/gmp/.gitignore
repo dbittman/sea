@@ -1,0 +1,4 @@
+*
+!make.inc
+!*.patch
+!.gitignore
