@@ -8,13 +8,15 @@ $(error TRIPLET is undefined)
 endif
 TOOLCHAINDIR := $(shell realpath $(TOOLCHAINDIR))
 
+USRLINK=$(TOOLCHAINDIR)/$(TRIPLET)/usr
+
 BUILD_TRIPLET=$(shell ./config.guess)
 export PATH:=$(PATH):$(TOOLCHAINDIR)/bin
 
 DIRS := $(subst ./,,$(shell find . -maxdepth 1 -mindepth 1 -type d))
 TOOLS := $(DIRS)
 
-all: $(TOOLCHAINDIR) $(USRLINK) build-all
+all: $(TOOLCHAINDIR) $(USRLINK) $(TOOLCHAINDIR)/$(TRIPLET)/include build-all
 
 $(TOOLCHAINDIR):
 	mkdir -p $(TOOLCHAINDIR)
@@ -23,7 +25,10 @@ $(TOOLCHAINDIR)/$(TRIPLET):
 	mkdir -p $(TOOLCHAINDIR)/$(TRIPLET)
 
 $(USRLINK): $(TOOLCHAINDIR) $(TOOLCHAINDIR)/$(TRIPLET)
-	ln -s . $(TOOLCHAINDIR)/$(TRIPLET)/usr
+	ln -s . $(USRLINK)
+
+$(TOOLCHAINDIR)/$(TRIPLET)/include: $(TOOLCHAINDIR)/$(TRIPLET)
+	mkdir $(TOOLCHAINDIR)/$(TRIPLET)/include
 
 .PHONY: $(addprefix do-build-,$(TOOLS))
 .PHONY: $(addprefix clean-,$(DIRS))
