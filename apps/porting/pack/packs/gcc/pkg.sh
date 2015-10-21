@@ -15,7 +15,9 @@ function prepare() {
 }
 
 function build() {
-	if ! ../src/$NAME-$VERSION/configure --prefix=/usr --host=$HOST_TRIPLET --target=$HOST_TRIPLET --enable-lto --disable-nls --enable-languages=c,c++; then
+	SYSROOT=$($HOST_TRIPLET-gcc -print-sysroot)
+	
+	if ! ../src/$NAME-$VERSION/configure --prefix=/usr --host=$HOST_TRIPLET --target=$HOST_TRIPLET --enable-lto --disable-nls --enable-languages=c,c++ --with-build-sysroot=$SYSROOT; then
 		return 1
 	fi
 
