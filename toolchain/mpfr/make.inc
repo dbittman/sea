@@ -7,7 +7,7 @@ REMOTE='ftp://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.gz'
 REMOTEFILE=$(NAME)-$(VERSION).tar.gz
 BUILDDIR=build-$(TRIPLET)-$(NAME)-$(VERSION)
 PATCHFILE:=$(NAME)-$(VERSION)-seaos-all.patch
-DEPS=binutils gcc newlib gmp
+DEPS=binutils gcc newlib gmp libgcc
 
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)

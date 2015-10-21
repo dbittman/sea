@@ -7,7 +7,7 @@ REMOTE='ftp://ftp.gnu.org/gnu/readline/readline-6.2.tar.gz'
 REMOTEFILE=$(NAME)-$(VERSION).tar.gz
 BUILDDIR=build-$(TRIPLET)-$(NAME)-$(VERSION)
 PATCHFILE:=readline-$(VERSION)-seaos-all.patch
-DEPS=binutils gcc newlib termcap ncurses
+DEPS=binutils gcc newlib termcap ncurses libgcc
 
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)

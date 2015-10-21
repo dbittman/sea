@@ -38,7 +38,7 @@ build-libstdc++: $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	$(MAKE) -j1 all install
 
 do-build-libstdc++: NAME:=$(NAME)
-do-build-libstdc++: do-build-newlib do-build-binutils do-build-gcc
+do-build-libstdc++: do-build-newlib do-build-binutils do-build-gcc do-build-libgcc
 	$(MAKE) build-libstdc++
 
 do-build-libgcc: NAME:=$(NAME)

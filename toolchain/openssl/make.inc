@@ -7,7 +7,7 @@ REMOTE='http://www.openssl.org/source/openssl-1.0.1f.tar.gz'
 REMOTEFILE=$(NAME)-$(VERSION).tar.gz
 BUILDDIR=build-$(TRIPLET)-$(NAME)-$(VERSION)
 PATCHFILE:=$(NAME)-$(VERSION)-seaos-all.patch
-DEPS=binutils gcc newlib
+DEPS=binutils gcc newlib libgcc
 
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)

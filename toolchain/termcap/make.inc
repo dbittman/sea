@@ -7,7 +7,7 @@ REMOTE='ftp://ftp.gnu.org/gnu/termcap/termcap-1.3.1.tar.gz'
 REMOTEFILE=$(NAME)-$(VERSION).tar.gz
 BUILDDIR=build-$(TRIPLET)-$(NAME)-$(VERSION)
 PATCHFILE:=
-DEPS=binutils gcc newlib
+DEPS=binutils gcc newlib libgcc
 
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
