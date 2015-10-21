@@ -14,7 +14,16 @@ export PATH:=$(PATH):$(TOOLCHAINDIR)/bin
 DIRS := $(subst ./,,$(shell find . -maxdepth 1 -mindepth 1 -type d))
 TOOLS := $(DIRS)
 
-all: build-all
+all: $(TOOLCHAINDIR) $(USRLINK) build-all
+
+$(TOOLCHAINDIR):
+	mkdir -p $(TOOLCHAINDIR)
+
+$(TOOLCHAINDIR)/$(TRIPLET):
+	mkdir -p $(TOOLCHAINDIR)/$(TRIPLET)
+
+$(USRLINK): $(TOOLCHAINDIR) $(TOOLCHAINDIR)/$(TRIPLET)
+	ln -s . $(TOOLCHAINDIR)/$(TRIPLET)/usr
 
 .PHONY: $(addprefix do-build-,$(TOOLS))
 .PHONY: $(addprefix clean-,$(DIRS))

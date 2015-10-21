@@ -2,6 +2,7 @@ NAME:=gcc
 VERSION:=5.2.0
 
 TOOLS+=libstdc++
+TOOLS+=libgcc
 
 SOURCEDIR:=$(NAME)-$(VERSION)
 PATCHEDDIR:=$(SOURCEDIR)-seaos
@@ -14,10 +15,19 @@ DEPS=binutils
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	cd $(NAME)/$(BUILDDIR) && \
-	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=$(TOOLCHAINDIR) --disable-nls --enable-languages=c,c++ --enable-lto && \
-	$(MAKE) -j1 all-gcc install-gcc all-target-libgcc install-target-libgcc
+	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=$(TOOLCHAINDIR) --disable-nls --enable-languages=c,c++ --enable-lto --with-sysroot=$(TOOLCHAINDIR)/$(TRIPLET) && \
+	$(MAKE) -j1 all-gcc install-gcc
 	-rm $(TOOLCHAINDIR)/bin/$(TRIPLET)-cc 2>/dev/null
 	-ln -s $(TRIPLET)-gcc $(TOOLCHAINDIR)/bin/$(TRIPLET)-cc 2>/dev/null
+
+build-libgcc: NAME:=$(NAME)
+build-libgcc: PATCHEDDIR:=$(PATCHEDDIR)
+build-libgcc: BUILDDIR:=$(BUILDDIR)
+build-libgcc: PATCHFILE:=$(PATCHFILE)
+build-libgcc: $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
+	cd $(NAME)/$(BUILDDIR) && \
+	$(MAKE) -j1 all-target-libgcc install-target-libgcc
+
 
 build-libstdc++: NAME:=$(NAME)
 build-libstdc++: PATCHEDDIR:=$(PATCHEDDIR)
@@ -30,4 +40,8 @@ build-libstdc++: $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 do-build-libstdc++: NAME:=$(NAME)
 do-build-libstdc++: do-build-newlib do-build-binutils do-build-gcc
 	$(MAKE) build-libstdc++
+
+do-build-libgcc: NAME:=$(NAME)
+do-build-libgcc: do-build-newlib do-build-binutils do-build-gcc
+	$(MAKE) build-libgcc
 
