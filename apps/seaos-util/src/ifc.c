@@ -216,7 +216,6 @@ int set_addr(const char *name, char *addr_string)
 		*slash = 0;
 		slash++;
 		int smask = strtol(slash, 0, 10);
-		printf("smask = %d\n", smask);
 		if(smask < 1 || smask > 32) {
 			fprintf(stderr, "ifc: invalid netmask\n");
 			return -1;
@@ -229,12 +228,10 @@ int set_addr(const char *name, char *addr_string)
 		}
 	}
 	
-	int r;
-	if((r=inet_aton(addr_string, &addr.sin_addr)) == 0) {
+	if(inet_aton(addr_string, &addr.sin_addr) == 0) {
 		fprintf(stderr, "ifc: invalid address '%s'.\n", addr_string);
 		return -1;
 	}
-	printf(":: %s -> %x (%d)\n", addr_string, addr.sin_addr.s_addr, r);
 	return do_set_addr(name, &addr);
 }
 
