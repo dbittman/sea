@@ -5,7 +5,7 @@ if [ "$1" == "" ]; then
 	exit 1
 fi
 
-if ! cd packs/$1; then
+if ! cd $PACKSDIR/$1; then
 	echo Package $1 doesn\'t exist.
 	exit 1
 fi

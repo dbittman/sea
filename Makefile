@@ -58,10 +58,28 @@ updatehd: $(KDIR)/$(BUILDDIR)/skernel $(BUILDDIR)/initrd.tar $(BUILDDIR)/hd.img
 	@sudo sh tools/close_hdimage.sh
 	@sudo chmod a+rw $(BUILDDIR)/hd.img 
 
+.PHONY: extupdatehd
+extupdatehd: $(KDIR)/$(BUILDDIR)/skernel $(BUILDDIR)/initrd.tar $(BUILDDIR)/hd.img
+	@echo updating hd image...
+	@sudo mount /dev/sdb1 /mnt
+	@sudo mkdir -p /mnt/sys/modules-${VERSION}/
+	@sudo cp -rf $(KDIR)/$(BUILDDIR)/drivers/built/* /mnt/sys/modules-${VERSION}/ 2>/dev/null
+	@sudo cp -rf $(BUILDDIR)/initrd.tar /mnt/sys/initrd
+	@sudo cp -rf $(KDIR)/$(BUILDDIR)/skernel /mnt/sys/kernel
+	@sudo gzip -f /mnt/sys/initrd
+	@sudo umount /mnt
+	@sync
+
+
 .PHONY: apps apps64 apps_port apps_seaos
 
 apps:
 	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/build-all.sh x86_64-pc-seaos; apps/porting/pack/aggregate.sh apps/install-base-x86_64-pc-seaos x86_64-pc-seaos
+
+
+apps_seaos:
+	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/clean.sh seaosutil -s; apps/porting/pack/pack.sh seaosutil; apps/porting/pack/aggregate.sh apps/install-base-x86_64-pc-seaos x86_64-pc-seaos
+
 
 apps_clean:
 	rm -rf apps/install-base-*; cd apps/porting/pack && PACKSDIR=packs ./clean-all.sh
@@ -73,7 +91,7 @@ apps_distclean:
 toolchain:
 	echo $(TOOLCHAINDIR)
 	mkdir -p $(TOOLCHAINDIR)
-	@PATH=$$PATH:$(TOOLCHAINDIR)/bin cd toolchain && $(MAKE) TOOLCHAINDIR=$(TOOLCHAINDIR) TRIPLET=$(ARCH)-pc-seaos
+	@PATH=$$PATH:$(TOOLCHAINDIR)/bin cd toolchain && $(MAKE) TOOLCHAINDIR=$(TOOLCHAINDIR) TRIPLET=$(ARCH)-pc-seaos ${TOOLS}
 	
 man:
 	sh tools/gen_man.sh
