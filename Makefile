@@ -110,10 +110,10 @@ qemu_net:
 	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=$(BUILDDIR)/hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_NET) $(QEMU_LOCAL)
 
 qemu_net_socket:
-	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=$(BUILDDIR)/hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_NET_SOCKET) $(QEMU_LOCAL)
+	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=$(BUILDDIR)/hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_NET_SOCKET) $(QEMU_LOCAL) -net dump,file=/tmp/vm-client.pcap
 
 qemu_net_socket_server:
-	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=$(BUILDDIR)/hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_NET_SOCKET_SERVER) $(QEMU_LOCAL)
+	@qemu-system-x86_64 -localtime -m 2000 -serial stdio -drive file=$(BUILDDIR)/hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_NET_SOCKET_SERVER) $(QEMU_LOCAL) -net dump,file=/tmp/vm-server.pcap
 
 qemu_kvm:
 	@qemu-system-x86_64 -cpu qemu64,+vmx -m 2000 -localtime -serial stdio -drive file=$(BUILDDIR)/hd.img,if=ide,cache=writeback $(QEMU_EXTRA) $(QEMU_LOCAL)

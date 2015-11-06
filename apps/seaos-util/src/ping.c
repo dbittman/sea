@@ -640,7 +640,6 @@ pr_pack(char *buf, int cc, struct sockaddr_in *from)
 	int hlen, dupflag;
 
 	(void)gettimeofday(&tv, (struct timezone *)NULL);
-
 	/* Check the IP header */
 	ip = (struct iphdr *)buf;
 	hlen = ip->ip_hl << 2;
@@ -700,20 +699,20 @@ pr_pack(char *buf, int cc, struct sockaddr_in *from)
 				(void)printf(" (DUP!)");
 			/* check the data */
 #ifndef icmp_data
-			cp = ((u_char*)(icp + 1) + 8);
+			cp = ((u_char*)(icp + 1) + sizeof(struct timeval));
 #else
-			cp = (u_char*)icp->icmp_data + 8;
+			cp = (u_char*)icp->icmp_data + sizeof(struct timeval);
 #endif
 			dp = &outpack[8 + sizeof(struct timeval)];
-			for (i = 8; i < datalen; ++i, ++cp, ++dp) {
+			for (i = sizeof(struct timeval); i < datalen; ++i, ++cp, ++dp) {
 				if (*cp != *dp) {
 	(void)printf("\nwrong data byte #%d should be 0x%x but was 0x%x",
 	    i, *dp, *cp);
 					cp = (u_char*)(icp + 1);
-					for (i = 8; i < datalen; ++i, ++cp) {
+					for (i = 8; i < datalen; ++i, ++cp, ++dp) {
 						if ((i % 32) == 8)
 							(void)printf("\n\t");
-						(void)printf("%x ", *cp);
+						(void)printf("%x:%x ", *cp, *dp);
 					}
 					break;
 				}
