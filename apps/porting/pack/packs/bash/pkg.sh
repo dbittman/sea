@@ -15,7 +15,7 @@ function prepare() {
 }
 
 function build() {
-	if ! ../src/$NAME-$VERSION/configure --prefix=/ --host=$HOST_TRIPLET --datarootdir=/usr/share --enable-history --build=$(sh ../src/bash-4.3/support/config.guess); then
+	if ! ../src/$NAME-$VERSION/configure --prefix=/ --host=$HOST_TRIPLET --datarootdir=/usr/share --enable-history --build=$(sh ../src/bash-4.3/support/config.guess) --with-curses --without-bash-malloc; then
 		return 1
 	fi
 

@@ -1,6 +1,6 @@
 diff -uprN ncurses-6.0/config.sub ncurses-6.0-seaos/config.sub
 --- ncurses-6.0/config.sub	2015-05-02 04:52:04.000000000 -0700
-+++ ncurses-6.0-seaos/config.sub	2015-10-19 22:30:55.043262390 -0700
++++ ncurses-6.0-seaos/config.sub	2015-10-20 17:31:57.629003654 -0700
 @@ -1,31 +1,38 @@
  #! /bin/sh
  # Configuration validation subroutine script.
@@ -465,3 +465,33 @@ diff -uprN ncurses-6.0/config.sub ncurses-6.0-seaos/config.sub
  		;;
  	m68*-cisco)
  		os=-aout
+diff -uprN ncurses-6.0/misc/terminfo.src ncurses-6.0-seaos/misc/terminfo.src
+--- ncurses-6.0/misc/terminfo.src	2015-07-25 12:27:20.000000000 -0700
++++ ncurses-6.0-seaos/misc/terminfo.src	2015-11-11 00:51:43.189054873 -0800
+@@ -21281,6 +21281,26 @@ v3220|LANPAR Vision II model 3220/3221/3
+ 	kf8=\E[OR, kf9=\E[OS, khome=\E[H, ri=\EM, rmam=\E[?7l,
+ 	rmir=\E[4l, rmkx=\E>, rmso=\E[m, rmul=\E[m, sgr0=\E[m,
+ 	smam=\E[?7h, smir=\E[4h, smkx=\E=, smso=\E[7m, smul=\E[4m,
++
++
++
++seaos|SEAOS System Console,
++	mir, msgr, xenl, xon,
++	it#8,
++	bel=^G, blink=\E[5m, bold=\E[1m, civis=\E[3m,
++	clear=\E[1;1H\E[0J, cr=^M, cub=\E[%p1%dD, cub1=\E[D,
++	cud=\E[%p1%dB, cud1=\E[B, cuf=\E[%p1%dC, cuf1=\E[C,
++	cup=\E[%i%p1%d;%p2%dH, cuu=\E[%p1%dA, cuu1=\E[A,
++	dch=\E[%p1%dP, dch1=\E[1P, dim=\E[2m, dl=\E[%p1%dM,
++	dl1=\E[1M, ed=\E[1J, el=\E[0K, el1=\E[1K, home=\E[1;1H,
++	ht=^I, ind=\E[1F, indn=\E[%p1%dF, kbs=\177, kcub1=\E[D,
++	kcud1=\E[B, kcuf1=\E[C, kcuu1=\E[A, nel=\r\E[1F, rc=\E[S,
++	ri=\E[1R, rin=\E[%p1%dR, sc=\E[s, sgr0=\E[0m, smso=\E[7m,
++	smul=\E[4m,
++
++
++
++
+ ######## ICH/ICH1 VERSUS RMIR/SMIR
+ #
+ # Some non-curses applications get confused if both ich/ich1 and rmir/smir

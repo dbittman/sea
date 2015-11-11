@@ -1,6 +1,18 @@
+diff -uprN bash-4.3/lib/sh/ufuncs.c bash-4.3-seaos/lib/sh/ufuncs.c
+--- bash-4.3/lib/sh/ufuncs.c	2009-01-08 06:00:47.000000000 -0800
++++ bash-4.3-seaos/lib/sh/ufuncs.c	2015-11-11 01:34:48.911898212 -0800
+@@ -37,6 +37,8 @@
+ #include <unistd.h>
+ #endif
+ 
++#include <sys/select.h>
++
+ /* A version of `alarm' using setitimer if it's available. */
+ 
+ #if defined (HAVE_SETITIMER)
 diff -uprN bash-4.3/support/config.sub bash-4.3-seaos/support/config.sub
 --- bash-4.3/support/config.sub	2013-12-17 07:49:47.000000000 -0800
-+++ bash-4.3-seaos/support/config.sub	2014-08-02 00:14:29.291323472 -0700
++++ bash-4.3-seaos/support/config.sub	2015-10-20 22:39:44.751433057 -0700
 @@ -1356,7 +1356,7 @@ case $os in
  	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
  	      | -sym* | -kopensolaris* | -plan9* \

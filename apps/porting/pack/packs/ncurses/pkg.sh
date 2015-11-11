@@ -15,7 +15,7 @@ function prepare() {
 }
 
 function build() {
-	if ! ../src/$NAME-$VERSION/configure --prefix=/usr --host=$HOST_TRIPLET --enable-termcap --disable-database --oldincludedir=/usr/include --includedir=/usr/include; then
+	if ! ../src/$NAME-$VERSION/configure --prefix=/usr --host=$HOST_TRIPLET --oldincludedir=/usr/include --includedir=/usr/include --disable-termcap; then
 		return 1
 	fi
 
