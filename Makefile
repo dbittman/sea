@@ -35,6 +35,9 @@ $(BUILDDIR)/initrd.tar: $(shell find data-initrd $(KDIR)/$(BUILDDIR)/drivers/bui
 newhd $(BUILDDIR)/hd.img:
 	@sudo bash tools/chd.sh $(ARCH)-pc-seaos $(BUILDDIR)/hd.img $(BUILDCFG)
 
+cpdata $(BUILDDIR)/hd.img:
+	@sudo bash tools/cpdata.sh $(ARCH)-pc-seaos $(BUILDDIR)/hd.img $(BUILDCFG)
+
 $(KDIR)/$(BUILDDIR)/skernel: FORCE
 	PATH=$$PATH:$(TOOLCHAINDIR)/bin make $(MAKE_FLAGS) -s -C $(KDIR)
 
