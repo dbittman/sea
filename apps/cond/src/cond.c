@@ -54,6 +54,13 @@ struct pty *create_pty(struct termios *term, struct winsize *win)
 	return p;
 }
 
+bool pty_is_icanon(struct pty *pty)
+{
+	struct termios term;
+	tcgetattr(pty->masterfd, &term);
+	return (term.c_lflag & ICANON) != 0;
+}
+
 struct pty *spawn_terminal(char * const cmd[])
 {
 	struct pty *p = create_pty(&def_term, &def_win);

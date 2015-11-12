@@ -21,19 +21,20 @@ for i in $failed_mods; do
 	echo "loading failed for module $i: see kernel log for details"
 done
 
+/bin/cond sh /init.sh $1
+exit 0
 if [[ "$1" = "/" ]]; then
 	# the user instructed us to use the initrd as root. Just start a shell
 	sh
 else
 	fsck -p -T -C $1
-	printf "Mounting filesystems: $1 -> /,"
+	printf "Mounting filesystems...\n"
 	if ! mount $1 /mnt; then
 		echo
 		echo "Failed to mount root filesystem, falling back to initrd shell..."
 		sh
 	else
 		chroot /mnt /bin/sh -c <<EOF "
-			printf dev,
 			mount -t devfs /dev/null /dev
 			. /etc/rc/boot; exit 0"
 EOF

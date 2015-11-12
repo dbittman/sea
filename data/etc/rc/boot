@@ -20,9 +20,9 @@ if [ ! -e /etc/firstbootdate ]; then
 	sh /sys/first_run.sh
 fi
 
-login </dev/tty1 >/dev/tty1 2>/dev/tty1 &
-login </dev/tty2 >/dev/tty2 2>/dev/tty2 &
+login &
+#login </dev/tty2 >/dev/tty2 2>/dev/tty2 &
 
-login </dev/tty3 >/dev/tty3 2>/dev/tty3 &
+#login </dev/tty3 >/dev/tty3 2>/dev/tty3 &
 . /etc/rc/rand start
 . /etc/rc/loop start

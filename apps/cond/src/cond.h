@@ -40,4 +40,4 @@ void update_cursor(struct pty *pty);
 void switch_console(int);
 void flip(struct pty *pty);
 void update_cursor(struct pty *pty);
-
+bool pty_is_icanon(struct pty *pty);
