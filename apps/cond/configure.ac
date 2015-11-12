@@ -1,0 +1,11 @@
+AC_INIT(src/cond.c)
+
+PACKAGE=cond
+VERSION=0.1.0
+
+AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+
+AC_PROG_CC
+
+AC_OUTPUT(Makefile src/Makefile)
+

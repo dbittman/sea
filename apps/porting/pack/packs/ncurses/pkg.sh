@@ -15,11 +15,11 @@ function prepare() {
 }
 
 function build() {
-	if ! ../src/$NAME-$VERSION/configure --prefix=/usr --host=$HOST_TRIPLET --oldincludedir=/usr/include --includedir=/usr/include --disable-termcap; then
+if ! ../src/$NAME-$VERSION/configure --prefix=/usr --host=$HOST_TRIPLET --oldincludedir=/usr/include --includedir=/usr/include --disable-termcap --with-build-cc=gcc --with-build-cpp=cpp --with-build-cxx=g++ BUILD_CC=gcc BUILD_CXX=g++ BUILD_CPP=cpp --build=$(../src/$NAME-$VERSION/config.guess); then
 		return 1
 	fi
 
-	if ! make DESTDIR=$INSTALL_ROOT -i all install; then
+	if ! make DESTDIR=$INSTALL_ROOT all install; then
 		return 1
 	fi
 }

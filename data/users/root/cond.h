@@ -37,4 +37,7 @@ void clear(struct pty *pty);
 int scroll_down(struct pty *pty, int n);
 int scroll_up(struct pty *pty, int n);
 void update_cursor(struct pty *pty);
+void switch_console(int);
+void flip(struct pty *pty);
+void update_cursor(struct pty *pty);
 

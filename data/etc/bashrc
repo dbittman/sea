@@ -9,7 +9,7 @@ export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;
 alias ls='ls --color=auto'
 export EDITOR=nano
 
-export PS1="[\e[31m\u\e[37m:\e[33m\\w\e[37m]$ "
+export PS1="\e[1;37m[\e[1;31m\u\e[1;37m:\e[1;33m\\w\e[1;37m]$\e[m "
 alias lsmod='modprobe -l'
 alias less='less -d'
 alias ps='sps'

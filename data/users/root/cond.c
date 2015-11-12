@@ -13,9 +13,12 @@
 #include <sys/time.h>
 #include <sys/select.h>
 #include <sys/types.h>
+#include <stdio.h>
 #include <signal.h>
 
 #include "cond.h"
+
+char *command[128];
 
 struct termios def_term = {
 	.c_iflag = BRKINT | ICRNL,
@@ -59,6 +62,10 @@ struct pty *spawn_terminal(char * const cmd[])
 	if(!pid) {
 		execvp(cmd[0], cmd);
 	}
+	int flags = fcntl(p->masterfd, F_GETFL, 0);
+	if(flags >= 0)
+		flags |= O_NONBLOCK;
+	fcntl(p->masterfd, F_SETFL, flags);
 	for(int i=0;i<MAX_TERMS;i++) {
 		if(!ptys[i]) {
 			ptys[i] = p;
@@ -66,6 +73,19 @@ struct pty *spawn_terminal(char * const cmd[])
 		}
 	}
 	return p;
+}
+
+void switch_console(int con)
+{
+	struct pty *n;
+	if(!ptys[con]) {
+		n = spawn_terminal(command);
+	} else {
+		n = ptys[con];
+	}
+	current_pty = n;
+	flip(n);
+	update_cursor(n);
 }
 
 void select_loop(void)
@@ -101,8 +121,41 @@ void select_loop(void)
 	}
 }
 
+void help()
+{
+	fprintf(stderr, "cond - Console Daemon\n");
+	fprintf(stderr, "usage: cond [-h] -- command args...\n");
+	fprintf(stderr, "'command args' is the command that is to be spawned on"
+			"ptys when first accessed.\n");
+}
+
+void parse_options(int argc, char **argv)
+{
+	int c;
+	while((c = getopt(argc, argv, "h")) != -1) {
+		switch(c) {
+			case 'h':
+				help();
+				exit(0);
+		}
+		printf("%c\n", c);
+	}
+	int rem = argc - optind;
+	if(rem > 0) {
+		int i;
+		for(i=0;i<rem && i<127;i++) {
+			command[i] = argv[optind + i];
+		}
+		command[i] = NULL;
+	} else {
+		command[0] = "bash";
+		command[1] = NULL;
+	}
+}
+
 int main(int argc, char **argv)
 {
+	parse_options(argc, argv);
 	//daemon(0, 0);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
@@ -115,13 +168,13 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 	init_screen();
-	char *login[] = { "bash", NULL };
-	struct pty *init = spawn_terminal(login);
+	struct pty *init = spawn_terminal(command);
 	if(!init) {
 		syslog(LOG_ERR, "failed to start initial terminal\n");
 		exit(1);
 	}
 	current_pty = init;
+	flip(init);
 	select_loop();
 }
 

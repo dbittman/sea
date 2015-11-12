@@ -1,5 +1,5 @@
 
-bin_PROGRAMS = fortune ifc ioctl login losetup lscpu lspci modprobe mon mount passwd ping route sps shiv kshutdown swap t umount useradd
+bin_PROGRAMS = fortune ifc ioctl login losetup lscpu lspci modprobe mon mount passwd ping route sps shiv kshutdown swap t umount useradd strace
 
 fortune_SOURCES = fortune.c
 ifc_SOURCES = ifc.c
@@ -23,4 +23,5 @@ t_SOURCES = t.c
 umount_SOURCES = umount.c
 useradd_SOURCES = useradd.c
 shiv_SOURCES = shiv.c
+strace_SOURCES = strace.c
 

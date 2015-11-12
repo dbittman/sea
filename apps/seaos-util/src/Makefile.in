@@ -91,7 +91,7 @@ bin_PROGRAMS = fortune$(EXEEXT) ifc$(EXEEXT) ioctl$(EXEEXT) \
 	modprobe$(EXEEXT) mon$(EXEEXT) mount$(EXEEXT) passwd$(EXEEXT) \
 	ping$(EXEEXT) route$(EXEEXT) sps$(EXEEXT) shiv$(EXEEXT) \
 	kshutdown$(EXEEXT) swap$(EXEEXT) t$(EXEEXT) umount$(EXEEXT) \
-	useradd$(EXEEXT)
+	useradd$(EXEEXT) strace$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -152,6 +152,9 @@ shiv_LDADD = $(LDADD)
 am_sps_OBJECTS = ps.$(OBJEXT)
 sps_OBJECTS = $(am_sps_OBJECTS)
 sps_LDADD = $(LDADD)
+am_strace_OBJECTS = strace.$(OBJEXT)
+strace_OBJECTS = $(am_strace_OBJECTS)
+strace_LDADD = $(LDADD)
 am_swap_OBJECTS = swap.$(OBJEXT)
 swap_OBJECTS = $(am_swap_OBJECTS)
 swap_LDADD = $(LDADD)
@@ -197,15 +200,15 @@ SOURCES = $(fortune_SOURCES) $(ifc_SOURCES) $(ioctl_SOURCES) \
 	$(lscpu_SOURCES) $(lspci_SOURCES) $(modprobe_SOURCES) \
 	$(mon_SOURCES) $(mount_SOURCES) $(passwd_SOURCES) \
 	$(ping_SOURCES) $(route_SOURCES) $(shiv_SOURCES) \
-	$(sps_SOURCES) $(swap_SOURCES) $(t_SOURCES) $(umount_SOURCES) \
-	$(useradd_SOURCES)
+	$(sps_SOURCES) $(strace_SOURCES) $(swap_SOURCES) $(t_SOURCES) \
+	$(umount_SOURCES) $(useradd_SOURCES)
 DIST_SOURCES = $(fortune_SOURCES) $(ifc_SOURCES) $(ioctl_SOURCES) \
 	$(kshutdown_SOURCES) $(login_SOURCES) $(losetup_SOURCES) \
 	$(lscpu_SOURCES) $(lspci_SOURCES) $(modprobe_SOURCES) \
 	$(mon_SOURCES) $(mount_SOURCES) $(passwd_SOURCES) \
 	$(ping_SOURCES) $(route_SOURCES) $(shiv_SOURCES) \
-	$(sps_SOURCES) $(swap_SOURCES) $(t_SOURCES) $(umount_SOURCES) \
-	$(useradd_SOURCES)
+	$(sps_SOURCES) $(strace_SOURCES) $(swap_SOURCES) $(t_SOURCES) \
+	$(umount_SOURCES) $(useradd_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -342,6 +345,7 @@ t_SOURCES = t.c
 umount_SOURCES = umount.c
 useradd_SOURCES = useradd.c
 shiv_SOURCES = shiv.c
+strace_SOURCES = strace.c
 all: all-am
 
 .SUFFIXES:
@@ -482,6 +486,10 @@ sps$(EXEEXT): $(sps_OBJECTS) $(sps_DEPENDENCIES) $(EXTRA_sps_DEPENDENCIES)
 	@rm -f sps$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(sps_OBJECTS) $(sps_LDADD) $(LIBS)
 
+strace$(EXEEXT): $(strace_OBJECTS) $(strace_DEPENDENCIES) $(EXTRA_strace_DEPENDENCIES) 
+	@rm -f strace$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(strace_OBJECTS) $(strace_LDADD) $(LIBS)
+
 swap$(EXEEXT): $(swap_OBJECTS) $(swap_DEPENDENCIES) $(EXTRA_swap_DEPENDENCIES) 
 	@rm -f swap$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(swap_OBJECTS) $(swap_LDADD) $(LIBS)
@@ -521,6 +529,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/route.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shiv.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shutdown.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/strace.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/swap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/t.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/umount.Po@am__quote@

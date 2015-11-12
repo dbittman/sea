@@ -39,8 +39,12 @@ void clear_line(struct pty *pty, int n, int mode)
 
 void clear(struct pty *pty)
 {
-	for(int i=0;i<25;i++)
-		append_scroll_down(pty);
+	for(int x=0;x<80;x++) {
+		for(int y=0;y<LINES;y++) {
+			pty->lines[y][x].character = ' ';
+			pty->lines[y][x].attr = DEF_ATTR;
+		}
+	}
 	pty->cy = pty->sp;
 }
 
@@ -48,6 +52,12 @@ void flip(struct pty *pty)
 {
 	if(pty == current_pty)
 		memcpy((void *)SCREEN, &pty->lines[pty->sp][0], 2 * 80 * 25);
+}
+
+void flip_line(struct pty *pty, int n)
+{
+	if(pty == current_pty && n >= pty->sp && n < LINES)
+		memcpy(((unsigned short *)SCREEN) + (n - pty->sp) * 80, &pty->lines[n][0], 2 * 80);
 }
 
 void append_scroll_down(struct pty *pty)
@@ -102,8 +112,13 @@ void disp_character(struct pty *pty, unsigned char c)
 			pty->cx = 0;
 			break;
 		case '\b':
-			if(pty->cx > 0)
+			if(pty->cx > 0) {
 				pty->cx--;
+			}
+			break;
+		case 7: /* bell */
+			/* TODO */
+			syslog(0, "BELL!\n");
 			break;
 		case 27:
 			escape_code(pty);
@@ -152,11 +167,11 @@ void escape_cattr(struct pty *pty, int val)
 		pty->cattr |= ATTR_BRIGHT;
 	} else if(val >= 30 && val <= 37) {
 		int color = val - 30;
-		pty->cattr &= 0xF0;
+		pty->cattr &= 0xF8;
 		pty->cattr |= color;
 	} else  if(val >= 40 && val <= 47) {
 		int color = val - 40;
-		pty->cattr &= 0xF;
+		pty->cattr &= 0x8F;
 		pty->cattr |= color << 4;
 	}
 
@@ -179,12 +194,14 @@ void update_cursor(struct pty *pty)
 
 void escape_command(struct pty *pty, unsigned char cmd, int argc, int args[])
 {
-	syslog(0, "escape: %c: %d\n", cmd, argc);
-	for(int i=0;i<argc;i++) syslog(0, "    * %d\n", args[i]);
+	//syslog(0, "escape: %c: %d\n", cmd, argc);
+	//for(int i=0;i<argc;i++) syslog(0, "    * %d\n", args[i]);
 
 	switch(cmd) {
 		int x, y;
 		case 'm':
+			if(argc == 0)
+				escape_cattr(pty, 0);
 			for(int i=0;i<argc;i++) {
 				escape_cattr(pty, args[i]);
 			}
@@ -192,7 +209,7 @@ void escape_command(struct pty *pty, unsigned char cmd, int argc, int args[])
 		case 'K':
 			/* line clear */
 			clear_line(pty, pty->cy, args[0]);
-			flip(pty);
+			flip_line(pty, pty->cy);
 			break;
 		case 'J':
 			clear_screen(pty, args[0]);
@@ -262,12 +279,12 @@ void escape_command(struct pty *pty, unsigned char cmd, int argc, int args[])
 			if(x + pty->cx > 80)
 				x = 80 - pty->cx;
 			memcpy(&pty->lines[pty->cy][pty->cx], &pty->lines[pty->cy][pty->cx + x],
-					sizeof(struct cell) * x);
+					sizeof(struct cell) * (80 - x));
 			y = pty->cx;
 			pty->cx = 80 - x;
-			clear_line(pty, pty->cy, 1);
+			clear_line(pty, pty->cy, 0);
 			pty->cx = y;
-			flip(pty);
+			flip_line(pty, pty->cy);
 			break;
 		case 'M':
 			if(pty->cy < (LINES - 1)) {
@@ -284,8 +301,6 @@ void escape_command(struct pty *pty, unsigned char cmd, int argc, int args[])
 		default:
 			syslog(LOG_ERR, "invalid escape sequence command '%c'\n", cmd);
 	}
-
-	flip(pty);
 }
 
 /* Allowed escape code types:
@@ -310,17 +325,17 @@ void escape_code(struct pty *pty)
 	if(READ(c) != 1)
 		return;
 	if(c == '[') {
-		syslog(0, "BEGIN ESCAPE: ");
+		//syslog(0, "BEGIN ESCAPE: ");
 		while(1) {
 			if(READ(c) != 1)
 				return;
-			syslog(0, "%c", c);
+			//syslog(0, "%c", c);
 			if(isalpha(c)) {
 				/* end of escape sequence, we have the command. */
 				if(digitpos > 0 && argc < 4) {
 					args[argc++] = atoi(digitbuf);
 				}
-				syslog(0, ":: ");
+				//syslog(0, ":: ");
 				escape_command(pty, c, argc, args);
 				break;
 			} else if(isdigit(c) && digitpos < 4) {
@@ -348,6 +363,5 @@ void init_screen(void)
 {
 	syslog(LOG_ERR, "Taking over screen...\n");
 	syscall(58, 0, 0, 0, 0, 0);
-	memset((void *)SCREEN, 0, 2 * 80 * 25);
 }
 

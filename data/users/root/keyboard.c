@@ -79,6 +79,8 @@
 #define KEY_DEL         2017
 #define KEY_INSERT      2018
 
+#define KEY_BACKTAB     2019
+
 #define KEY_SCANCODE_F1  0x3b
 #define KEY_SCANCODE_F2  0x3c
 #define KEY_SCANCODE_F3  0x3d
@@ -158,6 +160,24 @@ unsigned int us_map_ctrl[128] = {
 	[0x35] = '/',
 	
 	[0x39] = ' ',
+
+	[0x3b] = KEY_F1,
+	[0x3c] = KEY_F2,
+	[0x3d] = KEY_F3,
+	[0x3e] = KEY_F4,
+	[0x3f] = KEY_F5,
+	[0x40] = KEY_F6,
+	[0x41] = KEY_F7,
+	[0x42] = KEY_F8,
+	[0x43] = KEY_F9,
+	[0x44] = KEY_F10,
+	[0x52] = KEY_INSERT,
+	[0x47] = KEY_HOME,
+	[0x53] = KEY_DEL,
+	[0x4f] = KEY_END,
+
+
+
 	[0x49] = KEY_PAGE_UP,
 	[0x51] = KEY_PAGE_DOWN,
 	
@@ -224,8 +244,24 @@ unsigned int us_map[128] = {
 	
 	[0x39] = ' ',
 
+	[0x3b] = KEY_F1,
+	[0x3c] = KEY_F2,
+	[0x3d] = KEY_F3,
+	[0x3e] = KEY_F4,
+	[0x3f] = KEY_F5,
+	[0x40] = KEY_F6,
+	[0x41] = KEY_F7,
+	[0x42] = KEY_F8,
+	[0x43] = KEY_F9,
+	[0x44] = KEY_F10,
+
 	[0x49] = KEY_PAGE_UP,
 	[0x51] = KEY_PAGE_DOWN,
+
+	[0x52] = KEY_INSERT,
+	[0x47] = KEY_HOME,
+	[0x53] = KEY_DEL,
+	[0x4f] = KEY_END,
 
 	[0x48] = KEY_ARROW_UP,
 	[0x50] = KEY_ARROW_DOWN,
@@ -249,7 +285,7 @@ unsigned int us_map_shift[128] = {
 	[0x0c] = '_',
 	[0x0d] = '+',
 	[0x0e] = '\b',
-	[0x0f] = '\t',
+	[0x0f] = KEY_BACKTAB,
 	[0x10] = 'q',
 	[0x11] = 'w',
 	[0x12] = 'e',
@@ -289,6 +325,22 @@ unsigned int us_map_shift[128] = {
 	[0x34] = '>',
 	[0x35] = '?',
 	
+	[0x3b] = KEY_F1,
+	[0x3c] = KEY_F2,
+	[0x3d] = KEY_F3,
+	[0x3e] = KEY_F4,
+	[0x3f] = KEY_F5,
+	[0x40] = KEY_F6,
+	[0x41] = KEY_F7,
+	[0x42] = KEY_F8,
+	[0x43] = KEY_F9,
+	[0x44] = KEY_F10,
+	[0x52] = KEY_INSERT,
+	[0x47] = KEY_HOME,
+	[0x53] = KEY_DEL,
+	[0x4f] = KEY_END,
+
+
 	[0x39] = ' ',
 	[0x49] = KEY_PAGE_UP,
 	[0x51] = KEY_PAGE_DOWN,
@@ -307,6 +359,15 @@ void sendkey(unsigned char key)
 	data[0] = key;
 	write(current_pty->masterfd, data, 1);
 }
+#include <string.h>
+void sendescstr(char *str)
+{
+	unsigned char buf[16];
+	memset(buf, 0, sizeof(buf));
+	buf[0] = 27;
+	strncpy(&buf[1], str, 14);
+	write(current_pty->masterfd, buf, strlen(buf));
+}
 
 bool ctrl = false, shift = false, alt = false, capslock = false;
 
@@ -317,21 +378,48 @@ void special_key(unsigned int key)
 	} else if(key == KEY_PAGE_UP && shift) {
 		scroll_up(current_pty, 10);
 	} else if(key == KEY_ARROW_UP) {
-		sendkey(27);
-		sendkey('[');
-		sendkey('A');
+		sendescstr("[A");
 	} else if(key == KEY_ARROW_DOWN) {
-		sendkey(27);
-		sendkey('[');
-		sendkey('B');
+		sendescstr("[B");
 	} else if(key == KEY_ARROW_LEFT) {
-		sendkey(27);
-		sendkey('[');
-		sendkey('D');
+		sendescstr("[D");
 	} else if(key == KEY_ARROW_RIGHT) {
-		sendkey(27);
-		sendkey('[');
-		sendkey('C');
+		sendescstr("[C");
+	} else if(key >= KEY_F1 && key <= KEY_F9 && ctrl) {
+		int console = key - KEY_F1;
+		switch_console(console);
+	} else if(key >= KEY_F1 && key < KEY_F10) {
+		char str[5];
+		str[0] = '['; str[1] = '1' + (key - KEY_F1);
+		str[2] = 'F';
+		str[3] = 0;
+		sendescstr(str);
+	} else if(key == KEY_DEL) {
+		if(shift)
+			sendescstr("[^4~");
+		else
+			sendescstr("[4~");
+	} else if(key == KEY_INSERT) {
+		if(shift)
+			sendescstr("[^1~");
+		else
+			sendescstr("[1~");
+	} else if(key == KEY_HOME) {
+		if(shift)
+			sendescstr("[^2~");
+		else
+			sendescstr("[2~");
+	} else if(key == KEY_END) {
+		if(shift)
+			sendescstr("[^5~");
+		else
+			sendescstr("[5~");
+	} else if(key == KEY_PAGE_DOWN) {
+		sendescstr("[6~");
+	} else if(key == KEY_PAGE_UP) {
+		sendescstr("[3~");
+	} else if(key == KEY_BACKTAB) {
+		sendescstr("[Z");
 	}
 }
 

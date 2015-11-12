@@ -61,6 +61,21 @@ updatehd: $(KDIR)/$(BUILDDIR)/skernel $(BUILDDIR)/initrd.tar $(BUILDDIR)/hd.img
 	@sudo sh tools/close_hdimage.sh
 	@sudo chmod a+rw $(BUILDDIR)/hd.img 
 
+.PHONY: updatehd
+updatehd2: $(KDIR)/$(BUILDDIR)/skernel $(BUILDDIR)/initrd.tar $(BUILDDIR)/hd.img
+	@echo updating hd image...
+	@sudo sh tools/open_hdimage.sh $(BUILDDIR)/hd.img
+	@sudo mkdir -p /mnt/sys/modules-${VERSION}/
+	@sudo cp -rf $(KDIR)/$(BUILDDIR)/drivers/built/* /mnt/sys/modules-${VERSION}/ 2>/dev/null
+	@sudo cp -rf $(BUILDDIR)/initrd.tar /mnt/sys/initrd
+	@sudo cp -rf $(KDIR)/$(BUILDDIR)/skernel /mnt/sys/kernel
+	@sudo cp -rf apps/porting/pack/packs/seaosutil/install-${ARCH}-pc-seaos/root/* /mnt
+	@sudo cp -rf apps/porting/pack/packs/cond/install-${ARCH}-pc-seaos/root/* /mnt
+	@sudo gzip -f /mnt/sys/initrd
+	@sudo sh tools/close_hdimage.sh
+	@sudo chmod a+rw $(BUILDDIR)/hd.img 
+
+
 .PHONY: extupdatehd
 extupdatehd: $(KDIR)/$(BUILDDIR)/skernel $(BUILDDIR)/initrd.tar $(BUILDDIR)/hd.img
 	@echo updating hd image...
@@ -81,8 +96,13 @@ apps:
 
 
 apps_seaos:
-	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/clean.sh seaosutil -s; apps/porting/pack/pack.sh seaosutil; apps/porting/pack/aggregate.sh apps/install-base-x86_64-pc-seaos x86_64-pc-seaos
+	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/clean.sh seaosutil -s; apps/porting/pack/pack.sh seaosutil
 
+agg_apps:
+	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs ; apps/porting/pack/aggregate.sh apps/install-base-x86_64-pc-seaos x86_64-pc-seaos
+
+apps_cond:
+	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/clean.sh cond -s; apps/porting/pack/pack.sh cond; cat apps/porting/pack/packs/cond/*.log
 
 apps_clean:
 	rm -rf apps/install-base-*; cd apps/porting/pack && PACKSDIR=packs ./clean-all.sh
