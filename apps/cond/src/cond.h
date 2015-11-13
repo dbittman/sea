@@ -1,4 +1,4 @@
-#define LINES 35
+#define LINES 1000
 #define MAX_TERMS 12
 
 #define DEF_ATTR 0x7

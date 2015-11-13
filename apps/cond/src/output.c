@@ -122,7 +122,6 @@ void disp_character(struct pty *pty, unsigned char c)
 			break;
 		case 7: /* bell */
 			/* TODO */
-			syslog(0, "BELL!\n");
 			break;
 		case 27:
 			escape_code(pty);
@@ -199,9 +198,6 @@ void update_cursor(struct pty *pty)
 
 void escape_command(struct pty *pty, unsigned char cmd, int argc, int args[])
 {
-	//syslog(0, "escape: %c: %d\n", cmd, argc);
-	//for(int i=0;i<argc;i++) syslog(0, "    * %d\n", args[i]);
-
 	switch(cmd) {
 		int x, y;
 		case 'm':
@@ -304,7 +300,7 @@ void escape_command(struct pty *pty, unsigned char cmd, int argc, int args[])
 			flip(pty);
 			break;
 		default:
-			syslog(LOG_ERR, "invalid escape sequence command '%c'\n", cmd);
+			syslog(LOG_WARNING, "invalid escape sequence command '%c'\n", cmd);
 	}
 }
 
@@ -330,17 +326,14 @@ void escape_code(struct pty *pty)
 	if(READ(c) != 1)
 		return;
 	if(c == '[') {
-		//syslog(0, "BEGIN ESCAPE: ");
 		while(1) {
 			if(READ(c) != 1)
 				return;
-			//syslog(0, "%c", c);
 			if(isalpha(c)) {
 				/* end of escape sequence, we have the command. */
 				if(digitpos > 0 && argc < 4) {
 					args[argc++] = atoi(digitbuf);
 				}
-				//syslog(0, ":: ");
 				escape_command(pty, c, argc, args);
 				break;
 			} else if(isdigit(c) && digitpos < 4) {
@@ -366,7 +359,7 @@ void process_output(struct pty *pty)
 
 void init_screen(void)
 {
-	syslog(LOG_ERR, "Taking over screen...\n");
+	syslog(LOG_INFO, "taking control of screen\n");
 	syscall(58, 0, 0, 0, 0, 0);
 }
 

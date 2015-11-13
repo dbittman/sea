@@ -28,9 +28,9 @@ $(BUILDDIR):
 
 $(BUILDDIR)/initrd.tar: $(shell find data-initrd $(KDIR)/$(BUILDDIR)/drivers/built) $(addprefix apps/install-base-$(ARCH)-pc-seaos/bin/, $(INITRD_ARCH_FILES))
 	@echo "Building initrd..."
-	@tar cfv $(BUILDDIR)/initrd.tar -C data-initrd .
-	@tar rfv $(BUILDDIR)/initrd.tar -C apps/install-base-$(ARCH)-pc-seaos/bin $(INITRD_ARCH_OPTIONS) $(INITRD_ARCH_FILES)
-	@tar rfv $(BUILDDIR)/initrd.tar -C $(KDIR)/$(BUILDDIR)/drivers --xform='s,^built,modules,' built
+	@tar cf $(BUILDDIR)/initrd.tar -C data-initrd .
+	@tar rf $(BUILDDIR)/initrd.tar -C apps/install-base-$(ARCH)-pc-seaos/bin $(INITRD_ARCH_OPTIONS) $(INITRD_ARCH_FILES)
+	@tar rf $(BUILDDIR)/initrd.tar -C $(KDIR)/$(BUILDDIR)/drivers --xform='s,^built,modules,' built
 
 newhd $(BUILDDIR)/hd.img:
 	@sudo bash tools/chd.sh $(ARCH)-pc-seaos $(BUILDDIR)/hd.img $(BUILDCFG)

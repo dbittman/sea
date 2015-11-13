@@ -1,9 +1,5 @@
 #!/bin/sh
 
-echo "Initializing logging..."
-
-mkdir -p /var/log
-
 echo "Initializing network... "
 
 modprobe ethernet

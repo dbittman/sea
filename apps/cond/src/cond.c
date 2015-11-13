@@ -165,7 +165,7 @@ void parse_options(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-	//daemon(0, 0);
+	daemon(0, 0);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
@@ -173,7 +173,7 @@ int main(int argc, char **argv)
 	memset(command, 0, sizeof(command));
 	openlog("cond", 0, 0);
 	parse_options(argc, argv);
-	syslog(LOG_ERR, "starting cond v. 0.1\n");
+	syslog(LOG_INFO, "starting cond v. 0.1\n");
 	keyfd = open("/dev/keyboard", O_RDWR | O_NONBLOCK);
 	if(keyfd == -1) {
 		syslog(LOG_ERR, "failed to open keyboard file: %s\n", strerror(errno));

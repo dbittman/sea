@@ -374,9 +374,13 @@ bool ctrl = false, shift = false, alt = false, capslock = false;
 void special_key(unsigned int key)
 {
 	if(key == KEY_PAGE_DOWN && shift) {
-		scroll_down(current_pty, 10);
+		scroll_down(current_pty, 20);
 	} else if(key == KEY_PAGE_UP && shift) {
-		scroll_up(current_pty, 10);
+		scroll_up(current_pty, 20);
+	} else if(key == KEY_SHIFT_ARROW_DOWN) {
+		scroll_down(current_pty, 1);
+	} else if(key == KEY_SHIFT_ARROW_UP) {
+		scroll_up(current_pty, 1);
 	} else if(key == KEY_ARROW_UP) {
 		sendescstr("[A");
 	} else if(key == KEY_ARROW_DOWN) {
@@ -467,10 +471,10 @@ void keyboard_state_machine(unsigned char scancode)
 				key = us_map_ctrl[scancode];
 			else
 				key = us_map[scancode];
-			if(shift ^ capslock)
+			if(shift ^ capslock && key < 256)
 				key = toupper(key);
 			if(key == 0)
-				syslog(LOG_ERR, "unknown scancode: %x (%d %d %d)\n", scancode, shift, ctrl, alt);
+				syslog(LOG_DEBUG, "unknown scancode: %x (%d %d %d)\n", scancode, shift, ctrl, alt);
 			else if(!release && key < 256) {
 				sendkey((unsigned char)key);
 			} else if(!release) {
