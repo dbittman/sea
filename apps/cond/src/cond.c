@@ -162,10 +162,11 @@ void parse_options(int argc, char **argv)
 		}
 	}
 }
-
+#include <sys/resource.h>
 int main(int argc, char **argv)
 {
-	daemon(0, 0);
+	//daemon(0, 0);
+	setpriority(PRIO_PROCESS, 0, -20);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
