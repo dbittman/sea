@@ -18,7 +18,8 @@
 
 #include "cond.h"
 
-char *command[128];
+char *command = "bash";
+char *autospawn = NULL;
 
 struct termios def_term = {
 	.c_iflag = BRKINT | ICRNL,
@@ -61,13 +62,14 @@ bool pty_is_icanon(struct pty *pty)
 	return (term.c_lflag & ICANON) != 0;
 }
 
-struct pty *spawn_terminal(char * const cmd[])
+struct pty *spawn_terminal(char *cmd)
 {
+	syslog(LOG_INFO, "spawning new terminal: %s\n", cmd);
 	struct pty *p = create_pty(&def_term, &def_win);
 	clear(p);
 	int pid = forkpty(&p->masterfd, NULL, &p->term, &p->win);
 	if(!pid) {
-		execvp(cmd[0], cmd);
+		system(cmd);
 	}
 	int flags = fcntl(p->masterfd, F_GETFL, 0);
 	if(flags >= 0)
@@ -86,7 +88,11 @@ void switch_console(int con)
 {
 	struct pty *n;
 	if(!ptys[con]) {
-		n = spawn_terminal(command);
+		if(autospawn) {
+			n = spawn_terminal(autospawn);
+		} else {
+			return;
+		}
 	} else {
 		n = ptys[con];
 	}
@@ -139,37 +145,31 @@ void help()
 void parse_options(int argc, char **argv)
 {
 	int c;
-	while((c = getopt(argc, argv, "h")) != -1) {
+	while((c = getopt(argc, argv, "ha:c:")) != -1) {
 		switch(c) {
 			case 'h':
 				help();
 				exit(0);
+			case 'a':
+				autospawn = optarg;
+				break;
+			case 'c':
+				command = optarg;
+				break;
 		}
-		printf("%c\n", c);
-	}
-	int rem = argc - optind;
-	if(rem > 0) {
-		int i;
-		for(i=0;i<rem && i<127;i++) {
-			command[i] = argv[optind + i];
-		}
-		command[i] = NULL;
-	} else {
-		command[0] = "bash";
-		command[1] = NULL;
 	}
 }
 
 int main(int argc, char **argv)
 {
-	parse_options(argc, argv);
 	//daemon(0, 0);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	memset(ptys, 0, sizeof(ptys));
 	openlog("cond", 0, 0);
-	syslog(LOG_ERR, "starting cond!\n");
+	parse_options(argc, argv);
+	syslog(LOG_ERR, "starting cond v. 0.1\n");
 	keyfd = open("/dev/keyboard", O_RDWR | O_NONBLOCK);
 	if(keyfd == -1) {
 		syslog(LOG_ERR, "failed to open keyboard file: %s\n", strerror(errno));

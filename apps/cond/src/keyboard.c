@@ -362,7 +362,7 @@ void sendkey(unsigned char key)
 #include <string.h>
 void sendescstr(char *str)
 {
-	unsigned char buf[16];
+	char buf[16];
 	memset(buf, 0, sizeof(buf));
 	buf[0] = 27;
 	strncpy(&buf[1], str, 14);

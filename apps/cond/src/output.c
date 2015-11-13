@@ -183,6 +183,7 @@ void escape_cattr(struct pty *pty, int val)
 
 void clear_screen(struct pty *pty, int mode)
 {
+	(void)mode;
 	for(int i=pty->cy;i < LINES;i++) {
 		clear_line(pty, i, 2);
 	}

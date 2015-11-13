@@ -91,7 +91,7 @@ bin_PROGRAMS = fortune$(EXEEXT) ifc$(EXEEXT) ioctl$(EXEEXT) \
 	modprobe$(EXEEXT) mon$(EXEEXT) mount$(EXEEXT) passwd$(EXEEXT) \
 	ping$(EXEEXT) route$(EXEEXT) sps$(EXEEXT) shiv$(EXEEXT) \
 	kshutdown$(EXEEXT) swap$(EXEEXT) t$(EXEEXT) umount$(EXEEXT) \
-	useradd$(EXEEXT) strace$(EXEEXT)
+	useradd$(EXEEXT) strace$(EXEEXT) init$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -110,6 +110,9 @@ fortune_LDADD = $(LDADD)
 am_ifc_OBJECTS = ifc.$(OBJEXT)
 ifc_OBJECTS = $(am_ifc_OBJECTS)
 ifc_LDADD = $(LDADD)
+am_init_OBJECTS = init.$(OBJEXT)
+init_OBJECTS = $(am_init_OBJECTS)
+init_LDADD = $(LDADD)
 am_ioctl_OBJECTS = ioctl.$(OBJEXT)
 ioctl_OBJECTS = $(am_ioctl_OBJECTS)
 ioctl_LDADD = $(LDADD)
@@ -195,20 +198,22 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(fortune_SOURCES) $(ifc_SOURCES) $(ioctl_SOURCES) \
-	$(kshutdown_SOURCES) $(login_SOURCES) $(losetup_SOURCES) \
-	$(lscpu_SOURCES) $(lspci_SOURCES) $(modprobe_SOURCES) \
-	$(mon_SOURCES) $(mount_SOURCES) $(passwd_SOURCES) \
-	$(ping_SOURCES) $(route_SOURCES) $(shiv_SOURCES) \
-	$(sps_SOURCES) $(strace_SOURCES) $(swap_SOURCES) $(t_SOURCES) \
-	$(umount_SOURCES) $(useradd_SOURCES)
-DIST_SOURCES = $(fortune_SOURCES) $(ifc_SOURCES) $(ioctl_SOURCES) \
-	$(kshutdown_SOURCES) $(login_SOURCES) $(losetup_SOURCES) \
-	$(lscpu_SOURCES) $(lspci_SOURCES) $(modprobe_SOURCES) \
-	$(mon_SOURCES) $(mount_SOURCES) $(passwd_SOURCES) \
-	$(ping_SOURCES) $(route_SOURCES) $(shiv_SOURCES) \
-	$(sps_SOURCES) $(strace_SOURCES) $(swap_SOURCES) $(t_SOURCES) \
-	$(umount_SOURCES) $(useradd_SOURCES)
+SOURCES = $(fortune_SOURCES) $(ifc_SOURCES) $(init_SOURCES) \
+	$(ioctl_SOURCES) $(kshutdown_SOURCES) $(login_SOURCES) \
+	$(losetup_SOURCES) $(lscpu_SOURCES) $(lspci_SOURCES) \
+	$(modprobe_SOURCES) $(mon_SOURCES) $(mount_SOURCES) \
+	$(passwd_SOURCES) $(ping_SOURCES) $(route_SOURCES) \
+	$(shiv_SOURCES) $(sps_SOURCES) $(strace_SOURCES) \
+	$(swap_SOURCES) $(t_SOURCES) $(umount_SOURCES) \
+	$(useradd_SOURCES)
+DIST_SOURCES = $(fortune_SOURCES) $(ifc_SOURCES) $(init_SOURCES) \
+	$(ioctl_SOURCES) $(kshutdown_SOURCES) $(login_SOURCES) \
+	$(losetup_SOURCES) $(lscpu_SOURCES) $(lspci_SOURCES) \
+	$(modprobe_SOURCES) $(mon_SOURCES) $(mount_SOURCES) \
+	$(passwd_SOURCES) $(ping_SOURCES) $(route_SOURCES) \
+	$(shiv_SOURCES) $(sps_SOURCES) $(strace_SOURCES) \
+	$(swap_SOURCES) $(t_SOURCES) $(umount_SOURCES) \
+	$(useradd_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -323,6 +328,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+init_SOURCES = init.c
 fortune_SOURCES = fortune.c
 ifc_SOURCES = ifc.c
 ioctl_SOURCES = ioctl.c
@@ -430,6 +436,10 @@ ifc$(EXEEXT): $(ifc_OBJECTS) $(ifc_DEPENDENCIES) $(EXTRA_ifc_DEPENDENCIES)
 	@rm -f ifc$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(ifc_OBJECTS) $(ifc_LDADD) $(LIBS)
 
+init$(EXEEXT): $(init_OBJECTS) $(init_DEPENDENCIES) $(EXTRA_init_DEPENDENCIES) 
+	@rm -f init$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(init_OBJECTS) $(init_LDADD) $(LIBS)
+
 ioctl$(EXEEXT): $(ioctl_OBJECTS) $(ioctl_DEPENDENCIES) $(EXTRA_ioctl_DEPENDENCIES) 
 	@rm -f ioctl$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(ioctl_OBJECTS) $(ioctl_LDADD) $(LIBS)
@@ -515,6 +525,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_password.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fortune.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ifc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/init.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ioctl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/login.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/losetup.Po@am__quote@

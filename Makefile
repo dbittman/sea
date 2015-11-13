@@ -26,11 +26,11 @@ all: $(BUILDDIR) updatehd
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
 
-$(BUILDDIR)/initrd.tar: $(shell find data-initrd $(KDIR)/$(BUILDDIR)/drivers/built) $(addprefix apps/install-base-$(ARCH)-pc-seaos/, $(INITRD_ARCH_FILES))
+$(BUILDDIR)/initrd.tar: $(shell find data-initrd $(KDIR)/$(BUILDDIR)/drivers/built) $(addprefix apps/install-base-$(ARCH)-pc-seaos/bin/, $(INITRD_ARCH_FILES))
 	@echo "Building initrd..."
-	@tar cf $(BUILDDIR)/initrd.tar -C data-initrd .
-	@tar rf $(BUILDDIR)/initrd.tar -C apps/install-base-$(ARCH)-pc-seaos $(INITRD_ARCH_OPTIONS) $(INITRD_ARCH_FILES)
-	@tar rf $(BUILDDIR)/initrd.tar -C $(KDIR)/$(BUILDDIR)/drivers/built .
+	@tar cfv $(BUILDDIR)/initrd.tar -C data-initrd .
+	@tar rfv $(BUILDDIR)/initrd.tar -C apps/install-base-$(ARCH)-pc-seaos/bin $(INITRD_ARCH_OPTIONS) $(INITRD_ARCH_FILES)
+	@tar rfv $(BUILDDIR)/initrd.tar -C $(KDIR)/$(BUILDDIR)/drivers --xform='s,^built,modules,' built
 
 newhd $(BUILDDIR)/hd.img:
 	@sudo bash tools/chd.sh $(ARCH)-pc-seaos $(BUILDDIR)/hd.img $(BUILDCFG)
@@ -96,13 +96,16 @@ apps:
 
 
 apps_seaos:
-	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/clean.sh seaosutil -s; apps/porting/pack/pack.sh seaosutil
+	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/clean.sh seaosutil -s; apps/porting/pack/pack.sh seaosutil;DESTDIR=$$(pwd)/apps/install-base-${ARCH}-pc-seaos TRIPLET=${ARCH}-pc-seaos apps/porting/pack/install.sh seaosutil
+
 
 agg_apps:
 	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs ; apps/porting/pack/aggregate.sh apps/install-base-x86_64-pc-seaos x86_64-pc-seaos
 
 apps_cond:
-	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/clean.sh cond -s; apps/porting/pack/pack.sh cond; cat apps/porting/pack/packs/cond/*.log
+	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/clean.sh cond -s; apps/porting/pack/pack.sh cond; DESTDIR=$$(pwd)/apps/install-base-${ARCH}-pc-seaos TRIPLET=${ARCH}-pc-seaos apps/porting/pack/install.sh cond
+	
+	cat apps/porting/pack/packs/cond/*.log
 
 apps_clean:
 	rm -rf apps/install-base-*; cd apps/porting/pack && PACKSDIR=packs ./clean-all.sh
