@@ -32,4 +32,4 @@ fi
 . /etc/rc/rand start
 . /etc/rc/loop start
 
-login
+exec login

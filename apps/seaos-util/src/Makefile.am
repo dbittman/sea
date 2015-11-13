@@ -1,7 +1,8 @@
 
-bin_PROGRAMS = fortune ifc ioctl login losetup lscpu lspci modprobe mon mount passwd ping route sps shiv kshutdown swap t umount useradd strace init
+bin_PROGRAMS = fortune ifc ioctl login losetup lscpu lspci modprobe mon mount passwd ping route sps shiv kshutdown swap t umount useradd strace init syslogd
 
 init_SOURCES = init.c
+syslogd_SOURCES = syslogd.c
 fortune_SOURCES = fortune.c
 ifc_SOURCES = ifc.c
 ioctl_SOURCES = ioctl.c

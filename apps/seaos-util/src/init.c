@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 	}
 
 	if(!fork()) {
-		execlp("cond", "cond", "-a", "login", "-c", "sh /etc/rc/boot", (char *)NULL);
+		execlp("cond", "cond", "-a", "login", "-1", "sh /etc/rc/boot", "-9", "syslogd", (char *)NULL);
 	}
 	while(true) {
 		waitpid(-1, 0, 0);

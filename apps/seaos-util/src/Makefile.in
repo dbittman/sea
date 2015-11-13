@@ -91,7 +91,8 @@ bin_PROGRAMS = fortune$(EXEEXT) ifc$(EXEEXT) ioctl$(EXEEXT) \
 	modprobe$(EXEEXT) mon$(EXEEXT) mount$(EXEEXT) passwd$(EXEEXT) \
 	ping$(EXEEXT) route$(EXEEXT) sps$(EXEEXT) shiv$(EXEEXT) \
 	kshutdown$(EXEEXT) swap$(EXEEXT) t$(EXEEXT) umount$(EXEEXT) \
-	useradd$(EXEEXT) strace$(EXEEXT) init$(EXEEXT)
+	useradd$(EXEEXT) strace$(EXEEXT) init$(EXEEXT) \
+	syslogd$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -161,6 +162,9 @@ strace_LDADD = $(LDADD)
 am_swap_OBJECTS = swap.$(OBJEXT)
 swap_OBJECTS = $(am_swap_OBJECTS)
 swap_LDADD = $(LDADD)
+am_syslogd_OBJECTS = syslogd.$(OBJEXT)
+syslogd_OBJECTS = $(am_syslogd_OBJECTS)
+syslogd_LDADD = $(LDADD)
 am_t_OBJECTS = t.$(OBJEXT)
 t_OBJECTS = $(am_t_OBJECTS)
 t_LDADD = $(LDADD)
@@ -204,16 +208,16 @@ SOURCES = $(fortune_SOURCES) $(ifc_SOURCES) $(init_SOURCES) \
 	$(modprobe_SOURCES) $(mon_SOURCES) $(mount_SOURCES) \
 	$(passwd_SOURCES) $(ping_SOURCES) $(route_SOURCES) \
 	$(shiv_SOURCES) $(sps_SOURCES) $(strace_SOURCES) \
-	$(swap_SOURCES) $(t_SOURCES) $(umount_SOURCES) \
-	$(useradd_SOURCES)
+	$(swap_SOURCES) $(syslogd_SOURCES) $(t_SOURCES) \
+	$(umount_SOURCES) $(useradd_SOURCES)
 DIST_SOURCES = $(fortune_SOURCES) $(ifc_SOURCES) $(init_SOURCES) \
 	$(ioctl_SOURCES) $(kshutdown_SOURCES) $(login_SOURCES) \
 	$(losetup_SOURCES) $(lscpu_SOURCES) $(lspci_SOURCES) \
 	$(modprobe_SOURCES) $(mon_SOURCES) $(mount_SOURCES) \
 	$(passwd_SOURCES) $(ping_SOURCES) $(route_SOURCES) \
 	$(shiv_SOURCES) $(sps_SOURCES) $(strace_SOURCES) \
-	$(swap_SOURCES) $(t_SOURCES) $(umount_SOURCES) \
-	$(useradd_SOURCES)
+	$(swap_SOURCES) $(syslogd_SOURCES) $(t_SOURCES) \
+	$(umount_SOURCES) $(useradd_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -329,6 +333,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 init_SOURCES = init.c
+syslogd_SOURCES = syslogd.c
 fortune_SOURCES = fortune.c
 ifc_SOURCES = ifc.c
 ioctl_SOURCES = ioctl.c
@@ -504,6 +509,10 @@ swap$(EXEEXT): $(swap_OBJECTS) $(swap_DEPENDENCIES) $(EXTRA_swap_DEPENDENCIES)
 	@rm -f swap$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(swap_OBJECTS) $(swap_LDADD) $(LIBS)
 
+syslogd$(EXEEXT): $(syslogd_OBJECTS) $(syslogd_DEPENDENCIES) $(EXTRA_syslogd_DEPENDENCIES) 
+	@rm -f syslogd$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(syslogd_OBJECTS) $(syslogd_LDADD) $(LIBS)
+
 t$(EXEEXT): $(t_OBJECTS) $(t_DEPENDENCIES) $(EXTRA_t_DEPENDENCIES) 
 	@rm -f t$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(t_OBJECTS) $(t_LDADD) $(LIBS)
@@ -542,6 +551,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shutdown.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/strace.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/swap.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/syslogd.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/t.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/umount.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/useradd.Po@am__quote@

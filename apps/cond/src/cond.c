@@ -18,7 +18,7 @@
 
 #include "cond.h"
 
-char *command = "bash";
+char *command[9];
 char *autospawn = NULL;
 
 struct termios def_term = {
@@ -75,12 +75,6 @@ struct pty *spawn_terminal(char *cmd)
 	if(flags >= 0)
 		flags |= O_NONBLOCK;
 	fcntl(p->masterfd, F_SETFL, flags);
-	for(int i=0;i<MAX_TERMS;i++) {
-		if(!ptys[i]) {
-			ptys[i] = p;
-			break;
-		}
-	}
 	return p;
 }
 
@@ -90,6 +84,7 @@ void switch_console(int con)
 	if(!ptys[con]) {
 		if(autospawn) {
 			n = spawn_terminal(autospawn);
+			ptys[con] = n;
 		} else {
 			return;
 		}
@@ -145,7 +140,7 @@ void help()
 void parse_options(int argc, char **argv)
 {
 	int c;
-	while((c = getopt(argc, argv, "ha:c:")) != -1) {
+	while((c = getopt(argc, argv, "ha:1:2:3:4:5:6:7:8:9:")) != -1) {
 		switch(c) {
 			case 'h':
 				help();
@@ -153,8 +148,16 @@ void parse_options(int argc, char **argv)
 			case 'a':
 				autospawn = optarg;
 				break;
-			case 'c':
-				command = optarg;
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				command[c - '1'] = optarg;
 				break;
 		}
 	}
@@ -167,6 +170,7 @@ int main(int argc, char **argv)
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	memset(ptys, 0, sizeof(ptys));
+	memset(command, 0, sizeof(command));
 	openlog("cond", 0, 0);
 	parse_options(argc, argv);
 	syslog(LOG_ERR, "starting cond v. 0.1\n");
@@ -176,13 +180,14 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 	init_screen();
-	struct pty *init = spawn_terminal(command);
-	if(!init) {
-		syslog(LOG_ERR, "failed to start initial terminal\n");
-		exit(1);
+	for(int i=0;i<9;i++) {
+		if(command[i]) {
+			struct pty *p = spawn_terminal(command[i]);
+			ptys[i] = p;
+		}
 	}
-	current_pty = init;
-	flip(init);
+	current_pty = ptys[0];
+	flip(current_pty);
 	select_loop();
 }
 

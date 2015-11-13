@@ -1,5 +1,5 @@
 #define LINES 35
-#define MAX_TERMS 8
+#define MAX_TERMS 12
 
 #define DEF_ATTR 0x7
 
