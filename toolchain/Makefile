@@ -28,7 +28,7 @@ $(USRLINK): $(TOOLCHAINDIR) $(TOOLCHAINDIR)/$(TRIPLET)
 	ln -s . $(USRLINK)
 
 $(TOOLCHAINDIR)/$(TRIPLET)/include: $(TOOLCHAINDIR)/$(TRIPLET)
-	mkdir $(TOOLCHAINDIR)/$(TRIPLET)/include
+	mkdir -p $(TOOLCHAINDIR)/$(TRIPLET)/include
 
 .PHONY: $(addprefix do-build-,$(TOOLS))
 .PHONY: $(addprefix clean-,$(DIRS))
