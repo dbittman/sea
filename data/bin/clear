@@ -1,0 +1,3 @@
+#!/bin/sh
+echo -en "\e[H\e[J"
+
