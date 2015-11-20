@@ -280,7 +280,7 @@ void escape_command(struct pty *pty, unsigned char cmd, int argc, int args[])
 			if(x + pty->cx > 80)
 				x = 80 - pty->cx;
 			memcpy(&pty->lines[pty->cy][pty->cx], &pty->lines[pty->cy][pty->cx + x],
-					sizeof(struct cell) * (80 - x));
+					sizeof(struct cell) * (80 - (x + pty->cx)));
 			y = pty->cx;
 			pty->cx = 80 - x;
 			clear_line(pty, pty->cy, 0);
