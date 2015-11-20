@@ -104,8 +104,7 @@ void print_process(int pid)
 		return;
 	if(!read_field(path, "command", 128, cmdstr))
 		return;
-	if(!read_field(path, "tty", 64, ttystr))
-		return;
+	int hastty = read_field(path, "tty", 64, ttystr);
 	if(!read_field(path, "real_uid", 16, uidstr))
 		return;
 	if(!read_field(path, "flags", 8, flagsstr))
@@ -152,10 +151,10 @@ void print_process(int pid)
 	}
 	if(format) {
 		printf("%4s %5d %3s %5s %5.2f%c %5.2f%c", 
-				uidstr, pid, ttystr, flagsstr, 
+				uidstr, pid, hastty ? ttystr : "-", flagsstr, 
 				utime, utime_unit, stime, stime_unit);
 	} else {
-		printf("%5d %3s %5.2f%c %5.2f%c", pid, ttystr, utime, utime_unit, stime, stime_unit);
+		printf("%5d %3s %5.2f%c %5.2f%c", pid, hastty ? ttystr : "-", utime, utime_unit, stime, stime_unit);
 	}
 
 	if(threads) {
@@ -220,8 +219,9 @@ int main(int argc, char **argv)
 	sprintf(us, "%s/%d", PROCSDIR, ourpid);
 	if(ourtty == -1) {
 		if(!read_field(us, "tty", 32, tty))
-			return 1;
-		ourtty = strtol(tty, 0, 10);
+			ourtty = 0;
+		else
+			ourtty = strtol(tty, 0, 10);
 	}
 	enumerate_processes();
 

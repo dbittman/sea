@@ -24,6 +24,7 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
+	printf("Started system logger\n");
 	FILE *out = open_log_out();
 	if(out)
 		setbuf(out, NULL);

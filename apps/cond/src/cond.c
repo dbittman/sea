@@ -69,7 +69,8 @@ struct pty *spawn_terminal(char *cmd)
 	clear(p);
 	int pid = forkpty(&p->masterfd, NULL, &p->term, &p->win);
 	if(!pid) {
-		system(cmd);
+		execlp("sh", "sh", "-c", cmd, (char *)NULL);
+		exit(0);
 	}
 	int flags = fcntl(p->masterfd, F_GETFL, 0);
 	if(flags >= 0)

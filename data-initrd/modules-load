@@ -1,6 +1,5 @@
-partitions
 keyboard
 pci
-psm
 ahci
+partitions
 ext2
