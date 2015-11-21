@@ -9,6 +9,7 @@ BUILDDIR=$(BUILDCONTAINER)/$(BUILDCFG)
 TOOLCHAINDIR=$(shell realpath $(BUILDCONTAINER)/toolchain)
 include $(BUILDCONTAINER)/$(BUILDCFG)/make.inc
 ARCH ?= x86_64
+export SYSROOTDIR=$(shell realpath apps/install-base-${ARCH}-pc-seaos)
 
 include $(KDIR)/make.inc
 
@@ -92,7 +93,7 @@ extupdatehd: $(KDIR)/$(BUILDDIR)/skernel $(BUILDDIR)/initrd.tar $(BUILDDIR)/hd.i
 .PHONY: apps apps64 apps_port apps_seaos
 
 apps:
-	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/build-all.sh x86_64-pc-seaos; apps/porting/pack/aggregate.sh apps/install-base-x86_64-pc-seaos x86_64-pc-seaos
+	@export PATH=$$(pwd)/apps/porting/pack:$$PATH:$(TOOLCHAINDIR)/bin ; export PACKSDIR=$$(pwd)/apps/porting/pack/packs; apps/porting/pack/build-ordered.sh apps/install-base-x86_64-pc-seaos x86_64-pc-seaos
 
 
 apps_seaos:
@@ -115,9 +116,8 @@ apps_distclean:
 
 .PHONY : toolchain
 toolchain:
-	echo $(TOOLCHAINDIR)
 	mkdir -p $(TOOLCHAINDIR)
-	@PATH=$$PATH:$(TOOLCHAINDIR)/bin cd toolchain && $(MAKE) TOOLCHAINDIR=$(TOOLCHAINDIR) TRIPLET=$(ARCH)-pc-seaos ${TOOLS}
+	@PATH=$$PATH:$(TOOLCHAINDIR)/bin cd toolchain && $(MAKE) TOOLCHAINDIR=$(TOOLCHAINDIR) TRIPLET=$(ARCH)-pc-seaos SYSROOTDIR=$(SYSROOTDIR) ${TOOLS}
 	
 man:
 	sh tools/gen_man.sh

@@ -17,7 +17,11 @@ fi
 
 mkdir -p $DEST $DEST/var/pack/manifests $DEST/usr/src/packs
 
-for i in $(ls $SUBDIR); do
+if [ "$JOBS" == "" ]; then
+	JOBS="$(ls $SUBDIR)"
+fi
+
+for i in $JOBS; do
 	echo Aggregating $i...
 	if [ -d $SUBDIR/$i/install-$TRIPLET/root ]; then
 		rsync -a $SUBDIR/$i/install-$TRIPLET/root/* $DEST/
@@ -28,6 +32,8 @@ for i in $(ls $SUBDIR); do
 	fi
 done
 
-echo Stripping executables...
-find $DEST -executable -type f -exec strip -s {} \; 2>/dev/null
+#echo Stripping executables...
+#find $DEST -executable -type f -exec strip -s {} \; 2>/dev/null
+echo Removing .la files...
+find $DEST/usr/lib -name "*.la" -exec rm {} \;
 

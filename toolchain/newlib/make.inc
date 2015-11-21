@@ -12,6 +12,7 @@ DEPS=binutils gcc
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	cd $(NAME)/$(BUILDDIR) && \
-	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=$(TOOLCHAINDIR) && \
-	$(MAKE) -j1 all install
+	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=/usr && \
+	$(MAKE) -j1 DESTDIR=$(SYSROOTDIR) all install && \
+	cp -ar $(SYSROOTDIR)/usr/$(TRIPLET)/* $(SYSROOTDIR)/usr/
 

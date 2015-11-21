@@ -3,12 +3,15 @@ ifndef TOOLCHAINDIR
 $(error TOOLCHAINDIR is undefined)
 endif
 
+ifndef SYSROOTDIR
+$(error SYSROOTDIR is undefined)
+endif
+
 ifndef TRIPLET
 $(error TRIPLET is undefined)
 endif
 TOOLCHAINDIR := $(shell realpath $(TOOLCHAINDIR))
-
-USRLINK=$(TOOLCHAINDIR)/$(TRIPLET)/usr
+SYSROOTDIR := $(shell realpath $(SYSROOTDIR))
 
 BUILD_TRIPLET=$(shell ./config.guess)
 export PATH:=$(PATH):$(TOOLCHAINDIR)/bin
@@ -16,19 +19,17 @@ export PATH:=$(PATH):$(TOOLCHAINDIR)/bin
 DIRS := $(subst ./,,$(shell find . -maxdepth 1 -mindepth 1 -type d))
 TOOLS := $(DIRS)
 
-all: $(TOOLCHAINDIR) $(USRLINK) $(TOOLCHAINDIR)/$(TRIPLET)/include build-all
+all: $(TOOLCHAINDIR) $(USRLINK) $(TOOLCHAINDIR) $(SYSROOTDIR)/usr/include build-all
+
+print:
+	echo toolchain dir: $(TOOLCHAINDIR)
+	echo sysroot dir: $(SYSROOTDIR)
 
 $(TOOLCHAINDIR):
 	mkdir -p $(TOOLCHAINDIR)
 
-$(TOOLCHAINDIR)/$(TRIPLET):
-	mkdir -p $(TOOLCHAINDIR)/$(TRIPLET)
-
-$(USRLINK): $(TOOLCHAINDIR) $(TOOLCHAINDIR)/$(TRIPLET)
-	ln -s . $(USRLINK)
-
-$(TOOLCHAINDIR)/$(TRIPLET)/include: $(TOOLCHAINDIR)/$(TRIPLET)
-	mkdir -p $(TOOLCHAINDIR)/$(TRIPLET)/include
+$(SYSROOTDIR)/usr/include:
+	mkdir -p $(TOOLCHAINDIR)/usr/include
 
 .PHONY: $(addprefix do-build-,$(TOOLS))
 .PHONY: $(addprefix clean-,$(DIRS))

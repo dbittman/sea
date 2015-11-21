@@ -15,7 +15,8 @@ DEPS=binutils
 include varfix.mk
 build-$(NAME): $(NAME)/$(BUILDDIR) $(NAME)/$(PATCHEDDIR)
 	cd $(NAME)/$(BUILDDIR) && \
-	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=$(TOOLCHAINDIR) --disable-nls --enable-languages=c,c++ --enable-lto --with-sysroot=$(TOOLCHAINDIR)/$(TRIPLET) && \
+	mkdir -p $(SYSROOTDIR)/usr/include && \
+	../$(PATCHEDDIR)/configure --target=$(TRIPLET) --prefix=$(TOOLCHAINDIR) --disable-nls --enable-languages=c,c++ --enable-lto --with-sysroot=$(SYSROOTDIR) && \
 	$(MAKE) -j1 all-gcc install-gcc
 	-rm $(TOOLCHAINDIR)/bin/$(TRIPLET)-cc 2>/dev/null
 	-ln -s $(TRIPLET)-gcc $(TOOLCHAINDIR)/bin/$(TRIPLET)-cc 2>/dev/null

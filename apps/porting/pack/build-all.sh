@@ -4,7 +4,11 @@ SUBDIR=$PACKSDIR
 
 if [ "$SUBDIR" == "" ]; then SUBDIR=/usr/src/packs; fi
 
-JOBS=($(ls $SUBDIR))
+if [ "$JOBS" == "" ]; then
+	JOBS=($(ls $SUBDIR))
+else
+	JOBS=($JOBS)
+fi
 index=0
 handle_interrupt() {
 	echo Killing all subprocesses
@@ -22,8 +26,8 @@ function add_next_job {
     if [[ $index -lt ${#JOBS[*]} ]]; then
 
         do_job ${JOBS[$index]} & 
-        index=$(($index+1))
     fi
+    index=$(($index+1))
 }
 
 function do_job {
