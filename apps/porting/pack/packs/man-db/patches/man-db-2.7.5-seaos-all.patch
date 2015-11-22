@@ -1,0 +1,12 @@
+diff -uprN man-db-2.7.5/build-aux/config.sub man-db-2.7.5-seaos/build-aux/config.sub
+--- man-db-2.7.5/build-aux/config.sub	2015-11-06 07:46:31.000000000 -0800
++++ man-db-2.7.5-seaos/build-aux/config.sub	2015-11-19 22:33:22.482633879 -0800
+@@ -1377,7 +1377,7 @@ case $os in
+ 	-gnu* | -bsd* | -mach* | -minix* | -genix* | -ultrix* | -irix* \
+ 	      | -*vms* | -sco* | -esix* | -isc* | -aix* | -cnk* | -sunos | -sunos[34]*\
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+-	      | -sym* | -kopensolaris* | -plan9* \
++	      | -sym* | -kopensolaris* | -plan9* | -seaos* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+ 	      | -aos* | -aros* | -cloudabi* | -sortix* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \

@@ -1,0 +1,12 @@
+diff -uprN libpipeline-1.4.1/build-aux/config.sub libpipeline-1.4.1-seaos/build-aux/config.sub
+--- libpipeline-1.4.1/build-aux/config.sub	2015-08-17 02:14:23.000000000 -0700
++++ libpipeline-1.4.1-seaos/build-aux/config.sub	2015-11-21 00:37:20.962984987 -0800
+@@ -1365,7 +1365,7 @@ case $os in
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+ 	      | -sym* | -kopensolaris* | -plan9* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+-	      | -aos* | -aros* \
++	      | -aos* | -aros* | -seaos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
