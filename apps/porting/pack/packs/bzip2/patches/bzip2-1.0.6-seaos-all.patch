@@ -1,0 +1,12 @@
+diff -uprN bzip2-1.0.6/Makefile bzip2-1.0.6-seaos/Makefile
+--- bzip2-1.0.6/Makefile	2010-09-10 15:46:02.000000000 -0700
++++ bzip2-1.0.6-seaos/Makefile	2015-11-21 17:26:06.409073131 -0800
+@@ -35,7 +35,7 @@ OBJS= blocksort.o  \
+       decompress.o \
+       bzlib.o
+ 
+-all: libbz2.a bzip2 bzip2recover test
++all: libbz2.a bzip2 bzip2recover
+ 
+ bzip2: libbz2.a bzip2.o
+ 	$(CC) $(CFLAGS) $(LDFLAGS) -o bzip2 bzip2.o -L. -lbz2

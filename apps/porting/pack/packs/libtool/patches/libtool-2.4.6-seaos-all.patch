@@ -1,0 +1,12 @@
+diff -uprN libtool-2.4.6/build-aux/config.sub libtool-2.4.6-seaos/build-aux/config.sub
+--- libtool-2.4.6/build-aux/config.sub	2015-02-13 04:12:57.000000000 -0800
++++ libtool-2.4.6-seaos/build-aux/config.sub	2015-11-21 17:34:42.290098509 -0800
+@@ -1373,7 +1373,7 @@ case $os in
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+ 	      | -sym* | -kopensolaris* | -plan9* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+-	      | -aos* | -aros* \
++	      | -aos* | -aros* | -seaos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
