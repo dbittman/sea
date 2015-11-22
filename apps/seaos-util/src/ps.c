@@ -49,10 +49,12 @@ size_t read_field(const char *path, const char *field, int len, char *buf)
 	size_t ret = fread(buf, 1, len, file);
 	if(ferror(file)) {
 		fprintf(stderr, "%s: failed to read process field '%s': %s\n", progname, field, strerror(errno));
+		fclose(file);
 		return 0;
 	}
 	if(ret == 0) {
 		fprintf(stderr, "%s: failed to read process field '%s': no data\n", progname, field);
+		fclose(file);
 		return 0;
 	}
 	fclose(file);	

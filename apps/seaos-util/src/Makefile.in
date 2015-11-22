@@ -90,7 +90,7 @@ bin_PROGRAMS = fortune$(EXEEXT) ifc$(EXEEXT) ioctl$(EXEEXT) \
 	login$(EXEEXT) losetup$(EXEEXT) lscpu$(EXEEXT) lspci$(EXEEXT) \
 	modprobe$(EXEEXT) mon$(EXEEXT) mount$(EXEEXT) passwd$(EXEEXT) \
 	ping$(EXEEXT) route$(EXEEXT) sps$(EXEEXT) shiv$(EXEEXT) \
-	kshutdown$(EXEEXT) swap$(EXEEXT) t$(EXEEXT) umount$(EXEEXT) \
+	kshutdown$(EXEEXT) swap$(EXEEXT) umount$(EXEEXT) \
 	useradd$(EXEEXT) strace$(EXEEXT) init$(EXEEXT) \
 	syslogd$(EXEEXT)
 subdir = src
@@ -165,9 +165,6 @@ swap_LDADD = $(LDADD)
 am_syslogd_OBJECTS = syslogd.$(OBJEXT)
 syslogd_OBJECTS = $(am_syslogd_OBJECTS)
 syslogd_LDADD = $(LDADD)
-am_t_OBJECTS = t.$(OBJEXT)
-t_OBJECTS = $(am_t_OBJECTS)
-t_LDADD = $(LDADD)
 am_umount_OBJECTS = umount.$(OBJEXT)
 umount_OBJECTS = $(am_umount_OBJECTS)
 umount_LDADD = $(LDADD)
@@ -208,16 +205,16 @@ SOURCES = $(fortune_SOURCES) $(ifc_SOURCES) $(init_SOURCES) \
 	$(modprobe_SOURCES) $(mon_SOURCES) $(mount_SOURCES) \
 	$(passwd_SOURCES) $(ping_SOURCES) $(route_SOURCES) \
 	$(shiv_SOURCES) $(sps_SOURCES) $(strace_SOURCES) \
-	$(swap_SOURCES) $(syslogd_SOURCES) $(t_SOURCES) \
-	$(umount_SOURCES) $(useradd_SOURCES)
+	$(swap_SOURCES) $(syslogd_SOURCES) $(umount_SOURCES) \
+	$(useradd_SOURCES)
 DIST_SOURCES = $(fortune_SOURCES) $(ifc_SOURCES) $(init_SOURCES) \
 	$(ioctl_SOURCES) $(kshutdown_SOURCES) $(login_SOURCES) \
 	$(losetup_SOURCES) $(lscpu_SOURCES) $(lspci_SOURCES) \
 	$(modprobe_SOURCES) $(mon_SOURCES) $(mount_SOURCES) \
 	$(passwd_SOURCES) $(ping_SOURCES) $(route_SOURCES) \
 	$(shiv_SOURCES) $(sps_SOURCES) $(strace_SOURCES) \
-	$(swap_SOURCES) $(syslogd_SOURCES) $(t_SOURCES) \
-	$(umount_SOURCES) $(useradd_SOURCES)
+	$(swap_SOURCES) $(syslogd_SOURCES) $(umount_SOURCES) \
+	$(useradd_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -352,7 +349,6 @@ route_SOURCES = route.c
 sps_SOURCES = ps.c
 kshutdown_SOURCES = shutdown.c
 swap_SOURCES = swap.c
-t_SOURCES = t.c
 umount_SOURCES = umount.c
 useradd_SOURCES = useradd.c
 shiv_SOURCES = shiv.c
@@ -513,10 +509,6 @@ syslogd$(EXEEXT): $(syslogd_OBJECTS) $(syslogd_DEPENDENCIES) $(EXTRA_syslogd_DEP
 	@rm -f syslogd$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(syslogd_OBJECTS) $(syslogd_LDADD) $(LIBS)
 
-t$(EXEEXT): $(t_OBJECTS) $(t_DEPENDENCIES) $(EXTRA_t_DEPENDENCIES) 
-	@rm -f t$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(t_OBJECTS) $(t_LDADD) $(LIBS)
-
 umount$(EXEEXT): $(umount_OBJECTS) $(umount_DEPENDENCIES) $(EXTRA_umount_DEPENDENCIES) 
 	@rm -f umount$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(umount_OBJECTS) $(umount_LDADD) $(LIBS)
@@ -552,7 +544,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/strace.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/swap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/syslogd.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/t.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/umount.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/useradd.Po@am__quote@
 

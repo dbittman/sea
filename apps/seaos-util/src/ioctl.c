@@ -28,7 +28,6 @@ void usage()
 int main(int argc, char **argv)
 {
 	progname = (char *)basename(argv[0]);
-	int i;
 	int cmd=0;
 	int arg=0;
 	FILE *f;

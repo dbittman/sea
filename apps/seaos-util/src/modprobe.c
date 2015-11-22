@@ -88,8 +88,10 @@ int check_depend(char *name)
 				while((list = skip_space(list))) {
 					char *del = strchr(list, ' ');
 					if(del) *del = 0;
-					if(!check_module_exists(list))
+					if(!check_module_exists(list)) {
+						fclose(f);
 						return 0;
+					}
 					if(del)
 					{
 						*del=' ';
@@ -100,6 +102,7 @@ int check_depend(char *name)
 			}
 		}
 	}
+	fclose(f);
 	return 1;
 }
 

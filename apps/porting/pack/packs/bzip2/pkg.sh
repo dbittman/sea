@@ -16,7 +16,7 @@ function prepare() {
 
 function build() {
 	cp -rf ../src/bzip2-1.0.6/* .
-	if ! make PREFIX=$INSTALL_ROOT CC=$HOST_TRIPLET-gcc RANLIB=$HOST_TRIPLET-ranlib AR=$HOST_TRIPLET-ar all install; then
+	if ! make PREFIX=$INSTALL_ROOT/usr CC=$HOST_TRIPLET-gcc RANLIB=$HOST_TRIPLET-ranlib AR=$HOST_TRIPLET-ar all install; then
 		return 1
 	fi
 }

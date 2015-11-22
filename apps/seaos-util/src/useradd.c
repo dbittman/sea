@@ -103,38 +103,52 @@ int main(int argc, char **argv)
 	int gid = atoi(group_id);
 	if(!gid) {
 		fprintf(stderr, "%s: gid %d is unavailable (or invalid gid)\n", prog, uid);
+		free(home);
 		return 2;
 	}
 	if(!uid || !check_uid_available(uid)) {
 		fprintf(stderr, "%s: uid %d is unavailable (or invalid uid)\n", prog, uid);
+		free(home);
 		return 2;
 	}
 	if(getpwnam(login)) {
 		fprintf(stderr, "%s: login '%s' is unavailable\n", prog, login);
+		free(home);
 		return 2;
 	}
 	FILE *p = fopen("/etc/passwd", "r+");
 	if(!p) {
 		fprintf(stderr, "%s: /etc/passwd: %s\n", prog, strerror(errno));
+		free(home);
 		return 3;
 	}
 	if(fseek(p, 0, SEEK_END)) {
 		fprintf(stderr, "%s: couldn't seek in file /etc/passwd: %s\n", prog, strerror(errno));
+		free(home);
+		fclose(p);
 		return 3;
 	}
 	if(fprintf(p, "%s:%s:%d:%s:%s:%s:%s\n", login, password, uid, group_id, comment, home, shell) <= 0) {
 		fprintf(stderr, "%s: couldn't write to /etc/passwd: %s\n", prog, strerror(errno));
+		free(home);
+		fclose(p);
 		return 4;
 	}
 	if(!no_create_home) {
 		if(mkdir(home, 0755) && errno != EEXIST) {
 			fprintf(stderr, "%s: couldn't create '%s': %s\n", prog, home, strerror(errno));
+			free(home);
+			fclose(p);
 			return 5;
 		}
 		if(chown(home, uid, gid)) {
 			fprintf(stderr, "%s: couldn't change owner of '%s': %s\n", prog, home, strerror(errno));
+			free(home);
+			fclose(p);
 			return 5;
 		}
 	}
+	free(home);
+	fclose(p);
 	return 0;
 }
