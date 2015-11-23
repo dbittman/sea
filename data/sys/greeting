@@ -6,4 +6,5 @@ It is recommended that you add a root password soon, with the command `passwd'.
 You may add users with the `useradd' command. Some useful commands:
   less - pager
    gcc - C compiler
-  nano - text editor
+   vim - text editor
+   man - documentation
