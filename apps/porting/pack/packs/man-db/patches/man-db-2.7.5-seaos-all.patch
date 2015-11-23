@@ -1,6 +1,6 @@
 diff -uprN man-db-2.7.5/build-aux/config.sub man-db-2.7.5-seaos/build-aux/config.sub
 --- man-db-2.7.5/build-aux/config.sub	2015-11-06 07:46:31.000000000 -0800
-+++ man-db-2.7.5-seaos/build-aux/config.sub	2015-11-19 22:33:22.482633879 -0800
++++ man-db-2.7.5-seaos/build-aux/config.sub	2015-11-21 00:42:20.429320362 -0800
 @@ -1377,7 +1377,7 @@ case $os in
  	-gnu* | -bsd* | -mach* | -minix* | -genix* | -ultrix* | -irix* \
  	      | -*vms* | -sco* | -esix* | -isc* | -aix* | -cnk* | -sunos | -sunos[34]*\
@@ -10,3 +10,46 @@ diff -uprN man-db-2.7.5/build-aux/config.sub man-db-2.7.5-seaos/build-aux/config
  	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
  	      | -aos* | -aros* | -cloudabi* | -sortix* \
  	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+diff -uprN man-db-2.7.5/src/man.c man-db-2.7.5-seaos/src/man.c
+--- man-db-2.7.5/src/man.c	2015-11-05 08:09:40.000000000 -0800
++++ man-db-2.7.5-seaos/src/man.c	2015-11-21 02:05:04.881661086 -0800
+@@ -619,39 +619,6 @@ static void gripe_no_name (const char *s
+  */
+ static void check_standard_fds (void)
+ {
+-	int flags, mode;
+-
+-	/* We can't even write an error message in this case, so check it
+-	 * first.
+-	 */
+-	flags = fcntl (2, F_GETFL);
+-	if (flags < 0)
+-		exit (FATAL);
+-	mode = flags & O_ACCMODE;
+-	if (mode != O_WRONLY && mode != O_RDWR)
+-		exit (FATAL);
+-
+-	flags = fcntl (0, F_GETFL);
+-	if (flags < 0) {
+-		fprintf (stderr, "stdin not open!\n");
+-		exit (FATAL);
+-	}
+-	mode = flags & O_ACCMODE;
+-	if (mode != O_RDONLY && mode != O_RDWR) {
+-		fprintf (stderr, "stdin not open for reading!\n");
+-		exit (FATAL);
+-	}
+-
+-	flags = fcntl (1, F_GETFL);
+-	if (flags < 0) {
+-		fprintf (stderr, "stdout not open!\n");
+-		exit (FATAL);
+-	}
+-	mode = flags & O_ACCMODE;
+-	if (mode != O_WRONLY && mode != O_RDWR) {
+-		fprintf (stderr, "stdout not open for reading!\n");
+-		exit (FATAL);
+-	}
+ }
+ 
+ static struct termios tms;
