@@ -228,7 +228,10 @@ int set_addr(const char *name, char *addr_string)
 		}
 	}
 	
-	inet_aton(addr_string, &addr.sin_addr);
+	if(inet_aton(addr_string, &addr.sin_addr) == 0) {
+		fprintf(stderr, "ifc: invalid address '%s'.\n", addr_string);
+		return -1;
+	}
 	return do_set_addr(name, &addr);
 }
 

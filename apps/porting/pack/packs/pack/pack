@@ -1,0 +1,19 @@
+#!/bin/bash
+
+TRIPLET=$(uname -m)-pc-$(uname -s | tr '[:upper:]' '[:lower:]')
+
+case $1 in
+install)
+	/usr/share/pack/bin/install.sh $2
+	;;
+build)
+	/usr/share/pack/bin/pack.sh $2 $TRIPLET
+	;;
+register)
+	
+	;;
+setup)
+	
+	;;
+esac
+

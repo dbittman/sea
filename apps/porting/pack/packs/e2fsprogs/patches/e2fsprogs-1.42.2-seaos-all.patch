@@ -1,0 +1,79 @@
+diff -uprN e2fsprogs-1.42.2/config/config.sub e2fsprogs-1.42.2-seaos/config/config.sub
+--- e2fsprogs-1.42.2/config/config.sub	2009-08-12 18:39:57.000000000 -0700
++++ e2fsprogs-1.42.2-seaos/config/config.sub	2014-08-11 20:11:15.552988618 -0700
+@@ -1264,7 +1264,7 @@ case $os in
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -solaris* | -sym* \
+ 	      | -kopensolaris* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+-	      | -aos* | -aros* \
++	      | -aos* | -aros* | -seaos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+diff -uprN e2fsprogs-1.42.2/e2fsck/logfile.c e2fsprogs-1.42.2-seaos/e2fsck/logfile.c
+--- e2fsprogs-1.42.2/e2fsck/logfile.c	2012-03-22 21:01:58.000000000 -0700
++++ e2fsprogs-1.42.2-seaos/e2fsck/logfile.c	2014-08-11 20:11:15.556321892 -0700
+@@ -122,15 +122,8 @@ static void expand_percent_expression(e2
+ 			tm->tm_sec);
+ 		break;
+ 	case 'u':
+-#ifdef TEST_PROGRAM
+-		strcpy(buf, "tytso");
++		strcpy(buf, "god");
+ 		break;
+-#else
+-		getpwuid_r(getuid(), &pw_struct, buf, sizeof(buf), &pw);
+-		if (pw)
+-			append_string(s, pw->pw_name, 0);
+-		return;
+-#endif
+ 	case 'U':
+ 		*flags |= FLAG_UTC;
+ 		return;
+diff -uprN e2fsprogs-1.42.2/lib/ext2fs/bmap64.h e2fsprogs-1.42.2-seaos/lib/ext2fs/bmap64.h
+--- e2fsprogs-1.42.2/lib/ext2fs/bmap64.h	2012-03-25 15:09:55.000000000 -0700
++++ e2fsprogs-1.42.2-seaos/lib/ext2fs/bmap64.h	2014-08-11 20:11:15.556321892 -0700
+@@ -8,7 +8,7 @@
+  * License.
+  * %End-Header%
+  */
+-
++#include <sys/time.h>
+ struct ext2_bmap_statistics {
+ 	int		type;
+ 	struct timeval	created;
+diff -uprN e2fsprogs-1.42.2/lib/quota/quota.h e2fsprogs-1.42.2-seaos/lib/quota/quota.h
+--- e2fsprogs-1.42.2/lib/quota/quota.h	2012-03-18 11:18:33.000000000 -0700
++++ e2fsprogs-1.42.2-seaos/lib/quota/quota.h	2014-08-11 20:11:15.556321892 -0700
+@@ -36,6 +36,18 @@
+ #include <errno.h>
+ #include <sys/types.h>
+ #include <ext2fs/ext2_types.h>
++#define u_int64_t unsigned long long
++#define u_int32_t unsigned int
++#define u_int16_t unsigned short
++#define u_int8_t unsigned char
++
++#define int64_t signed long long
++#define int32_t signed int
++#define int16_t signed short
++#define int8_t signed char
++
++#define intptr_t int*
++#define u_intptr_t unsigned*
+ 
+ #define __DQUOT_VERSION__	"dquot_6.5.2"
+ 
+diff -uprN e2fsprogs-1.42.2/lib/uuid/gen_uuid.c e2fsprogs-1.42.2-seaos/lib/uuid/gen_uuid.c
+--- e2fsprogs-1.42.2/lib/uuid/gen_uuid.c	2012-03-18 11:18:33.000000000 -0700
++++ e2fsprogs-1.42.2-seaos/lib/uuid/gen_uuid.c	2014-09-06 11:41:19.049670851 -0700
+@@ -221,7 +221,8 @@ static void get_random_bytes(void *buf,
+  */
+ static int get_node_id(unsigned char *node_id)
+ {
+-#ifdef HAVE_NET_IF_H
++	/* SEAOS TODO: FIX THIS */
++#if 0
+ 	int 		sd;
+ 	struct ifreq 	ifr, *ifrp;
+ 	struct ifconf 	ifc;

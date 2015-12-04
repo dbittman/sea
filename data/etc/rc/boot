@@ -1,28 +1,30 @@
 #!/bin/sh
 
-printf "Initializing network... "
+echo "Initializing network... "
 
-if ! modprobe rtl8139 &>/dev/null; then
-  echo "failed";
-else
-  ifc -i nd1 -n 10.0.0.2/8 -s up -b 10.255.255.255
-  route -a -i nd1 -n 10.0.0.0/8 
-  modprobe lo
-  ifc -i nd2 -n 127.0.0.1/8 -s up -b 127.255.255.255
-  route -a -i nd2 -n 127.0.0.0/8
-  modprobe udp
-  modprobe ipv4
-  modprobe ethernet
-  echo "ok";
+modprobe ethernet
+modprobe rtl8139
+modprobe ipv4
+modprobe udp
+
+(
+ifc -i nd1 -n 10.0.0.2/8 -s up -b 10.255.255.255
+route -a -i nd1 -n 10.0.0.0/8 
+
+NUM=$(ls /dev/nd* 2>/dev/null | wc -l)
+LOOP=nd$((NUM+1))
+if modprobe lo; then
+	ifc -i $LOOP -n 127.0.0.1/8 -s up -b 127.255.255.255
+	route -a -i $LOOP -n 127.0.0.0/8
 fi
+
+) > /var/log/net.log 2>&1
 
 if [ ! -e /etc/firstbootdate ]; then
 	sh /sys/first_run.sh
 fi
 
-login </dev/tty1 >/dev/tty1 2>/dev/tty1 &
-login </dev/tty2 >/dev/tty2 2>/dev/tty2 &
+sh /etc/rc/rand start
+#. /etc/rc/loop start
 
-login </dev/tty3 >/dev/tty3 2>/dev/tty3 &
-. /etc/rc/rand start
-. /etc/rc/loop start
+exec login

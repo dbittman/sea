@@ -26,7 +26,7 @@ void convert_mask(int slash, char *string)
 
 void print_routes()
 {
-	execlp("/bin/cat", "cat", "/proc/route");
+	execlp("/bin/cat", "cat", "/proc/route", NULL);
 }
 
 void usage()
@@ -136,6 +136,7 @@ int main(int argc, char **argv)
 	if(add) {
 		/* okay, construct the route struct... */
 		struct route r;
+		memset(&r, 0, sizeof(r));
 		r.dest.sin_family = AF_INET;
 		r.gate.sin_family = AF_INET;
 		r.mask.sin_family = AF_INET;
@@ -151,6 +152,7 @@ int main(int argc, char **argv)
 			return 2;
 	} else {
 		struct route r;
+		memset(&r, 0, sizeof(r));
 		r.dest.sin_family = AF_INET;
 		inet_aton(dest, &r.dest.sin_addr);
 		if(ioctl(fd, SIOCDELRT, &r))

@@ -1,0 +1,46 @@
+diff -uprN bash-4.2/builtins/psize.c bash-4.2-seaos/builtins/psize.c
+--- bash-4.2/builtins/psize.c	2008-08-14 12:56:53.000000000 -0700
++++ bash-4.2-seaos/builtins/psize.c	2013-09-13 14:39:53.099014358 -0700
+@@ -32,15 +32,15 @@
+ 
+ #include <stdio.h>
+ #ifndef _MINIX
+-#include "../bashtypes.h"
++//#include "../bashtypes.h"
+ #endif
+ #include <signal.h>
+ #include <errno.h>
+ 
+ #include "../command.h"
+-#include "../general.h"
++//#include "../general.h"
+ #include "../sig.h"
+-
++#include <stdlib.h>
+ #ifndef errno
+ extern int errno;
+ #endif
+diff -uprN bash-4.2/execute_cmd.c bash-4.2-seaos/execute_cmd.c
+--- bash-4.2/execute_cmd.c	2011-02-09 14:32:25.000000000 -0800
++++ bash-4.2-seaos/execute_cmd.c	2013-09-13 14:39:53.099014358 -0700
+@@ -2202,7 +2202,7 @@ execute_pipeline (command, asynchronous,
+   /* If the `lastpipe' option is set with shopt, and job control is not
+      enabled, execute the last element of non-async pipelines in the
+      current shell environment. */
+-  if (lastpipe_opt && job_control == 0 && asynchronous == 0 && pipe_out == NO_PIPE && prev > 0)
++  if (lastpipe_opt && asynchronous == 0 && pipe_out == NO_PIPE && prev > 0)
+     {
+       lstdin = move_to_high_fd (0, 0, 255);
+       if (lstdin > 0)
+diff -uprN bash-4.2/support/config.sub bash-4.2-seaos/support/config.sub
+--- bash-4.2/support/config.sub	2009-11-19 10:43:37.000000000 -0800
++++ bash-4.2-seaos/support/config.sub	2013-09-13 14:39:53.099014358 -0700
+@@ -1246,7 +1246,7 @@ case $os in
+ 	      | -*vms* | -sco* | -esix* | -isc* | -aix* | -sunos | -sunos[34]*\
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -solaris* | -sym* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+-	      | -aos* \
++	      | -aos* | -seaos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \

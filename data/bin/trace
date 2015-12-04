@@ -1,0 +1,6 @@
+#!/bin/bash
+for var in "$@"; do
+	echo Enable "$var"
+	echo "$var" > /dev/trace_on
+done
+

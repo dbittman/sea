@@ -1,0 +1,12 @@
+diff -uprN gdbm-1.11/build-aux/config.sub gdbm-1.11-seaos/build-aux/config.sub
+--- gdbm-1.11/build-aux/config.sub	2013-08-19 00:16:17.000000000 -0700
++++ gdbm-1.11-seaos/build-aux/config.sub	2015-11-19 22:39:10.251699261 -0800
+@@ -1354,7 +1354,7 @@ case $os in
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+ 	      | -sym* | -kopensolaris* | -plan9* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+-	      | -aos* | -aros* \
++	      | -aos* | -aros* | -seaos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \

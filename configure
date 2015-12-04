@@ -1,50 +1,19 @@
-#!/bin/sh
+#!/bin/bash
+
+mkdir -p data/{dev,mnt,tmp}
+mkdir -p mnt build build/toolchain
 
 if [ -d seakernel ]; then
 	echo "ok, you've got the kernel sources..."
 else
-	echo "couldn't locate the kernel sources! You may check them out from github with:"
-	echo "(read-only) : git clone git://github.com/dbittman/seakernel.git"
-	echo "(read-write): git clone https://github.com/dbittman/seakernel.git"
-	exit 1
+	git clone git://github.com/dbittman/seakernel.git
 fi
-
-mkdir -p data/{dev,mnt,tmp}
-mkdir -p mnt
-
-echo -ne "please enter a path to store the generated toolchain:\n</path/to/toolchain>: "
-read tools
-if [ "$tools" == "" ]; then
-	echo "You must enter a toolchain path!"
-	exit 1
-fi
-echo -n "$tools" > .toolchain
-
-if [ -d $tools ]; then
-	if [ ! -w $tools -o ! -x $tools  ]; then
-		echo "you don't have proper permissions on $tools!"
-		exit 1
-	fi
-else
-	echo "$tools is not a directory (or may not exist)!"
-	exit 1
-fi
-
-echo -n "enter a path to a loop device that I should use: "
-read loop
-test -e $loop
-if [ "$?" != "0" ]; then
-	echo "Device $loop doesn't exist!"
-	exit 1
-fi
-if [ "$loop" == "" ]; then
-	echo "You must enter a loop device!"
-	exit 1
-fi
-echo -n "$loop" > .loop
 
 #sh tools/update_repos.sh
+BRANCH=ptrace
+echo Checking out branch $BRANCH
 cd seakernel
+git checkout $BRANCH
 sh ./configure
 cd ..
 
@@ -61,7 +30,7 @@ echo "QEMU_LOCAL=-smp 3 -enable-kvm" > local_make.inc
 cat > local_make.inc <<EOF
 QEMU_LOCAL=-smp 3 -enable-kvm
 INITRD_ARCH_OPTIONS=--no-recursion
-INITRD_ARCH_FILES=bin/bash bin/modprobe bin/mount bin/umount bin/ls bin/chroot bin/cat usr/sbin/fsck usr/sbin/fsck.ext2
+INITRD_ARCH_FILES=init
 MAKE_FLAGS=-j1
 
 EOF

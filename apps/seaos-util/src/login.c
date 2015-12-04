@@ -24,15 +24,12 @@
 #include <sys/utsname.h>
 #include <libgen.h>
 #include <errno.h>
+#include <sys/wait.h>
 char out_tty=0;
 int pid;
 char *name;
 int check_password(char *);
 char def_shell[8] = "/bin/sh";
-void sigint_h(int g)
-{
-	/* LOL LOL LOL */
-}
 
 int main(int argc, char **argv)
 {
@@ -54,21 +51,19 @@ int main(int argc, char **argv)
 	if(isatty(1))
 		out_tty=1;
 	setbuf(stdout, NULL);
-	waitpid(pid, 0, 0);
-	signal(SIGINT, sigint_h);
-	signal(SIGTSTP, sigint_h);
-	signal(SIGQUIT, sigint_h);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	struct utsname name;
 	uname(&name);
 	/* Main loop */
 	while(1)
 	{
-		printf("\nSeaOS kernel version %s (tty%d)\nor: How I learned to stop worrying and love my computer.\n\n", name.release, ioctl(0, 8, 0));
+		printf("\nSeaOS kernel version %s\nor: How I learned to stop worrying and love my computer.\n\n", name.release);
 		char username[128];
 		memset(username, 0, 128);
 		printf("Login: ");
-		while(!read(0, username, 127))
-			;
+		read(0, username, sizeof(username));
 		char *nl = strchr(username, '\n');
 		if(nl) *nl=0;
 		struct passwd *pwd = getpwnam(username);
@@ -94,9 +89,9 @@ int main(int argc, char **argv)
 				if(ret == -ECHILD)
 					fprintf(stderr, "login: no child process\n");
 			}
-			ioctl(1, 0, 0);
+			printf("%c[H%c[J", 27, 27);
 		} else {
-			set_uid(pwd->pw_uid);
+			setuid(pwd->pw_uid);
 			char *shell = pwd->pw_shell;
 			if(!*shell)
 				shell = def_shell;

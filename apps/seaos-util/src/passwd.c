@@ -60,11 +60,13 @@ int main(int argc, char **argv)
 		login = strdup(argv[optind]);
 	if(!(p=getpwnam(login))) {
 		fprintf(stderr, "%s: user %s is not present on this system\n", prog, login);
+		free(login);
 		return 2;
 	}
 	if(my_uid && my_uid != p->pw_uid) 
 	{
 		fprintf(stderr, "%s: non-root user may only change their own password\n", prog);
+		free(login);
 		return 3;
 	}
 	if(!force || my_uid)
@@ -72,6 +74,7 @@ int main(int argc, char **argv)
 		if(!check_password2("Old password: ", login))
 		{
 			fprintf(stderr, "%s: invalid password\n", prog);
+			free(login);
 			return 3;
 		}
 	}
@@ -84,6 +87,7 @@ int main(int argc, char **argv)
 	{
 		ioctl(1, 1, 15);
 		fprintf(stderr, "%s: stdin: %s\n", prog, strerror(errno));
+		free(login);
 		return 4;
 	}
 	ioctl(1, 1, 15);
@@ -98,6 +102,7 @@ int main(int argc, char **argv)
 	{
 		ioctl(1, 1, 15);
 		fprintf(stderr, "%s: stdin: %s\n", prog, strerror(errno));
+		free(login);
 		return 4;
 	}
 	ioctl(1, 1, 15);
@@ -105,6 +110,7 @@ int main(int argc, char **argv)
 	if(nl) *nl=0;
 	if(strcmp(new, new2)) {
 		fprintf(stderr, "%s: passwords don't match\n", prog);
+		free(login);
 		return 4;
 	}
 	
@@ -116,7 +122,7 @@ int main(int argc, char **argv)
 	
 	FILE *shadow_old = fopen("/etc/shadow", "r");
 	if(!shadow_old && errno != ENOENT) {
-		fprintf(stderr, "%s: cannot open /etc/shadow, but the file may exist! (%s)\n", strerror(errno));
+		fprintf(stderr, "%s: cannot open /etc/shadow, but the file may exist! (%s)\n", prog, strerror(errno));
 		exit(1);
 	}
 	FILE *shadow_new = fopen("/etc/shadow.new", "w");
@@ -171,6 +177,7 @@ int main(int argc, char **argv)
 			err_exit("error writing /etc/shadow_new");
 		}
 	}
+	free(login);
 	fclose(shadow_new);
 	
 	if(shadow_old) {

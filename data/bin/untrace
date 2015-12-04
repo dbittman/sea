@@ -1,0 +1,6 @@
+#!/bin/bash
+for var in "$@"; do
+	echo Disable "$var"
+	echo "$var" > /dev/trace_off
+done
+

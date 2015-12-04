@@ -1,0 +1,15 @@
+diff -uprN nasm-2.10/Makefile.in nasm-2.10-saeaos/Makefile.in
+--- nasm-2.10/Makefile.in	2012-03-12 13:44:20.000000000 -0700
++++ nasm-2.10-saeaos/Makefile.in	2014-02-09 16:25:50.970556512 -0800
+@@ -87,7 +87,10 @@ NDISASM = ndisasm.$(O) disasm.$(O) sync.
+ 	insnsd.$(O) insnsb.$(O) insnsn.$(O) regs.$(O) regdis.$(O)
+ #-- End File Lists --#
+ 
+-all: nasm$(X) ndisasm$(X) nasm.man ndisasm.man rdf
++all: first nasm$(X) ndisasm$(X) nasm.man ndisasm.man rdf
++
++first:
++	mkdir -p lib
+ 
+ nasm$(X): $(NASM) $(XOBJS)
+ 	$(CC) $(LDFLAGS) -o nasm$(X) $(NASM) $(XOBJS) $(LIBS)

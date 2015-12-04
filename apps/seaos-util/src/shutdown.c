@@ -24,6 +24,9 @@
 extern char **environ;
 int reset=0;
 
+extern void kernel_reset();
+extern void kernel_shutdown();
+
 int main(int argc, char **argv)
 {
 	int i;
@@ -37,10 +40,10 @@ int main(int argc, char **argv)
 		if(!strcmp(argv[i], "-r"))
 			reset=1;
 	}
-	system("sh /etc/rc/shutdown");
 	if(reset) 
 		kernel_reset();
 	else
 		kernel_shutdown();
 	return 0;
 }
+

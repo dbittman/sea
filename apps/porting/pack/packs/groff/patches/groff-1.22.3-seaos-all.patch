@@ -1,0 +1,25 @@
+diff -uprN groff-1.22.3/config.sub groff-1.22.3-seaos/config.sub
+--- groff-1.22.3/config.sub	2014-11-04 00:38:35.141525047 -0800
++++ groff-1.22.3-seaos/config.sub	2015-11-21 16:10:43.285633856 -0800
+@@ -1371,7 +1371,7 @@ case $os in
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+ 	      | -sym* | -kopensolaris* | -plan9* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+-	      | -aos* | -aros* \
++	      | -aos* | -aros* | -seaos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+diff -uprN groff-1.22.3/src/libs/gnulib/build-aux/config.sub groff-1.22.3-seaos/src/libs/gnulib/build-aux/config.sub
+--- groff-1.22.3/src/libs/gnulib/build-aux/config.sub	2014-11-04 00:38:35.646518734 -0800
++++ groff-1.22.3-seaos/src/libs/gnulib/build-aux/config.sub	2015-11-21 16:13:30.150626662 -0800
+@@ -1371,7 +1371,7 @@ case $os in
+ 	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
+ 	      | -sym* | -kopensolaris* | -plan9* \
+ 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
+-	      | -aos* | -aros* \
++	      | -aos* | -aros* | -seaos* \
+ 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
+ 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
+ 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+

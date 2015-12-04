@@ -1,0 +1,15 @@
+#!/bin/sh
+
+printf "Terminating all processes..."
+LIST=`sps -a 2>/dev/null | grep -v PID | awk '{print $1}'`
+for i in $LIST; do
+  if [[ "$i" != "$BASHPID" ]]; then
+      kill -s TERM $i &>/dev/null
+  fi
+done
+echo " ok"
+printf "Syncing disks..."
+sync
+echo " ok"
+kshutdown $1
+
